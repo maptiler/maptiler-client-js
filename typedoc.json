@@ -1,0 +1,10 @@
+{
+  "entryPoints": ["./src/index.ts"],
+  "name": "MapTiler Client JS",
+  "out": "docs",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "excludeNotDocumented": false,
+  "excludeInternal": true
+}

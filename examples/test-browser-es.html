@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <title>tslib</title>
+  </head>
+
+  <body>
+    <p>
+      This demo is using the ES module.
+    </p>
+    <p>
+      Open JS console.
+    </p>
+
+    <div id="images"></div>
+
+    <script type="module">
+      import {
+        config,
+        geocoding,
+        geolocation,
+        coordinates,
+        data,
+        staticMaps,
+      } from '../dist/maptiler-client.mjs';
+
+      config.apiKey = 'wvElBzv1zqf8XeNE37ip';
+
+      async function testGeocoding() {
+        const result1 = await geocoding.forward('bordeaux', {language: ['es', 'en']});
+        console.log(result1);
+
+        const result2 = await geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']});
+        console.log(result2);
+      }
+
+      async function testGeolocation() {
+        const result = await geolocation.info();
+        console.log(result);
+      }
+
+      async function testCoordinates() {
+        // searching
+        console.log(await coordinates.search('mercator', {transformations: true}));
+        console.log(await coordinates.search('plate carree'));
+        console.log(await coordinates.search('france'));
+        console.log(await coordinates.search('4326', {transformations: true}));
+        console.log(await coordinates.search('4326'));
+
+        // Transforming from wgs84 (default) to lambert93
+        console.log(await coordinates.transform({lng: 1, lat: 45}, {targetCrs: 9793}));
+        console.log(await coordinates.transform([{lng: 10, lat: 48},{lng: 1, lat: 45}], {targetCrs: 9793}));
+      }
+
+      async function testData() {
+        console.log(await data.get('2dd5ecc4-3ae1-4d1e-99a2-182256486357'));
+      }
+
+      function addImage(url) {
+        const img = document.createElement("img");
+        img.src = url;
+        document.getElementById("images").appendChild(img);
+      }
+
+      function staticMapTest() {
+        config.apiKey = "ZFEK2gQSwT4Jcimbtcy7";
+
+        const imageLinkCentered = staticMaps.centered({lng: 7, lat: 46.8}, 5, {
+          hiDPI: true,
+          width: 1000,
+          height: 500,
+          style: 'winter',
+        });
+
+        addImage(imageLinkCentered);
+
+        const imageLinkBounded = staticMaps.bounded({southWest: { lng: -9.8905, lat: 36.6274 }, northEast: { lng: -6.0453, lat: 42.3208 }}, {
+          hiDPI: true,
+          width: 1024,
+          height: 2048,
+          style: 'streets-v2',
+          path: [[-9.8905, 36.6274], [-9.8905, 42.3208], [-6.0453, 42.3208], [-6.0453, 36.6274], [-9.8905, 36.6274]],
+          pathStrokeColor: 'red',
+          pathWidth: 4,
+        });
+
+        addImage(imageLinkBounded);
+      }
+
+
+      (async () => {
+        await testGeocoding();
+        await testGeolocation();
+        await testCoordinates();
+        await testData();
+        staticMapTest();
+      })()
+    </script>
+  </body>
+</html>
