@@ -1,6 +1,3 @@
-service api client library
-
-
 <p align="center">
   <img src="images/maptiler-client-logo.svg" width="400px">
 </p>
