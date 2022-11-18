@@ -21,16 +21,17 @@
         coordinates,
         data,
         staticMaps,
+        Language,
       } from '../dist/maptiler-client.mjs';
 
       config.apiKey = 'wvElBzv1zqf8XeNE37ip';
 
       async function testGeocoding() {
-        const result1 = await geocoding.forward('bordeaux', {language: ['es', 'en']});
+        const result1 = await geocoding.forward('london', {language: [Language.AUTO]});
         console.log(result1);
 
-        const result2 = await geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']});
-        console.log(result2);
+        // const result2 = await geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']});
+        // console.log(result2);
       }
 
       async function testGeolocation() {
@@ -89,10 +90,10 @@
 
       (async () => {
         await testGeocoding();
-        await testGeolocation();
-        await testCoordinates();
-        await testData();
-        staticMapTest();
+        // await testGeolocation();
+        // await testCoordinates();
+        // await testData();
+        // staticMapTest();
       })()
     </script>
   </body>

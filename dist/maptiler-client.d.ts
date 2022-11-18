@@ -35,7 +35,7 @@ type FetchFunction = (url: string, options: object) => Promise<any>;
  */
 declare class ClientConfig {
     /**
-     * MapTiler Cloud AOU key
+     * MapTiler Cloud API key
      */
     private _apiKey;
     /**
@@ -68,192 +68,68 @@ declare const config: ClientConfig;
 /**
  * Languages. Note that not all the languages of this list are available but the compatibility list may be expanded in the future.
  */
-declare enum Language {
-    LATIN = "latin",
-    NON_LATIN = "nonlatin",
-    LOCAL = "",
-    AFAR = "aa",
-    ABKHAZIAN = "ab",
-    AVESTAN = "ae",
-    AFRIKAANS = "af",
-    AKAN = "ak",
-    AMHARIC = "am",
-    ARAGONESE = "an",
-    ARABIC = "ar",
-    ASSAMESE = "as",
-    AVARIC = "av",
-    AYMARA = "ay",
-    AZERBAIJANI = "az",
-    BASHKIR = "ba",
-    BELARUSIAN = "be",
-    BULGARIAN = "bg",
-    BIHARI = "bh",
-    BISLAMA = "bi",
-    BAMBARA = "bm",
-    BENGALI = "bn",
-    TIBETAN = "bo",
-    BRETON = "br",
-    BOSNIAN = "bs",
-    CATALAN = "ca",
-    CHECHEN = "ce",
-    CHAMORRO = "ch",
-    CORSICAN = "co",
-    CREE = "cr",
-    CZECH = "cs",
-    CHURCH_SLAVIC = "cu",
-    CHUVASH = "cv",
-    WELSH = "cy",
-    DANISH = "da",
-    GERMAN = "de",
-    MALDIVIAN = "dv",
-    DZONGKHA = "dz",
-    EWE = "ee",
-    GREEK = "el",
-    ENGLISH = "en",
-    ESPERANTO = "eo",
-    SPANISH = "es",
-    ESTONIAN = "et",
-    BASQUE = "eu",
-    PERSIAN = "fa",
-    FULAH = "ff",
-    FINNISH = "fi",
-    FIJIAN = "fj",
-    FAROESE = "fo",
-    FRENCH = "fr",
-    WESTERN_FRISIAN = "fy",
-    IRISH = "ga",
-    GAELIC = "gd",
-    GALICIAN = "gl",
-    GUARANI = "gn",
-    GUJARATI = "gu",
-    MANX = "gv",
-    HAUSA = "ha",
-    HEBREW = "he",
-    HINDI = "hi",
-    HIRI_MOTU = "ho",
-    CROATIAN = "hr",
-    HAITIAN = "ht",
-    HUNGARIAN = "hu",
-    ARMENIAN = "hy",
-    HERERO = "hz",
-    INTERLINGUA = "ia",
-    INDONESIAN = "id",
-    INTERLINGUE = "ie",
-    IGBO = "ig",
-    SICHUAN_YI = "ii",
-    INUPIAQ = "ik",
-    IDO = "io",
-    ICELANDIC = "is",
-    ITALIAN = "it",
-    INUKTITUT = "iu",
-    JAPANESE = "ja",
-    JAVANESE = "jv",
-    GEORGIAN = "ka",
-    KONGO = "kg",
-    KIKUYU = "ki",
-    KUANYAMA = "kj",
-    KAZAKH = "kk",
-    KALAALLISUT = "kl",
-    CENTRAL_KHMER = "km",
-    KANNADA = "kn",
-    KOREAN = "ko",
-    KANURI = "kr",
-    KASHMIRI = "ks",
-    KURDISH = "ku",
-    KOMI = "kv",
-    CORNISH = "kw",
-    KIRGHIZ = "ky",
-    LUXEMBOURGISH = "lb",
-    GANDA = "lg",
-    LIMBURGAN = "li",
-    LINGALA = "ln",
-    LAO = "lo",
-    LITHUANIAN = "lt",
-    LUBA_KATANGA = "lu",
-    LATVIAN = "lv",
-    MALAGASY = "mg",
-    MARSHALLESE = "mh",
-    MAORI = "mi",
-    MACEDONIAN = "mk",
-    MALAYALAM = "ml",
-    MONGOLIAN = "mn",
-    MARATHI = "mr",
-    MALAY = "ms",
-    MALTESE = "mt",
-    BURMESE = "my",
-    NAURU = "na",
-    NORWEGIAN = "no",
-    NORTH_NDEBELE = "nd",
-    NEPALI = "ne",
-    NDONGA = "ng",
-    DUTCH = "nl",
-    SOUTH_NDEBELE = "nr",
-    NAVAJO = "nv",
-    CHICHEWA = "ny",
-    OCCITAN = "oc",
-    OJIBWA = "oj",
-    OROMO = "om",
-    ORIYA = "or",
-    OSSETIC = "os",
-    PANJABI = "pa",
-    PALI = "pi",
-    POLISH = "pl",
-    PUSHTO = "ps",
-    PORTUGUESE = "pt",
-    QUECHUA = "qu",
-    ROMANSH = "rm",
-    RUNDI = "rn",
-    ROMANIAN = "ro",
-    RUSSIAN = "ru",
-    KINYARWANDA = "rw",
-    SANSKRIT = "sa",
-    SARDINIAN = "sc",
-    SINDHI = "sd",
-    NORTHERN_SAMI = "se",
-    SANGO = "sg",
-    SINHALA = "si",
-    SLOVAK = "sk",
-    SLOVENIAN = "sl",
-    SAMOAN = "sm",
-    SHONA = "sn",
-    SOMALI = "so",
-    ALBANIAN = "sq",
-    SERBIAN = "sr",
-    SWATI = "ss",
-    SOTHO_SOUTHERN = "st",
-    SUNDANESE = "su",
-    SWEDISH = "sv",
-    SWAHILI = "sw",
-    TAMIL = "ta",
-    TELUGU = "te",
-    TAJIK = "tg",
-    THAI = "th",
-    TIGRINYA = "ti",
-    TURKMEN = "tk",
-    TAGALOG = "tl",
-    TSWANA = "tn",
-    TONGA = "to",
-    TURKISH = "tr",
-    TSONGA = "ts",
-    TATAR = "tt",
-    TWI = "tw",
-    TAHITIAN = "ty",
-    UIGHUR = "ug",
-    UKRAINIAN = "uk",
-    URDU = "ur",
-    UZBEK = "uz",
-    VENDA = "ve",
-    VIETNAMESE = "vi",
-    VOLAPUK = "vo",
-    WALLOON = "wa",
-    WOLOF = "wo",
-    XHOSA = "xh",
-    YIDDISH = "yi",
-    YORUBA = "yo",
-    ZHUANG = "za",
-    CHINESE = "zh",
-    ZULU = "zu"
-}
+declare const Language: {
+    AUTO: string;
+    ALBANIAN: string;
+    ARABIC: string;
+    ARMENIAN: string;
+    AZERBAIJANI: string;
+    BELORUSSIAN: string;
+    BOSNIAN: string;
+    BRETON: string;
+    BULGARIAN: string;
+    CATALAN: string;
+    CHINESE: string;
+    CROATIAN: string;
+    CZECH: string;
+    DANISH: string;
+    DUTCH: string;
+    ENGLISH: string;
+    ESPERANTO: string;
+    ESTONIAN: string;
+    FINNISH: string;
+    FRENCH: string;
+    FRISIAN: string;
+    GEORGIAN: string;
+    GERMAN: string;
+    GREEK: string;
+    HEBREW: string;
+    HUNGARIAN: string;
+    ICELANDIC: string;
+    IRISH: string;
+    ITALIAN: string;
+    JAPANESE: string;
+    KANNADA: string;
+    KAZAKH: string;
+    KOREAN: string;
+    ROMAN_LATIN: string;
+    LATVIAN: string;
+    LITHUANIAN: string;
+    LUXEMBOURGISH: string;
+    MACEDONIAN: string;
+    MALTESE: string;
+    NORWEGIAN: string;
+    POLISH: string;
+    PORTUGUESE: string;
+    ROMANIAN: string;
+    ROMANSH: string;
+    RUSSIAN: string;
+    SCOTTISH_GAELIC: string;
+    SERBIAN_CYRILLIC: string;
+    SLOVAK: string;
+    SLOVENE: string;
+    SPANISH: string;
+    SWEDISH: string;
+    THAI: string;
+    TURKISH: string;
+    UKRAINIAN: string;
+    WELSH: string;
+};
+type Values<T> = T[keyof T];
+/**
+ * Built-in languages values as strings
+ */
+type LanguageString = Values<typeof Language>;
 
 type GeocodingOptions = {
     /**
@@ -267,7 +143,7 @@ type GeocodingOptions = {
     /**
      * Prefer results in specific language. It’s possible to specify multiple values.
      */
-    language?: string | Array<string>;
+    language?: LanguageString | Array<LanguageString>;
 };
 /**
  * Performs a forward geocoding query to MapTiler API.
@@ -554,4 +430,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, Language, LngLat, LngLatArray, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, Language, LanguageString, LngLat, LngLatArray, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };

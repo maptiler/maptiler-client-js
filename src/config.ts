@@ -18,7 +18,7 @@ function tryGettingFetch() {
  */
 class ClientConfig {
   /**
-   * MapTiler Cloud AOU key
+   * MapTiler Cloud API key
    */
   private _apiKey = "Not defined yet.";
 

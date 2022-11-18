@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 232 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+<svg width="100%" height="100%" viewBox="0 0 231 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(1,0,0,1,-9.41979e-05,0.000178727)">
         <g transform="matrix(1,0,0,1,-1.20801,-0.711928)">
             <path d="M58.567,28.139L58.567,20.497C58.567,18.616 57.566,16.908 55.595,16.908C53.654,16.908 52.508,18.616 52.508,20.497L52.508,28.139L48.922,28.139L48.922,13.84L52.244,13.84L52.508,15.578C53.273,14.129 54.949,13.609 56.33,13.609C58.066,13.609 59.8,14.304 60.624,16.271C61.918,14.245 63.595,13.667 65.476,13.667C69.593,13.667 71.622,16.155 71.622,20.44L71.622,28.139L68.034,28.139L68.034,20.44C68.034,18.559 67.24,16.966 65.301,16.966C63.359,16.966 62.153,18.616 62.153,20.497L62.153,28.139L58.567,28.139Z" style="fill:rgb(51,51,89);fill-rule:nonzero;"/>
@@ -26,7 +26,7 @@
         <g>
             <g transform="matrix(1.45413,0,0,1,-169.409,0.0892285)">
                 <clipPath id="_clip1">
-                    <path d="M236.534,-27.795L267.902,-16.106L258.296,38.404L226.928,26.715L236.534,-27.795Z"/>
+                    <path d="M231.731,-0.54L263.099,11.149L258.296,38.404L226.928,26.715L231.731,-0.54Z"/>
                 </clipPath>
                 <g clip-path="url(#_clip1)">
                     <path d="M270.382,12.81L232.413,12.81C231.562,12.81 230.871,13.815 230.871,15.052L230.871,25.472C230.871,26.692 231.552,27.683 232.391,27.683L270.382,27.683L270.382,12.81Z" style="fill:rgb(3,161,196);"/>
@@ -53,7 +53,7 @@
                 </g>
             </g>
         </g>
-        <g transform="matrix(1,0,0,1,-4,0)">
+        <g transform="matrix(1,0,0,1,-4.85769,0)">
             <g transform="matrix(-1.1073,-1.35605e-16,1.40521e-16,-1.14744,491.39,43.567)">
                 <clipPath id="_clip2">
                     <path d="M222.883,26.693L244.255,31.978L249.737,11.334L228.365,6.049L222.883,26.693Z"/>

@@ -2,6 +2,7 @@ import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
 import { Bbox, LngLat } from "../generalTypes";
+import { getAutoLanguage, Language, LanguageString } from "../language";
 import { ServiceError } from "./ServiceError";
 
 export type GeocodingOptions = {
@@ -18,7 +19,7 @@ export type GeocodingOptions = {
   /**
    * Prefer results in specific language. It’s possible to specify multiple values.
    */
-  language?: string | Array<string>;
+  language?: LanguageString | Array<LanguageString>;
 };
 
 const customMessages = {
@@ -64,7 +65,9 @@ async function forward(query, options: GeocodingOptions = {}) {
   if ("language" in options) {
     const languages = (
       Array.isArray(options.language) ? options.language : [options.language]
-    ).join(",");
+    )
+      .map((lang) => (lang === Language.AUTO ? getAutoLanguage() : lang))
+      .join(",");
     endpoint.searchParams.set("language", languages);
   }
 
@@ -119,7 +122,9 @@ async function reverse(lngLat: LngLat, options: GeocodingOptions = {}) {
   if ("language" in options) {
     const languages = (
       Array.isArray(options.language) ? options.language : [options.language]
-    ).join(",");
+    )
+      .map((lang) => (lang === Language.AUTO ? getAutoLanguage() : lang))
+      .join(",");
     endpoint.searchParams.set("language", languages);
   }
 

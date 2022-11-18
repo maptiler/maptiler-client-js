@@ -3,14 +3,17 @@ import type { Bbox, LngLat, LngLatArray } from "./generalTypes";
 
 import { ClientConfig, config } from "./config";
 import type { FetchFunction } from "./config";
-import { Language } from "./language";
+import { Language, LanguageString } from "./language";
 
 // Importing services
 import { geocoding } from "./services/geocoding";
 import type { GeocodingOptions } from "./services/geocoding";
 import { geolocation } from "./services/geolocation";
 import { coordinates } from "./services/coordinates";
-import type { CoordinatesSearchOptions, CoordinatesTransformOptions } from "./services/coordinates";
+import type {
+  CoordinatesSearchOptions,
+  CoordinatesTransformOptions,
+} from "./services/coordinates";
 import { data } from "./services/data";
 import { staticMaps } from "./services/staticMaps";
 import type {
@@ -37,6 +40,7 @@ export type {
   BoundedStaticMapOptions,
   AutomaticStaticMapOptions,
   FetchFunction,
+  LanguageString,
 };
 
 // Exporting classes, objects, functions, etc.
