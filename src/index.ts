@@ -3,7 +3,7 @@ import type { Bbox, LngLat, LngLatArray } from "./generalTypes";
 
 import { ClientConfig, config } from "./config";
 import type { FetchFunction } from "./config";
-import { Language, LanguageString } from "./language";
+import { LanguageGeocoding, LanguageGeocodingString } from "./language";
 
 // Importing services
 import { geocoding } from "./services/geocoding";
@@ -40,7 +40,7 @@ export type {
   BoundedStaticMapOptions,
   AutomaticStaticMapOptions,
   FetchFunction,
-  LanguageString,
+  LanguageGeocodingString,
 };
 
 // Exporting classes, objects, functions, etc.
@@ -53,5 +53,5 @@ export {
   coordinates,
   data,
   staticMaps,
-  Language,
+  LanguageGeocoding,
 };

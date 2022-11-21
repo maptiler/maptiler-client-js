@@ -33,7 +33,7 @@
   }
   const config = new ClientConfig();
 
-  const Language = {
+  const LanguageGeocoding = {
     AUTO: "auto",
     ALBANIAN: "sq",
     ARABIC: "ar",
@@ -90,15 +90,15 @@
     UKRAINIAN: "uk",
     WELSH: "cy"
   };
-  const languageCodeSet = new Set(Object.values(Language));
-  function getAutoLanguage() {
+  const languageCodeSet = new Set(Object.values(LanguageGeocoding));
+  function getAutoLanguageGeocoding() {
     if (typeof navigator === "undefined") {
       return Intl.DateTimeFormat().resolvedOptions().locale.split("-")[0];
     }
     const canditatelangs = Array.from(
       new Set(navigator.languages.map((l) => l.split("-")[0]))
     ).filter((l) => languageCodeSet.has(l));
-    return canditatelangs.length ? canditatelangs[0] : Language.ENGLISH;
+    return canditatelangs.length ? canditatelangs[0] : LanguageGeocoding.ENGLISH;
   }
 
   var __async$4 = (__this, __arguments, generator) => {
@@ -196,7 +196,9 @@
         );
       }
       if ("language" in options) {
-        const languages = (Array.isArray(options.language) ? options.language : [options.language]).map((lang) => lang === Language.AUTO ? getAutoLanguage() : lang).join(",");
+        const languages = (Array.isArray(options.language) ? options.language : [options.language]).map(
+          (lang) => lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+        ).join(",");
         endpoint.searchParams.set("language", languages);
       }
       const urlWithParams = endpoint.toString();
@@ -236,7 +238,9 @@
         );
       }
       if ("language" in options) {
-        const languages = (Array.isArray(options.language) ? options.language : [options.language]).map((lang) => lang === Language.AUTO ? getAutoLanguage() : lang).join(",");
+        const languages = (Array.isArray(options.language) ? options.language : [options.language]).map(
+          (lang) => lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+        ).join(",");
         endpoint.searchParams.set("language", languages);
       }
       const urlWithParams = endpoint.toString();
@@ -675,7 +679,7 @@
   };
 
   exports.ClientConfig = ClientConfig;
-  exports.Language = Language;
+  exports.LanguageGeocoding = LanguageGeocoding;
   exports.ServiceError = ServiceError;
   exports.config = config;
   exports.coordinates = coordinates;

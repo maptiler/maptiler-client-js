@@ -68,7 +68,7 @@ declare const config: ClientConfig;
 /**
  * Languages. Note that not all the languages of this list are available but the compatibility list may be expanded in the future.
  */
-declare const Language: {
+declare const LanguageGeocoding: {
     AUTO: string;
     ALBANIAN: string;
     ARABIC: string;
@@ -129,7 +129,7 @@ type Values<T> = T[keyof T];
 /**
  * Built-in languages values as strings
  */
-type LanguageString = Values<typeof Language>;
+type LanguageGeocodingString = Values<typeof LanguageGeocoding>;
 
 type GeocodingOptions = {
     /**
@@ -143,7 +143,7 @@ type GeocodingOptions = {
     /**
      * Prefer results in specific language. It’s possible to specify multiple values.
      */
-    language?: LanguageString | Array<LanguageString>;
+    language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
 };
 /**
  * Performs a forward geocoding query to MapTiler API.
@@ -430,4 +430,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, Language, LanguageString, LngLat, LngLatArray, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };

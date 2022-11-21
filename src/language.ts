@@ -1,7 +1,7 @@
 /**
  * Languages. Note that not all the languages of this list are available but the compatibility list may be expanded in the future.
  */
-const Language = {
+const LanguageGeocoding = {
   AUTO: "auto",
   ALBANIAN: "sq",
   ARABIC: "ar",
@@ -59,29 +59,29 @@ const Language = {
   WELSH: "cy",
 };
 
-const languageCodeSet = new Set(Object.values(Language));
+const languageCodeSet = new Set(Object.values(LanguageGeocoding));
 
 type Values<T> = T[keyof T];
 
 /**
  * Built-in languages values as strings
  */
-type LanguageString = Values<typeof Language>;
+type LanguageGeocodingString = Values<typeof LanguageGeocoding>;
 
-function getAutoLanguage(): LanguageString {
+function getAutoLanguageGeocoding(): LanguageGeocodingString {
   if (typeof navigator === "undefined") {
     return Intl.DateTimeFormat()
       .resolvedOptions()
-      .locale.split("-")[0] as LanguageString;
+      .locale.split("-")[0] as LanguageGeocodingString;
   }
 
   const canditatelangs = Array.from(
     new Set(navigator.languages.map((l) => l.split("-")[0]))
-  ).filter((l) => languageCodeSet.has(l as LanguageString));
+  ).filter((l) => languageCodeSet.has(l as LanguageGeocodingString));
 
   return canditatelangs.length
-    ? (canditatelangs[0] as LanguageString)
-    : Language.ENGLISH;
+    ? (canditatelangs[0] as LanguageGeocodingString)
+    : LanguageGeocoding.ENGLISH;
 }
 
-export { Language, LanguageString, getAutoLanguage };
+export { LanguageGeocoding, LanguageGeocodingString, getAutoLanguageGeocoding };

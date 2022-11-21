@@ -23,6 +23,8 @@ The **MapTiler Client JS** exposes a number of handy functions that wrap API cal
 
 The project is entirely written in TypeScript and all the function arguments are nicely documented and typed.
 
+> 📣 *__Note:__* If you need *this* API wrapper **AND** a complete SDK to display beautiful interactive maps, then checkout [MapTiler SDK JS](https://github.com/maptiler/maptiler-sdk-js), it contains it all!
+
 # Install
 ```shell
 npm install --save @maptiler/client
@@ -75,6 +77,15 @@ const result = await maptilerClient.geocoding.reverse({ lng: 6.249638, lat: 46.4
 The same option object as the forward geocoding can be provided.
 
 Read more about reverse geocoding on our official [API documentation](https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse).
+
+### Language
+For both *forward* and *reverse* geocoding, this library provides a list of supported languages as shorthands to [ISO language codes](https://en.wikipedia.org/wiki/ISO_639-1). The result will be provided in multiple languages if the `language` options is an array:
+
+```ts
+const result = await maptilerClient.geocoding.forward('bordeaux', {language: [maptilerClient.languageGeocoding.SPANISH, maptilerClient.languageGeocoding.KOREAN]})
+```
+
+The special language `AUTO` will detect the plateform/browser prefered language.
 
 ## 🕵️‍♂️ Geolocation
 The geolocation service provides an accurate location insight of a website visitor using its IP address.

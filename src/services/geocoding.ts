@@ -2,7 +2,11 @@ import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
 import { Bbox, LngLat } from "../generalTypes";
-import { getAutoLanguage, Language, LanguageString } from "../language";
+import {
+  getAutoLanguageGeocoding,
+  LanguageGeocoding,
+  LanguageGeocodingString,
+} from "../language";
 import { ServiceError } from "./ServiceError";
 
 export type GeocodingOptions = {
@@ -19,7 +23,7 @@ export type GeocodingOptions = {
   /**
    * Prefer results in specific language. It’s possible to specify multiple values.
    */
-  language?: LanguageString | Array<LanguageString>;
+  language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
 };
 
 const customMessages = {
@@ -66,7 +70,9 @@ async function forward(query, options: GeocodingOptions = {}) {
     const languages = (
       Array.isArray(options.language) ? options.language : [options.language]
     )
-      .map((lang) => (lang === Language.AUTO ? getAutoLanguage() : lang))
+      .map((lang) =>
+        lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+      )
       .join(",");
     endpoint.searchParams.set("language", languages);
   }
@@ -123,7 +129,9 @@ async function reverse(lngLat: LngLat, options: GeocodingOptions = {}) {
     const languages = (
       Array.isArray(options.language) ? options.language : [options.language]
     )
-      .map((lang) => (lang === Language.AUTO ? getAutoLanguage() : lang))
+      .map((lang) =>
+        lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+      )
       .join(",");
     endpoint.searchParams.set("language", languages);
   }
