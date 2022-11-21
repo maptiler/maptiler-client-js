@@ -1,3 +1,5 @@
+MapTiler Client JS / [Exports](modules.md)
+
 <p align="center">
   <img src="images/maptiler-client-logo.svg" width="400px">
 </p>
@@ -31,7 +33,7 @@ npm install --save @maptiler/client
 ```
 
 # API documentation
-In addition to the details and examples provided in this readme, check out the [complete API documentation](https://maptiler.github.io/maptiler-client-js) (also available in [markdown](docsmd)).
+In addition to the details and examples provided in this readme, check out the [complete API documentation](https://maptiler.github.io/maptiler-client-js).
 
 # Quick start
 ```ts
@@ -180,7 +182,6 @@ const imageLink = maptiler.staticMaps.centered(
 
 Read more about centered static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#center-based-image).
 
-
 ### Bounded static maps
 This type of map requires a bounding box made of two points: the south-west bound and the north-east bound. The zoom level cannot be provided and is automatically deduced from the size of the bounding box.
 
@@ -213,11 +214,9 @@ Since the zoom level cannot be provided, the level of details is dictated by the
 
 As you may notice, the geo bounding box could have very different proportions than the output image size. In the following example, we place the very same bounding box around Portugal, which has a this particular strip looking shape. We also add a `path` that repeats exactely the same bounding box to show the difference between the provided bounding box and the final image. We kept the default padding of 10%:
 
-
 | `2048 x 2048`      | `1024 x 2048` |
 | :-----------: | :-----------: |
 | ![](images/screenshots/static-bounded-portugal-2048x2048.png)      | ![](images/screenshots/static-bounded-portugal-1024x2048.png)       |
-
 
 Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#bounds-based-image).
 
