@@ -94,13 +94,13 @@
 <p>The same option object as the forward geocoding can be provided.</p>
 <p>Read more about reverse geocoding on our official <a href="https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse">API documentation</a>.</p>
 
-<a href="#langauge" id="langauge" style="color: inherit; text-decoration: none;">
-  <h3>Langauge</h3>
+<a href="#language" id="language" style="color: inherit; text-decoration: none;">
+  <h3>Language</h3>
 </a>
 <p>For both <em>forward</em> and <em>reverse</em> geocoding, this library provides a list of supported languages as shorthands to <a href="https://en.wikipedia.org/wiki/ISO_639-1">ISO language codes</a>. The result will be provided in multiple languages if the <code>language</code> options is an array:</p>
-<pre><code class="language-ts"><span class="hl-3">const</span><span class="hl-0"> </span><span class="hl-6">result</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-4">maptilerClient</span><span class="hl-0">.</span><span class="hl-4">geocoding</span><span class="hl-0">.</span><span class="hl-7">forward</span><span class="hl-0">(</span><span class="hl-5">&#39;bordeaux&#39;</span><span class="hl-0">, {</span><span class="hl-4">language:</span><span class="hl-0"> [</span><span class="hl-4">maptilerClient</span><span class="hl-0">.</span><span class="hl-4">languages</span><span class="hl-0">.</span><span class="hl-6">SPANISH</span><span class="hl-0">, </span><span class="hl-4">maptilerClient</span><span class="hl-0">.</span><span class="hl-4">languages</span><span class="hl-0">.</span><span class="hl-6">KOREAN</span><span class="hl-0">]})</span>
+<pre><code class="language-ts"><span class="hl-3">const</span><span class="hl-0"> </span><span class="hl-6">result</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-4">maptilerClient</span><span class="hl-0">.</span><span class="hl-4">geocoding</span><span class="hl-0">.</span><span class="hl-7">forward</span><span class="hl-0">(</span><span class="hl-5">&#39;bordeaux&#39;</span><span class="hl-0">, {</span><span class="hl-4">language:</span><span class="hl-0"> [</span><span class="hl-4">maptilerClient</span><span class="hl-0">.</span><span class="hl-4">languageGeocoding</span><span class="hl-0">.</span><span class="hl-6">SPANISH</span><span class="hl-0">, </span><span class="hl-4">maptilerClient</span><span class="hl-0">.</span><span class="hl-4">languageGeocoding</span><span class="hl-0">.</span><span class="hl-6">KOREAN</span><span class="hl-0">]})</span>
 </code></pre>
-<p>The special language <code>AUTO</code> will detect the plateform of browser prefered language.</p>
+<p>The special language <code>AUTO</code> will detect the plateform/browser prefered language.</p>
 
 <a href="#🕵️♂️-geolocation" id="🕵️♂️-geolocation" style="color: inherit; text-decoration: none;">
   <h2>🕵️‍♂️ Geolocation</h2>
