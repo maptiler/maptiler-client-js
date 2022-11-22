@@ -1,287 +1,449 @@
-MapTiler Client JS / [Exports](modules.md)
-
-<p align="center">
-  <img src="images/maptiler-client-logo.svg" width="400px">
-</p>
-
-<p align="center" style="color: #AAA">
-  The Javascript & TypeScript API client library to enjoy <a href="https://www.maptiler.com/cloud/">MapTiler Cloud</a>'s <br>services such as geocoding, geolocation and more!
-</p>
-
-<p align="center">
-  <img src="images/JS-logo.svg" width="20px">
-  <img src="images/TS-logo.svg" width="20px">
-  <img src="https://img.shields.io/npm/v/@maptiler/client"></img>
-  <img src="https://img.shields.io/twitter/follow/maptiler?style=social"></img>
-</p>
-
-# What and why?
-The **MapTiler Client JS** exposes a number of handy functions that wrap API call to [MapTiler Cloud API services](https://docs.maptiler.com/cloud/api), such as:
-- Geocoding forward and reverse
-- Geolocation from visitor's IP address
-- Coordidinate systems search and tranform
-- User data fetching as GeoJSON
-- Static maps of all sorts
-
-The project is entirely written in TypeScript and all the function arguments are nicely documented and typed.
-
-> 📣 *__Note:__* If you need *this* API wrapper **AND** a complete SDK to display beautiful interactive maps, then checkout [MapTiler SDK JS](https://github.com/maptiler/maptiler-sdk-js), it contains it all!
-
-# Install
-```shell
-npm install --save @maptiler/client
-```
-
-# API documentation
-In addition to the details and examples provided in this readme, check out the [complete API documentation](https://maptiler.github.io/maptiler-client-js) (also available in [markdown](docsmd)).
-
-# Quick start
-```ts
-// Import the whole library
-import * as maptilerClient from '@maptiler/client';
-
-// Or import only the bits you need
-import {
-  config,
-  geocoding,
-  geolocation,
-  coordinates,
-  data,
-  staticMaps,
-} from '@maptiler/client';
-```
-
-The [examples](examples/) folder includes are featuring usages for **NodeJS**, **browser with UMD** and **browser with ES module**.
-
-# Easy access to MapTiler Cloud API
-Here is the list of service wrapper functions that are built-in:
-
-## 🔍 Geocoding
-### Forward
-You want to know the longitude and latitude of a specific place, use the forward geocoding:
-```ts
-// in an async function, or as a 'thenable':
-const result = await maptilerClient.geocoding.forward('paris');
-```
-You can provide some options such as:
-- the proximity, given a lon-lat position, to sort the results
-- one of more languages to get the results into
-- a bounding geo box, to restrict the search to a given window
-
-Read more about forward geocoding on our official [API documentation](https://docs.maptiler.com/cloud/api/geocoding/#search-by-name-forward).
-
-### Reverse
-You wan to tknow the name of a place, given a longitude-latitude? Use the reverse geocoding:
-```ts
-// in an async function, or as a 'thenable':
-const result = await maptilerClient.geocoding.reverse({ lng: 6.249638, lat: 46.402056 });
-```
-The same option object as the forward geocoding can be provided.
-
-Read more about reverse geocoding on our official [API documentation](https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse).
-
-### Language
-For both *forward* and *reverse* geocoding, this library provides a list of supported languages as shorthands to [ISO language codes](https://en.wikipedia.org/wiki/ISO_639-1). The result will be provided in multiple languages if the `language` options is an array:
-
-```ts
-const result = await maptilerClient.geocoding.forward('paris', {language: [maptilerClient.languageGeocoding.SPANISH, maptilerClient.languageGeocoding.KOREAN]})
-```
-
-The special language `AUTO` will detect the plateform/browser prefered language.
-
-## 🕵️‍♂️ Geolocation
-The geolocation service provides an accurate location insight of a website visitor using its IP address.
-
-There is only a single function:
-```ts
-// in an async function, or as a 'thenable':
-const result = await maptilerClient.geolocation.info();
-```
-
-Read more about geolocation on our official [API documentation](https://docs.maptiler.com/cloud/api/geolocation/).
-
-## 🌐 Coordinates
-If you are already familiar with [epsg.io](https://epsg.io/) (created by MapTiler), then you may find convenient to access the details of more than 10 thousands of coordinate reference systems (CRS) programmatically, as well as transforming coordinates from one system to another!
+MapTiler Client JS
 
-### Search
-The `search` lets you perform a query in a free form fashion. Here are some examples:
-```ts
-// in an async function, or as a 'thenable':
-const resultA = await maptilerClient.coordinates.search('mercator');
-const resultB = await maptilerClient.coordinates.search('plate carree');
-const resultC = await maptilerClient.coordinates.search('france');
-const resultD = await maptilerClient.coordinates.search('code:4326', {transformations: true}));
-```
+# MapTiler Client JS
 
-The `transformations` options retrieves a lot more details about the CRS that MapTiler API is able to transform to/from than just their IDs.
+## Table of contents
 
-Read more about searching coordinate systems on our official [API documentation](https://docs.maptiler.com/cloud/api/coordinates/#search-coordinate-systems).
+### Classes
 
-### Transform
-Transforming a couple of coordinates from one system to another can be challenging, for example, most countries have their own official system, yet web mapping tools are more often than not exclusive to [WGS84](https://epsg.io/4326).
+- [ClientConfig](classes/ClientConfig.md)
+- [ServiceError](classes/ServiceError.md)
 
-If not provided, both the source (`sourceCrs`) and the destination (`targetCrs`) are default to **EPSG:4326** (in other words, [WGS84](https://epsg.io/4326)). Here is how to use this feature:
+### Type Aliases
 
-```ts
-// in an async function, or as a 'thenable':
+- [AutomaticStaticMapOptions](README.md#automaticstaticmapoptions)
+- [Bbox](README.md#bbox)
+- [BoundedStaticMapOptions](README.md#boundedstaticmapoptions)
+- [CenteredStaticMapOptions](README.md#centeredstaticmapoptions)
+- [CoordinatesSearchOptions](README.md#coordinatessearchoptions)
+- [CoordinatesTransformOptions](README.md#coordinatestransformoptions)
+- [FetchFunction](README.md#fetchfunction)
+- [GeocodingOptions](README.md#geocodingoptions)
+- [LanguageGeocodingString](README.md#languagegeocodingstring)
+- [LngLat](README.md#lnglat)
+- [LngLatArray](README.md#lnglatarray)
+- [StaticMapBaseOptions](README.md#staticmapbaseoptions)
+- [StaticMapMarker](README.md#staticmapmarker)
 
-// Providing one coordinate to transform, with a target CRS being EPSG:9793 (RGF93 v2 / Lambert-93, France official CRS)
-const resultA = await maptilerClient.coordinates.transform({lng: 1, lat: 45}, {targetCrs: 9793})
+### Variables
 
-// Using the same logic, we can pass up to 50 coordinates to be transformed
-const resultB = await maptilerClient.coordinates.transform([{lng: 10, lat: 48}, {lng: 1, lat: 45}], {targetCrs: 9793})
-```
+- [LanguageGeocoding](README.md#languagegeocoding)
+- [config](README.md#config)
+- [coordinates](README.md#coordinates)
+- [data](README.md#data)
+- [geocoding](README.md#geocoding)
+- [geolocation](README.md#geolocation)
+- [staticMaps](README.md#staticmaps)
 
-Read more about transforming coordinates on our official [API documentation](https://docs.maptiler.com/cloud/api/coordinates/#transform-coordinates).
+## Type Aliases
 
-## 💽 Data
-MapTiler Cloud give its users the possibility to [upload and create data](https://cloud.maptiler.com/data/), manually with a user interface or by uploading a GPX, GeoJSON, KML or shp file. A unique ID is associated to each dataset so that we can later on access it programmatically to retrieve a GeoJSON equivalent of it:
+### AutomaticStaticMapOptions
 
-```ts
-// in an async function, or as a 'thenable':
-const result = await maptilerClient.data.get('my-dataset-unique-id')
-```
+Ƭ **AutomaticStaticMapOptions**: [`BoundedStaticMapOptions`](README.md#boundedstaticmapoptions)
 
-Since the result is a GeoJSON, it can easily be added to a `map` with `.addSource()` and `.addLayer()`.
+Options that can be provided to automatic static maps
 
-## 🗺️ Static maps
-Maptiler Cloud provides many possibilities for creating static maps as PNG, JPEG or WebP images. They all offer the possibilities to:
-- Choose from one of the MapTiler style or your own
-- Add markers with a custom icon (or default icon with custom color)
-- Add path or polygon, with a parametric line width and color and a parametric filling color
+#### Defined in
 
-Three modes are available: `centered`, `bounded` and `automatic`.
+[services/staticMaps.ts:135](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/staticMaps.ts#L135)
 
-> 📣 *__important:__* Contrary to the geolocation/geocoding/coordinates/data service wrappers, the static maps function **does not** perform any query to the MapTiler API, instead they build the image URL. We took this decision because images are most likely going to be displayed  in `<img src="path.png"></img>` markups and will naturaly be fetched by the web browser.
+___
 
-### Centered static maps
-This type of map is centered on a longitude-latitude coordinate and the zoom level must also be provided (from `0`: very zoomed out, to `22`: very zoomed in).  
-Note that if a path or markers are provided, the framing of the map will not automatically adapt to include those (use the `automatic` mode for that).
+### Bbox
 
-```ts
-const imageLink = maptiler.staticMaps.centered(
-  // center position (Boston)
-  {lng: -71.06080, lat: 42.362114}, 
+Ƭ **Bbox**: `Object`
 
-  // zoom level
-  12.5, 
-  
-  // Options
-  {
-    // Request a hiDPI/Retina image
-    hiDPI: true,
+Bounding box (lng/lat axis aligned)
 
-    // Output image size
-    width: 1000,
-    height: 1000,
+#### Type declaration
 
-    // Map style
-    style: 'streets-v2',
-  });
-```
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `northEast` | [`LngLat`](README.md#lnglat) | North-east corner WGS84 coordinates |
+| `southWest` | [`LngLat`](README.md#lnglat) | South-west corner WGS84 coordinates |
 
-Read more about centered static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#center-based-image).
+#### Defined in
 
-### Bounded static maps
-This type of map requires a bounding box made of two points: the south-west bound and the north-east bound. The zoom level cannot be provided and is automatically deduced from the size of the bounding box.
+[generalTypes.ts:23](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/generalTypes.ts#L23)
 
-```ts
-const imageLink = maptiler.staticMaps.bounded(
-  // The bounding box on Europe
-  {
-    southWest: { lng: -24, lat: 34.5 },
-    northEast: { lng: 32, lat: 71 },
-  },
+___
 
-  // Options
-  {
-    hiDPI: true,
-    width: 2048,
-    height: 2048,
-    style: 'streets-v2',
+### BoundedStaticMapOptions
 
-    // Extra space that will add around the bounding box, in percentage
-    // (0.1 = 10% is actually the dafault)
-    padding: 0.1
-  });
-```
+Ƭ **BoundedStaticMapOptions**: [`StaticMapBaseOptions`](README.md#staticmapbaseoptions) & { `padding?`: `number`  }
 
-Since the zoom level cannot be provided, the level of details is dictated by the size of the output image. here is an example:
+Options that can be provided to bounded static maps
 
-| `2048 x 2048`      | `1024 x 1024` |
-| :-----------: | :-----------: |
-| ![](images/screenshots/static-bounded-europe-2048.png)      | ![](images/screenshots/static-bounded-europe-1024.png)       |
+#### Defined in
 
-As you may notice, the geo bounding box could have very different proportions than the output image size. In the following example, we place the very same bounding box around Portugal, which has a this particular strip looking shape. We also add a `path` that repeats exactely the same bounding box to show the difference between the provided bounding box and the final image. We kept the default padding of 10%:
+[services/staticMaps.ts:124](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/staticMaps.ts#L124)
 
-| `2048 x 2048`      | `1024 x 2048` |
-| :-----------: | :-----------: |
-| ![](images/screenshots/static-bounded-portugal-2048x2048.png)      | ![](images/screenshots/static-bounded-portugal-1024x2048.png)       |
+___
 
-Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#bounds-based-image).
+### CenteredStaticMapOptions
 
-### Automatic static maps
-As we have seen with centered and bounded maps, providing all the parameters is nice but can be cumbersome for the simplest use cases. This is why MapTiler Cloud also provides static maps that fits automatically whatever you need to place inside: path or markers.
+Ƭ **CenteredStaticMapOptions**: [`StaticMapBaseOptions`](README.md#staticmapbaseoptions)
 
-In the following example, we are going to load a cycling track recorded by one of our team members in Montreal, Canada. The track, originally a GPX file, was pushed to MapTiler Data and is now made avalable as a GeoJSON:
+Options that can be provided to centered static maps
 
-```ts
-// Fetching the GeoJSON
-const bikeTrack = await maptilerClient.data.get('the-id-of-a-bike-track-in-montreal');
+#### Defined in
 
-// Extracting the track points with the shape [[lng, lat], [lng, lat], ...]
-const trackPoints = bikeTrack.features[0].geometry.coordinates[0]
-  .map(p => p.slice(0, 2));
+[services/staticMaps.ts:119](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/staticMaps.ts#L119)
 
-// We will need the starting point to create a nice marker
-const departure = { lng: trackPoints[0][0], lat: trackPoints[0][1] };
+___
 
-const imageLink = maptiler.staticMaps.automatic({
-  // hiDPI/Retina precision
-  hiDPI: true,
+### CoordinatesSearchOptions
 
-  // A farily large output image
-  width: 2048,
-  height: 1024 ,
+Ƭ **CoordinatesSearchOptions**: `Object`
 
-  // A grey style on which the track will pop!
-  style: 'streets-v2-light',
+#### Type declaration
 
-  // Draw a path with the trackpoints
-  path: trackPoints,
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `exports?` | `boolean` | Show exports in WKT and Proj4 notations (default: false) |
+| `limit?` | `number` | Maximum number of results returned (default: 10) |
+| `transformations?` | `boolean` | Show detailed transformations for each CRS (default: false) |
 
-  // Adding a marker for the starting point, with a custom color
-  marker: {lng: trackPoints[0][0], lat: trackPoints[0][1], color: '#0a0'},
+#### Defined in
 
-  // Showing the track in red
-  pathStrokeColor: 'red',
-});
-```
+[services/coordinates.ts:7](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/coordinates.ts#L7)
 
-And voila!
+___
 
-![static map with bike path](images/screenshots/static-with-path.png)
+### CoordinatesTransformOptions
 
-> 📣 *__Note:__* The GeoJSON for this track contains 9380 couples of coordinates, which is a lot! In order to send the track to MapTiler Cloud static maps API, the client simplifies the long paths while keeing a high degree of precision using a very fast [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm).
+Ƭ **CoordinatesTransformOptions**: `Object`
 
-Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#auto-fitted-image).
+Options that can be provided when transforming a coordinate from one CRS to another.
 
-# From NodeJS
-NodeJS includes a stable `fetch()` function only fronm its version *18*, and this client does not contain a polyfill. If the `fetch()` function exists (browser or Node >= 18) then it is going to be resolved automatically, Yet, a custom `fetch()` function can be provided to the `config` object for Node < 18.
+#### Type declaration
 
-In [this NodeJS example](examples/test-node.js), you can see that the package [Node Fetch](https://www.npmjs.com/package/node-fetch) has been `npm install`ed and is passed to the config obejct of the *MapTiler Client*.
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `operations?` | `number` \| `number`[] | List of codes of operations |
+| `sourceCrs?` | `number` | Source coordinate reference system (default: 4326) |
+| `targetCrs?` | `number` | Target coordinate reference system (default: 4326) |
 
-```js
-import {
-  config,
-  // ...
-} from '@maptiler/client';
+#### Defined in
 
-// For this example to work, you must bring your own node-compatible fetch,
-// unles you are using a version of Nodejs that already contains fetch (>=18)
-import fetch from 'node-fetch';
+[services/coordinates.ts:74](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/coordinates.ts#L74)
 
-config.fetch = fetch;
+___
 
-// ...
-```
+### FetchFunction
+
+Ƭ **FetchFunction**: (`url`: `string`, `options`: `object`) => `Promise`<`any`\>
+
+#### Type declaration
+
+▸ (`url`, `options`): `Promise`<`any`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `url` | `string` |
+| `options` | `object` |
+
+##### Returns
+
+`Promise`<`any`\>
+
+#### Defined in
+
+[config.ts:1](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/config.ts#L1)
+
+___
+
+### GeocodingOptions
+
+Ƭ **GeocodingOptions**: `Object`
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `bbox?` | [`Bbox`](README.md#bbox) | Only search for results in the specified area. |
+| `language?` | [`LanguageGeocodingString`](README.md#languagegeocodingstring) \| [`LanguageGeocodingString`](README.md#languagegeocodingstring)[] | Prefer results in specific language. It’s possible to specify multiple values. |
+| `proximity?` | [`LngLat`](README.md#lnglat) | Prefer results close to a specific location. |
+
+#### Defined in
+
+[services/geocoding.ts:12](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/geocoding.ts#L12)
+
+___
+
+### LanguageGeocodingString
+
+Ƭ **LanguageGeocodingString**: `Values`<typeof [`LanguageGeocoding`](README.md#languagegeocoding)\>
+
+Built-in languages values as strings
+
+#### Defined in
+
+[language.ts:69](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/language.ts#L69)
+
+___
+
+### LngLat
+
+Ƭ **LngLat**: `Object`
+
+WGS84 longitude and latitude as object
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `lat` | `number` | Latitude |
+| `lng` | `number` | Longitude |
+
+#### Defined in
+
+[generalTypes.ts:4](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/generalTypes.ts#L4)
+
+___
+
+### LngLatArray
+
+Ƭ **LngLatArray**: [`number`, `number`]
+
+WGS84 longitude and latitude as array of the form [lng, lat]
+
+#### Defined in
+
+[generalTypes.ts:18](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/generalTypes.ts#L18)
+
+___
+
+### StaticMapBaseOptions
+
+Ƭ **StaticMapBaseOptions**: `Object`
+
+Base set of options that can be provided to all the types of static maps
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `attribution?` | ``"bottomright"`` \| ``"bottomleft"`` \| ``"topleft"`` \| ``"topright"`` \| ``false`` | Placement of the attribution. Can also be set to `false` to not show attribution. Default: `"bottomright"` |
+| `format?` | ``"png"`` \| ``"jpg"`` \| ``"webp"`` | Image format. Default: `"png"` |
+| `height?` | `number` | Height of the output image. Maximum value: `2048`. Default: `1024` |
+| `hiDPI?` | `boolean` | Double the size of the static map image to support hiDPI/Retina monitors. Default: `false` |
+| `marker?` | [`StaticMapMarker`](README.md#staticmapmarker) \| [`StaticMapMarker`](README.md#staticmapmarker)[] | A marker or list of markers to show on the map Default: none provided |
+| `markerAnchor?` | ``"top"`` \| ``"left"`` \| ``"bottom"`` \| ``"right"`` \| ``"center"`` \| ``"topleft"`` \| ``"bottomleft"`` \| ``"topright"`` \| ``"bottomright"`` | Position of the marker regarding its coordinates. Applies only: - with a custom icon provided with `markerIcon` - if one or multiple markers positions are provided. Default: `"bottom"` |
+| `markerIcon?` | `string` | URL of the marker image. Applies only if one or multiple markers positions are provided. Default: none provided |
+| `path?` | [`LngLatArray`](README.md#lnglatarray)[] | Draw a path or polygon on top of the map. If the path is too long it will be simplified, yet remaining accurate. Default: none provided |
+| `pathFillColor?` | `string` | Color of the filling, also works if the polygon is not closed. The color must be CSS compatible. Examples: - long form hex without transparency `"#FF0000"` (red) - short form hex without transparency `"#F00"` (red) - long form hex with transparency `"#FF000008"` (red, half opacity) - short form hex with transparency `"#F008"` (red, half opacity) - CSS color shorthands: `"red"`, `"chartreuse"`, etc. - decimal RGB values without transparency: `"rgb(128, 100, 255)"` - decimal RGB values with transparency: `"rgb(128, 100, 255, 0.5)"` Default: none (transparent filling) |
+| `pathStrokeColor?` | `string` | Color of the path line. The color must be CSS compatible. Examples: - long form hex without transparency `"#FF0000"` (red) - short form hex without transparency `"#F00"` (red) - long form hex with transparency `"#FF000008"` (red, half opacity) - short form hex with transparency `"#F008"` (red, half opacity) - CSS color shorthands: `"red"`, `"chartreuse"`, etc. - decimal RGB values without transparency: `"rgb(128, 100, 255)"` - decimal RGB values with transparency: `"rgb(128, 100, 255, 0.5)"` Default: `"blue"` |
+| `pathWidth?` | `number` | Width of the path line in pixel. It can be floating point precision (ex: `0.5`) Default: `1` if `hiDPI` is `false` and `2` if `hiDPI` is `true`. |
+| `style?` | `string` | Style of the map (not full style URL). Example: "winter", "streets-v2". Default: `"streets-v2"` |
+| `width?` | `number` | Width of the output image. Maximum value: `2048`. Default: `1024` |
+
+#### Defined in
+
+[services/staticMaps.ts:9](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/staticMaps.ts#L9)
+
+___
+
+### StaticMapMarker
+
+Ƭ **StaticMapMarker**: `Object`
+
+Definition of a maker to show on a static map
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `color?` | `string` | Color of the marker with CSS syntax. Applies only if a custom `markerIcon` is not provided. |
+| `lat` | `number` | latitude of the marker |
+| `lng` | `number` | Longitude of the marker |
+
+#### Defined in
+
+[services/staticMaps.ts:140](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/staticMaps.ts#L140)
+
+## Variables
+
+### LanguageGeocoding
+
+• `Const` **LanguageGeocoding**: `Object`
+
+Languages. Note that not all the languages of this list are available but the compatibility list may be expanded in the future.
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `ALBANIAN` | `string` |
+| `ARABIC` | `string` |
+| `ARMENIAN` | `string` |
+| `AUTO` | `string` |
+| `AZERBAIJANI` | `string` |
+| `BELORUSSIAN` | `string` |
+| `BOSNIAN` | `string` |
+| `BRETON` | `string` |
+| `BULGARIAN` | `string` |
+| `CATALAN` | `string` |
+| `CHINESE` | `string` |
+| `CROATIAN` | `string` |
+| `CZECH` | `string` |
+| `DANISH` | `string` |
+| `DUTCH` | `string` |
+| `ENGLISH` | `string` |
+| `ESPERANTO` | `string` |
+| `ESTONIAN` | `string` |
+| `FINNISH` | `string` |
+| `FRENCH` | `string` |
+| `FRISIAN` | `string` |
+| `GEORGIAN` | `string` |
+| `GERMAN` | `string` |
+| `GREEK` | `string` |
+| `HEBREW` | `string` |
+| `HUNGARIAN` | `string` |
+| `ICELANDIC` | `string` |
+| `IRISH` | `string` |
+| `ITALIAN` | `string` |
+| `JAPANESE` | `string` |
+| `KANNADA` | `string` |
+| `KAZAKH` | `string` |
+| `KOREAN` | `string` |
+| `LATVIAN` | `string` |
+| `LITHUANIAN` | `string` |
+| `LUXEMBOURGISH` | `string` |
+| `MACEDONIAN` | `string` |
+| `MALTESE` | `string` |
+| `NORWEGIAN` | `string` |
+| `POLISH` | `string` |
+| `PORTUGUESE` | `string` |
+| `ROMANIAN` | `string` |
+| `ROMANSH` | `string` |
+| `ROMAN_LATIN` | `string` |
+| `RUSSIAN` | `string` |
+| `SCOTTISH_GAELIC` | `string` |
+| `SERBIAN_CYRILLIC` | `string` |
+| `SLOVAK` | `string` |
+| `SLOVENE` | `string` |
+| `SPANISH` | `string` |
+| `SWEDISH` | `string` |
+| `THAI` | `string` |
+| `TURKISH` | `string` |
+| `UKRAINIAN` | `string` |
+| `WELSH` | `string` |
+
+#### Defined in
+
+[language.ts:4](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/language.ts#L4)
+
+___
+
+### config
+
+• `Const` **config**: [`ClientConfig`](classes/ClientConfig.md)
+
+Configuration object
+
+#### Defined in
+
+[config.ts:63](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/config.ts#L63)
+
+___
+
+### coordinates
+
+• `Const` **coordinates**: `Object`
+
+The **coordinate** namespace contains asynchronous functions to call the [MapTiler Coordinate API](https://docs.maptiler.com/cloud/api/coordinates/).
+The goal of the **Coordinate API* is query information about spatial coordinate reference system (CRS) as well as to transform coordinates from one CRS to another.
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `search` | (`query`: `string`, `options`: [`CoordinatesSearchOptions`](README.md#coordinatessearchoptions)) => `Promise`<`any`\> |
+| `transform` | (`coordinates`: [`LngLat`](README.md#lnglat) \| [`LngLat`](README.md#lnglat)[], `options`: [`CoordinatesTransformOptions`](README.md#coordinatestransformoptions)) => `Promise`<`any`\> |
+
+#### Defined in
+
+[services/coordinates.ts:150](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/coordinates.ts#L150)
+
+___
+
+### data
+
+• `Const` **data**: `Object`
+
+The **data** namespace contains an asynchronous function to call the [MapTiler Data API](https://docs.maptiler.com/cloud/api/data/).
+The **Data API** provides a way to retrieve user data in GeoJSON format.
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `get` | (`dataId`: `string`) => `Promise`<`any`\> |
+
+#### Defined in
+
+[services/data.ts:41](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/data.ts#L41)
+
+___
+
+### geocoding
+
+• `Const` **geocoding**: `Object`
+
+The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
+The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)
+and to get the location details (country, city, street, etc.) from a geographic coordinate (reverse geocoding);
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `forward` | (`query`: `any`, `options`: [`GeocodingOptions`](README.md#geocodingoptions)) => `Promise`<`any`\> |
+| `reverse` | (`lngLat`: [`LngLat`](README.md#lnglat), `options`: [`GeocodingOptions`](README.md#geocodingoptions)) => `Promise`<`any`\> |
+
+#### Defined in
+
+[services/geocoding.ts:158](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/geocoding.ts#L158)
+
+___
+
+### geolocation
+
+• `Const` **geolocation**: `Object`
+
+The **geolocation** namespace contains an asynchronous function to call the [MapTiler Geolocation API](https://docs.maptiler.com/cloud/api/geolocation/).
+The **Geolocation API** provides a way to retrieve the IP address as well as geographic informations of a machine performing the query (most likely: a user)
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `info` | () => `Promise`<`any`\> |
+
+#### Defined in
+
+[services/geolocation.ts:37](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/geolocation.ts#L37)
+
+___
+
+### staticMaps
+
+• `Const` **staticMaps**: `Object`
+
+The **staticMaps** namespace contains an synchronous function build image URL of static map, as specified by the [MapTiler Static Map API](https://docs.maptiler.com/cloud/api/static-maps/).
+The URL of static maps can then be used within a `<img />` markup element, as the `src` property value.
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `automatic` | (`options`: [`BoundedStaticMapOptions`](README.md#boundedstaticmapoptions)) => `string` |
+| `bounded` | (`boundingBox`: [`Bbox`](README.md#bbox), `options`: [`BoundedStaticMapOptions`](README.md#boundedstaticmapoptions)) => `string` |
+| `centered` | (`center`: [`LngLat`](README.md#lnglat), `zoom`: `number`, `options`: [`StaticMapBaseOptions`](README.md#staticmapbaseoptions)) => `string` |
+
+#### Defined in
+
+[services/staticMaps.ts:450](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/services/staticMaps.ts#L450)

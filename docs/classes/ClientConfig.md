@@ -1,4 +1,4 @@
-[MapTiler Client JS](../README.md) / [Exports](../modules.md) / ClientConfig
+[MapTiler Client JS](../README.md) / ClientConfig
 
 # Class: ClientConfig
 
@@ -35,7 +35,7 @@ Get the MapTiler Cloud API key
 
 #### Defined in
 
-[config.ts:41](https://github.com/maptiler/maptiler-client-js/blob/ce6b129/src/config.ts#L41)
+[config.ts:41](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/config.ts#L41)
 
 • `set` **apiKey**(`k`): `void`
 
@@ -53,23 +53,23 @@ Set the MapTiler Cloud API key
 
 #### Defined in
 
-[config.ts:34](https://github.com/maptiler/maptiler-client-js/blob/ce6b129/src/config.ts#L34)
+[config.ts:34](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/config.ts#L34)
 
 ___
 
 ### fetch
 
-• `get` **fetch**(): [`FetchFunction`](../modules.md#fetchfunction)
+• `get` **fetch**(): [`FetchFunction`](../README.md#fetchfunction)
 
 Get the fetch fucntion
 
 #### Returns
 
-[`FetchFunction`](../modules.md#fetchfunction)
+[`FetchFunction`](../README.md#fetchfunction)
 
 #### Defined in
 
-[config.ts:55](https://github.com/maptiler/maptiler-client-js/blob/ce6b129/src/config.ts#L55)
+[config.ts:55](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/config.ts#L55)
 
 • `set` **fetch**(`f`): `void`
 
@@ -79,7 +79,7 @@ Set a the custom fetch function to replace the default one
 
 | Name | Type |
 | :------ | :------ |
-| `f` | [`FetchFunction`](../modules.md#fetchfunction) |
+| `f` | [`FetchFunction`](../README.md#fetchfunction) |
 
 #### Returns
 
@@ -87,4 +87,4 @@ Set a the custom fetch function to replace the default one
 
 #### Defined in
 
-[config.ts:48](https://github.com/maptiler/maptiler-client-js/blob/ce6b129/src/config.ts#L48)
+[config.ts:48](https://github.com/maptiler/maptiler-client-js/blob/7e9150d/src/config.ts#L48)
