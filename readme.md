@@ -31,7 +31,7 @@ npm install --save @maptiler/client
 ```
 
 # API documentation
-In addition to the details and examples provided in this readme, check out the [complete API documentation](https://maptiler.github.io/maptiler-client-js) (also available in [markdown](docsmd)).
+In addition to the details and examples provided in this readme, check out the [complete API documentation](docs/README.md)).
 
 # Quick start
 ```ts
