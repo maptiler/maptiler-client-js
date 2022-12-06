@@ -196,8 +196,12 @@
         );
       }
       if ("language" in options) {
-        const languages = (Array.isArray(options.language) ? options.language : [options.language]).map(
-          (lang) => lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+        const languages = Array.from(
+          new Set(
+            (Array.isArray(options.language) ? options.language : [options.language]).map(
+              (lang) => lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+            )
+          )
         ).join(",");
         endpoint.searchParams.set("language", languages);
       }
@@ -238,8 +242,12 @@
         );
       }
       if ("language" in options) {
-        const languages = (Array.isArray(options.language) ? options.language : [options.language]).map(
-          (lang) => lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+        const languages = Array.from(
+          new Set(
+            (Array.isArray(options.language) ? options.language : [options.language]).map(
+              (lang) => lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+            )
+          )
         ).join(",");
         endpoint.searchParams.set("language", languages);
       }

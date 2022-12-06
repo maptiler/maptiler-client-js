@@ -21,19 +21,19 @@
         coordinates,
         data,
         staticMaps,
-        Language,
+        LanguageGeocoding,
       } from '../dist/maptiler-client.mjs';
 
-      console.log(Language);
+      console.log(LanguageGeocoding);
 
       config.apiKey = 'wvElBzv1zqf8XeNE37ip';
 
       async function testGeocoding() {
-        const result1 = await geocoding.forward('london', {language: [Language.AUTO]});
+        const result1 = await geocoding.forward('london', {language: [LanguageGeocoding.AUTO]});
         console.log(result1);
 
-        // const result2 = await geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']});
-        // console.log(result2);
+        const result2 = await geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']});
+        console.log(result2);
       }
 
       async function testGeolocation() {
