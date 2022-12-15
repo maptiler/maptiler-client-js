@@ -172,6 +172,12 @@ type GeocodingOptions = {
  * @returns
  */
 declare function forward(query: any, options?: GeocodingOptions): Promise<any>;
+type ReverseGeocodingOptions = {
+    /**
+     * Prefer results in specific language. It’s possible to specify multiple values.
+     */
+    language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+};
 /**
  * Perform a reverse geocoding query to MapTiler API.
  * Providing a longitude and latitude, this function returns a set of human readable information abou this place (country, city, street, etc.)
@@ -180,7 +186,7 @@ declare function forward(query: any, options?: GeocodingOptions): Promise<any>;
  * @param options
  * @returns
  */
-declare function reverse(lngLat: LngLat, options?: GeocodingOptions): Promise<any>;
+declare function reverse(lngLat: LngLat, options?: ReverseGeocodingOptions): Promise<any>;
 /**
  * The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
  * The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)

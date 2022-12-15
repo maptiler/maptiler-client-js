@@ -225,24 +225,6 @@
         defaults.maptilerApiURL
       );
       endpoint.searchParams.set("key", config.apiKey);
-      if ("bbox" in options) {
-        const bbox = Array.isArray(options.bbox) ? { southWest: { lng: options.bbox[0], lat: options.bbox[1] }, northEast: { lng: options.bbox[2], lat: options.bbox[3] } } : options.bbox;
-        endpoint.searchParams.set(
-          "bbox",
-          [
-            bbox.southWest.lng,
-            bbox.southWest.lat,
-            bbox.northEast.lng,
-            bbox.northEast.lat
-          ].join(",")
-        );
-      }
-      if ("proximity" in options) {
-        endpoint.searchParams.set(
-          "proximity",
-          [options.proximity.lng, options.proximity.lat].join(",")
-        );
-      }
       if ("language" in options) {
         const languages = Array.from(
           new Set(
