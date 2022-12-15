@@ -11,6 +11,11 @@ import { ServiceError } from "./ServiceError";
 
 export type GeocodingOptions = {
   /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+  apiKey?: string,
+  
+  /**
    * Only search for results in the specified area.
    */
   bbox?: Bbox;
@@ -45,7 +50,7 @@ async function forward(query, options: GeocodingOptions = {}) {
     `geocoding/${encodeURIComponent(query)}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("bbox" in options) {
     const bbox = Array.isArray(options.bbox) ? {southWest: { lng: options.bbox[0], lat: options.bbox[1]}, northEast: { lng: options.bbox[2], lat: options.bbox[3]}} : options.bbox;
@@ -99,6 +104,11 @@ async function forward(query, options: GeocodingOptions = {}) {
 
 export type ReverseGeocodingOptions = {
   /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+   apiKey?: string,
+
+  /**
    * Prefer results in specific language. It’s possible to specify multiple values.
    */
   language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
@@ -117,7 +127,7 @@ async function reverse(lngLat: LngLat, options: ReverseGeocodingOptions = {}) {
     `geocoding/${lngLat.lng},${lngLat.lat}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("language" in options) {
     const languages = Array.from(

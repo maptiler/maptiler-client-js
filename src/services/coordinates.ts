@@ -6,6 +6,11 @@ import { ServiceError } from "./ServiceError";
 
 export type CoordinatesSearchOptions = {
   /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+   apiKey?: string,
+
+  /**
    * Maximum number of results returned (default: 10)
    */
   limit?: number;
@@ -37,7 +42,7 @@ async function search(query: string, options: CoordinatesSearchOptions = {}) {
     `coordinates/search/${query}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("limit" in options) {
     endpoint.searchParams.set("limit", options.limit.toString());
@@ -72,6 +77,11 @@ async function search(query: string, options: CoordinatesSearchOptions = {}) {
  * Options that can be provided when transforming a coordinate from one CRS to another.
  */
 export type CoordinatesTransformOptions = {
+  /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+   apiKey?: string,
+
   /**
    * Source coordinate reference system (default: 4326)
    */
@@ -109,7 +119,7 @@ async function transform(
     `coordinates/transform/${coordinatesStr}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("sourceCrs" in options) {
     endpoint.searchParams.set("s_srs", options.sourceCrs.toString());

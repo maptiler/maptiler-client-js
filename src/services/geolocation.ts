@@ -7,14 +7,26 @@ const customMessages = {
   403: "Key is missing, invalid or restricted",
 };
 
+
+/**
+ * Options that can be provided to get user data.
+ */
+ export type GeolocationInfoOptions = {
+  /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+   apiKey?: string,
+};
+
+
 /**
  * Looks up geolocation details from IP address using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geolocation/#ip-geolocation
  * @returns
  */
-async function info() {
+async function info(options: GeolocationInfoOptions = {}) {
   const endpoint = new URL(`geolocation/ip.json`, defaults.maptilerApiURL);
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
   const urlWithParams = endpoint.toString();
 
   const res = await callFetch(urlWithParams);

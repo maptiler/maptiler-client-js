@@ -8,6 +8,11 @@ import simplify from "./simplify";
  */
 export type StaticMapBaseOptions = {
   /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+   apiKey?: string,
+
+  /**
    * Style of the map (not full style URL). Example: "winter", "streets-v2".
    * Default: `"streets-v2"`
    */
@@ -261,7 +266,7 @@ function centered(
     endpoint.searchParams.set("path", pathStr);
   }
 
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   return endpoint.toString();
 }
@@ -350,7 +355,7 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
     endpoint.searchParams.set("path", pathStr);
   }
 
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   return endpoint.toString();
 }
@@ -440,7 +445,7 @@ function automatic(options: AutomaticStaticMapOptions = {}) {
     endpoint.searchParams.set("path", pathStr);
   }
 
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   return endpoint.toString();
 }

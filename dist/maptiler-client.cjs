@@ -171,11 +171,12 @@ const customMessages$3 = {
 };
 function forward(_0) {
   return __async$3(this, arguments, function* (query, options = {}) {
+    var _a;
     const endpoint = new URL(
       `geocoding/${encodeURIComponent(query)}.json`,
       defaults.maptilerApiURL
     );
-    endpoint.searchParams.set("key", config.apiKey);
+    endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
     if ("bbox" in options) {
       const bbox = Array.isArray(options.bbox) ? { southWest: { lng: options.bbox[0], lat: options.bbox[1] }, northEast: { lng: options.bbox[2], lat: options.bbox[3] } } : options.bbox;
       endpoint.searchParams.set(
@@ -218,11 +219,12 @@ function forward(_0) {
 }
 function reverse(_0) {
   return __async$3(this, arguments, function* (lngLat, options = {}) {
+    var _a;
     const endpoint = new URL(
       `geocoding/${lngLat.lng},${lngLat.lat}.json`,
       defaults.maptilerApiURL
     );
-    endpoint.searchParams.set("key", config.apiKey);
+    endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
     if ("language" in options) {
       const languages = Array.from(
         new Set(
@@ -274,9 +276,10 @@ const customMessages$2 = {
   403: "Key is missing, invalid or restricted"
 };
 function info() {
-  return __async$2(this, null, function* () {
+  return __async$2(this, arguments, function* (options = {}) {
+    var _a;
     const endpoint = new URL(`geolocation/ip.json`, defaults.maptilerApiURL);
-    endpoint.searchParams.set("key", config.apiKey);
+    endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
     const urlWithParams = endpoint.toString();
     const res = yield callFetch(urlWithParams);
     if (!res.ok) {
@@ -318,11 +321,12 @@ const customMessages$1 = {
 };
 function search(_0) {
   return __async$1(this, arguments, function* (query, options = {}) {
+    var _a;
     const endpoint = new URL(
       `coordinates/search/${query}.json`,
       defaults.maptilerApiURL
     );
-    endpoint.searchParams.set("key", config.apiKey);
+    endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
     if ("limit" in options) {
       endpoint.searchParams.set("limit", options.limit.toString());
     }
@@ -349,12 +353,13 @@ function search(_0) {
 }
 function transform(_0) {
   return __async$1(this, arguments, function* (coordinates2, options = {}) {
+    var _a;
     const coordinatesStr = (Array.isArray(coordinates2) ? coordinates2 : [coordinates2]).map((coord) => `${coord.lng},${coord.lat}`).join(";");
     const endpoint = new URL(
       `coordinates/transform/${coordinatesStr}.json`,
       defaults.maptilerApiURL
     );
-    endpoint.searchParams.set("key", config.apiKey);
+    endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
     if ("sourceCrs" in options) {
       endpoint.searchParams.set("s_srs", options.sourceCrs.toString());
     }
@@ -407,13 +412,14 @@ var __async = (__this, __arguments, generator) => {
 const customMessages = {
   403: "Key is missing, invalid or restricted"
 };
-function get(dataId) {
-  return __async(this, null, function* () {
+function get(_0) {
+  return __async(this, arguments, function* (dataId, options = {}) {
+    var _a;
     const endpoint = new URL(
       `data/${encodeURIComponent(dataId)}/features.json`,
       defaults.maptilerApiURL
     );
-    endpoint.searchParams.set("key", config.apiKey);
+    endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
     const urlWithParams = endpoint.toString();
     const res = yield callFetch(urlWithParams);
     if (!res.ok) {
@@ -500,7 +506,7 @@ function simplifyAndStringify(path, maxNbChar = 3e3) {
   return str;
 }
 function centered(center, zoom, options = {}) {
-  var _a, _b, _c, _d, _e;
+  var _a, _b, _c, _d, _e, _f;
   const style = (_a = options.style) != null ? _a : defaults.mapStyle;
   const scale = options.hiDPI ? "@2x" : "";
   const format = (_b = options.format) != null ? _b : "png";
@@ -546,11 +552,11 @@ function centered(center, zoom, options = {}) {
     pathStr += simplifyAndStringify(options.path);
     endpoint.searchParams.set("path", pathStr);
   }
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", (_f = options.apiKey) != null ? _f : config.apiKey);
   return endpoint.toString();
 }
 function bounded(boundingBox, options = {}) {
-  var _a, _b, _c, _d, _e;
+  var _a, _b, _c, _d, _e, _f;
   const style = (_a = options.style) != null ? _a : defaults.mapStyle;
   const scale = options.hiDPI ? "@2x" : "";
   const format = (_b = options.format) != null ? _b : "png";
@@ -600,11 +606,11 @@ function bounded(boundingBox, options = {}) {
     pathStr += simplifyAndStringify(options.path);
     endpoint.searchParams.set("path", pathStr);
   }
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", (_f = options.apiKey) != null ? _f : config.apiKey);
   return endpoint.toString();
 }
 function automatic(options = {}) {
-  var _a, _b, _c, _d, _e;
+  var _a, _b, _c, _d, _e, _f;
   if (!("marker" in options) && !("path" in options)) {
     throw new Error(
       "Automatic static maps require markers and/or path to be created."
@@ -660,7 +666,7 @@ function automatic(options = {}) {
     pathStr += simplifyAndStringify(options.path);
     endpoint.searchParams.set("path", pathStr);
   }
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", (_f = options.apiKey) != null ? _f : config.apiKey);
   return endpoint.toString();
 }
 const staticMaps = {

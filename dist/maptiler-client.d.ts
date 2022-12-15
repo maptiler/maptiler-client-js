@@ -150,6 +150,10 @@ type LanguageGeocodingString = Values<typeof LanguageGeocoding>;
 
 type GeocodingOptions = {
     /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
+    /**
      * Only search for results in the specified area.
      */
     bbox?: Bbox;
@@ -173,6 +177,10 @@ type GeocodingOptions = {
  */
 declare function forward(query: any, options?: GeocodingOptions): Promise<any>;
 type ReverseGeocodingOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
     /**
      * Prefer results in specific language. It’s possible to specify multiple values.
      */
@@ -198,11 +206,20 @@ declare const geocoding: {
 };
 
 /**
+ * Options that can be provided to get user data.
+ */
+type GeolocationInfoOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
+};
+/**
  * Looks up geolocation details from IP address using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geolocation/#ip-geolocation
  * @returns
  */
-declare function info(): Promise<any>;
+declare function info(options?: GeolocationInfoOptions): Promise<any>;
 /**
  * The **geolocation** namespace contains an asynchronous function to call the [MapTiler Geolocation API](https://docs.maptiler.com/cloud/api/geolocation/).
  * The **Geolocation API** provides a way to retrieve the IP address as well as geographic informations of a machine performing the query (most likely: a user)
@@ -212,6 +229,10 @@ declare const geolocation: {
 };
 
 type CoordinatesSearchOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
     /**
      * Maximum number of results returned (default: 10)
      */
@@ -237,6 +258,10 @@ declare function search(query: string, options?: CoordinatesSearchOptions): Prom
  * Options that can be provided when transforming a coordinate from one CRS to another.
  */
 type CoordinatesTransformOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
     /**
      * Source coordinate reference system (default: 4326)
      */
@@ -268,12 +293,21 @@ declare const coordinates: {
 };
 
 /**
+ * Options that can be provided to get user data.
+ */
+type GetDataOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
+};
+/**
  * Get user data and returns it as GeoJSON using the MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/data/#geojson
  * @param dataId
  * @returns
  */
-declare function get(dataId: string): Promise<any>;
+declare function get(dataId: string, options?: GetDataOptions): Promise<any>;
 /**
  * The **data** namespace contains an asynchronous function to call the [MapTiler Data API](https://docs.maptiler.com/cloud/api/data/).
  * The **Data API** provides a way to retrieve user data in GeoJSON format.
@@ -286,6 +320,10 @@ declare const data: {
  * Base set of options that can be provided to all the types of static maps
  */
 type StaticMapBaseOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
     /**
      * Style of the map (not full style URL). Example: "winter", "streets-v2".
      * Default: `"streets-v2"`
