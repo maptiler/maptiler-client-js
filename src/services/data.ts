@@ -7,15 +7,14 @@ const customMessages = {
   403: "Key is missing, invalid or restricted",
 };
 
-
 /**
  * Options that can be provided to get user data.
  */
- export type GetDataOptions = {
+export type GetDataOptions = {
   /**
    * Custom mapTiler Cloud API key to use instead of the one in global `config`
    */
-   apiKey?: string,
+  apiKey?: string;
 };
 
 /**
@@ -24,7 +23,7 @@ const customMessages = {
  * @param dataId
  * @returns
  */
-async function get(dataId: string, options: GetDataOptions = {} ) {
+async function get(dataId: string, options: GetDataOptions = {}) {
   const endpoint = new URL(
     `data/${encodeURIComponent(dataId)}/features.json`,
     defaults.maptilerApiURL

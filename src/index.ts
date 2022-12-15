@@ -7,14 +7,19 @@ import { LanguageGeocoding, LanguageGeocodingString } from "./language";
 
 // Importing services
 import { geocoding } from "./services/geocoding";
-import type { GeocodingOptions } from "./services/geocoding";
+import type {
+  GeocodingOptions,
+  ReverseGeocodingOptions,
+} from "./services/geocoding";
 import { geolocation } from "./services/geolocation";
+import type { GeolocationInfoOptions } from "./services/geolocation";
 import { coordinates } from "./services/coordinates";
 import type {
   CoordinatesSearchOptions,
   CoordinatesTransformOptions,
 } from "./services/coordinates";
 import { data } from "./services/data";
+import type { GetDataOptions } from "./services/data";
 import { staticMaps } from "./services/staticMaps";
 import type {
   StaticMapMarker,
@@ -30,6 +35,7 @@ import { ServiceError } from "./services/ServiceError";
 export type {
   LngLat,
   GeocodingOptions,
+  ReverseGeocodingOptions,
   Bbox,
   LngLatArray,
   CoordinatesTransformOptions,
@@ -41,6 +47,8 @@ export type {
   AutomaticStaticMapOptions,
   FetchFunction,
   LanguageGeocodingString,
+  GetDataOptions,
+  GeolocationInfoOptions,
 };
 
 // Exporting classes, objects, functions, etc.

@@ -82,7 +82,7 @@ Read more about reverse geocoding on our official [API documentation](https://do
 For both *forward* and *reverse* geocoding, this library provides a list of supported languages as shorthands to [ISO language codes](https://en.wikipedia.org/wiki/ISO_639-1). The result will be provided in multiple languages if the `language` options is an array:
 
 ```ts
-const result = await maptilerClient.geocoding.forward('paris', {language: [maptilerClient.languageGeocoding.SPANISH, maptilerClient.languageGeocoding.KOREAN]})
+const result = await maptilerClient.geocoding.forward('paris', {language: [maptilerClient.geocoding.languages.SPANISH, maptilerClient.geocoding.languages.KOREAN]})
 ```
 
 The special language `AUTO` will detect the plateform/browser prefered language.

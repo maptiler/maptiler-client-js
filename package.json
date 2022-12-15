@@ -6,6 +6,10 @@
   "types": "dist/maptiler-client.d.ts",
   "type": "module",
   "author": "MapTiler",
+  "exports": {     
+    "import": "./dist/maptiler-client.mjs",
+    "require": "./dist/maptiler-client.cjs"
+  },
   "keywords": [
     "geocoding",
     "reverse geocoding",

@@ -8,7 +8,7 @@ export type CoordinatesSearchOptions = {
   /**
    * Custom mapTiler Cloud API key to use instead of the one in global `config`
    */
-   apiKey?: string,
+  apiKey?: string;
 
   /**
    * Maximum number of results returned (default: 10)
@@ -80,7 +80,7 @@ export type CoordinatesTransformOptions = {
   /**
    * Custom mapTiler Cloud API key to use instead of the one in global `config`
    */
-   apiKey?: string,
+  apiKey?: string;
 
   /**
    * Source coordinate reference system (default: 4326)

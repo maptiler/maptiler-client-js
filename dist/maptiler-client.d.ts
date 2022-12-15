@@ -203,6 +203,76 @@ declare function reverse(lngLat: LngLat, options?: ReverseGeocodingOptions): Pro
 declare const geocoding: {
     forward: typeof forward;
     reverse: typeof reverse;
+    language: {
+        AUTO: string;
+        ALBANIAN: string;
+        ARABIC: string;
+        ARMENIAN: string;
+        AZERBAIJANI: string;
+        BELORUSSIAN: string;
+        BOSNIAN: string;
+        BRETON: string;
+        BULGARIAN: string;
+        CATALAN: string;
+        CHINESE: string;
+        CROATIAN: string;
+        CZECH: string;
+        DANISH: string;
+        DUTCH: string;
+        ENGLISH: string;
+        ESPERANTO: string;
+        ESTONIAN: string;
+        FINNISH: string;
+        FRENCH: string;
+        FRISIAN: string;
+        GEORGIAN: string; /**
+         * Prefer results close to a specific location.
+         */
+        GERMAN: string;
+        GREEK: string;
+        HEBREW: string;
+        HUNGARIAN: string;
+        ICELANDIC: string; /**
+         * Prefer results in specific language. It’s possible to specify multiple values.
+         */
+        IRISH: string;
+        ITALIAN: string;
+        JAPANESE: string;
+        KANNADA: string;
+        KAZAKH: string;
+        KOREAN: string;
+        ROMAN_LATIN: string;
+        LATVIAN: string;
+        LITHUANIAN: string;
+        LUXEMBOURGISH: string;
+        MACEDONIAN: string;
+        MALTESE: string;
+        NORWEGIAN: string;
+        POLISH: string;
+        PORTUGUESE: string;
+        ROMANIAN: string;
+        /**
+         * Performs a forward geocoding query to MapTiler API.
+         * Providing a human readable place name (of a city, country, street, etc.), the function returns
+         * a list of candidate locations including longitude and latitude.
+         * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-name-forward
+         * @param query
+         * @param options
+         * @returns
+         */
+        ROMANSH: string;
+        RUSSIAN: string;
+        SCOTTISH_GAELIC: string;
+        SERBIAN_CYRILLIC: string;
+        SLOVAK: string;
+        SLOVENE: string;
+        SPANISH: string;
+        SWEDISH: string;
+        THAI: string;
+        TURKISH: string;
+        UKRAINIAN: string;
+        WELSH: string;
+    };
 };
 
 /**
@@ -491,4 +561,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, GeolocationInfoOptions, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };

@@ -10,7 +10,7 @@ export type StaticMapBaseOptions = {
   /**
    * Custom mapTiler Cloud API key to use instead of the one in global `config`
    */
-   apiKey?: string,
+  apiKey?: string;
 
   /**
    * Style of the map (not full style URL). Example: "winter", "streets-v2".
@@ -292,7 +292,12 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
     height = ~~(height / 2);
   }
 
-  const bbox = Array.isArray(boundingBox) ? {southWest: { lng: boundingBox[0], lat: boundingBox[1]}, northEast: { lng: boundingBox[2], lat: boundingBox[3]}} : boundingBox;
+  const bbox = Array.isArray(boundingBox)
+    ? {
+        southWest: { lng: boundingBox[0], lat: boundingBox[1] },
+        northEast: { lng: boundingBox[2], lat: boundingBox[3] },
+      }
+    : boundingBox;
 
   const endpoint = new URL(
     `maps/${encodeURIComponent(style)}/static/${bbox.southWest.lng},${

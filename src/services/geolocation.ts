@@ -7,17 +7,15 @@ const customMessages = {
   403: "Key is missing, invalid or restricted",
 };
 
-
 /**
  * Options that can be provided to get user data.
  */
- export type GeolocationInfoOptions = {
+export type GeolocationInfoOptions = {
   /**
    * Custom mapTiler Cloud API key to use instead of the one in global `config`
    */
-   apiKey?: string,
+  apiKey?: string;
 };
-
 
 /**
  * Looks up geolocation details from IP address using MapTiler API.

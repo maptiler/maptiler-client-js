@@ -180,7 +180,10 @@
       );
       endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
       if ("bbox" in options) {
-        const bbox = Array.isArray(options.bbox) ? { southWest: { lng: options.bbox[0], lat: options.bbox[1] }, northEast: { lng: options.bbox[2], lat: options.bbox[3] } } : options.bbox;
+        const bbox = Array.isArray(options.bbox) ? {
+          southWest: { lng: options.bbox[0], lat: options.bbox[1] },
+          northEast: { lng: options.bbox[2], lat: options.bbox[3] }
+        } : options.bbox;
         endpoint.searchParams.set(
           "bbox",
           [
@@ -251,7 +254,8 @@
   }
   const geocoding = {
     forward,
-    reverse
+    reverse,
+    language: LanguageGeocoding
   };
 
   var __async$2 = (__this, __arguments, generator) => {
@@ -568,7 +572,10 @@
       width = ~~(width / 2);
       height = ~~(height / 2);
     }
-    const bbox = Array.isArray(boundingBox) ? { southWest: { lng: boundingBox[0], lat: boundingBox[1] }, northEast: { lng: boundingBox[2], lat: boundingBox[3] } } : boundingBox;
+    const bbox = Array.isArray(boundingBox) ? {
+      southWest: { lng: boundingBox[0], lat: boundingBox[1] },
+      northEast: { lng: boundingBox[2], lat: boundingBox[3] }
+    } : boundingBox;
     const endpoint = new URL(
       `maps/${encodeURIComponent(style)}/static/${bbox.southWest.lng},${bbox.southWest.lat},${bbox.northEast.lng},${bbox.northEast.lat}/${width}x${height}${scale}.${format}`,
       defaults.maptilerApiURL
