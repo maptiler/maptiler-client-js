@@ -48,13 +48,14 @@ async function forward(query, options: GeocodingOptions = {}) {
   endpoint.searchParams.set("key", config.apiKey);
 
   if ("bbox" in options) {
+    const bbox = Array.isArray(options.bbox) ? {southWest: { lng: options.bbox[0], lat: options.bbox[1]}, northEast: { lng: options.bbox[2], lat: options.bbox[3]}} : options.bbox;
     endpoint.searchParams.set(
       "bbox",
       [
-        options.bbox.southWest.lng,
-        options.bbox.southWest.lat,
-        options.bbox.northEast.lng,
-        options.bbox.northEast.lat,
+        bbox.southWest.lng,
+        bbox.southWest.lat,
+        bbox.northEast.lng,
+        bbox.northEast.lat,
       ].join(",")
     );
   }
@@ -111,13 +112,14 @@ async function reverse(lngLat: LngLat, options: GeocodingOptions = {}) {
   endpoint.searchParams.set("key", config.apiKey);
 
   if ("bbox" in options) {
+    const bbox = Array.isArray(options.bbox) ? {southWest: { lng: options.bbox[0], lat: options.bbox[1]}, northEast: { lng: options.bbox[2], lat: options.bbox[3]}} : options.bbox;
     endpoint.searchParams.set(
       "bbox",
       [
-        options.bbox.southWest.lng,
-        options.bbox.southWest.lat,
-        options.bbox.northEast.lng,
-        options.bbox.northEast.lat,
+        bbox.southWest.lng,
+        bbox.southWest.lat,
+        bbox.northEast.lng,
+        bbox.northEast.lat,
       ].join(",")
     );
   }

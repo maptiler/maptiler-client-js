@@ -30,4 +30,24 @@ export type Bbox = {
    * North-east corner WGS84 coordinates
    */
   northEast: LngLat;
-};
+} | [
+  /**
+   * Minimum along longitude (east bound)
+   */
+  number,
+
+  /**
+   * Minimum along latitude (south bound)
+   */
+  number,
+
+  /**
+   * Maximum along longitude (west bound)
+   */
+  number,
+
+  /**
+   * Maximum along latitude (north bound)
+   */
+  number
+];

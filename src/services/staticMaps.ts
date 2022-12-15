@@ -287,11 +287,13 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
     height = ~~(height / 2);
   }
 
+  const bbox = Array.isArray(boundingBox) ? {southWest: { lng: boundingBox[0], lat: boundingBox[1]}, northEast: { lng: boundingBox[2], lat: boundingBox[3]}} : boundingBox;
+
   const endpoint = new URL(
-    `maps/${encodeURIComponent(style)}/static/${boundingBox.southWest.lng},${
-      boundingBox.southWest.lat
-    },${boundingBox.northEast.lng},${
-      boundingBox.northEast.lat
+    `maps/${encodeURIComponent(style)}/static/${bbox.southWest.lng},${
+      bbox.southWest.lat
+    },${bbox.northEast.lng},${
+      bbox.northEast.lat
     }/${width}x${height}${scale}.${format}`,
     defaults.maptilerApiURL
   );
