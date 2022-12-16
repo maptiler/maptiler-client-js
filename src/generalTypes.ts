@@ -15,8 +15,7 @@ export type LngLat = {
 /**
  * WGS84 longitude and latitude as array of the form [lng, lat]
  */
-export type LngLatArray = [number, number];
-
+export type ArrayLngLat = [number, number];
 
 export type ObjectBBox = {
   /**
@@ -28,7 +27,7 @@ export type ObjectBBox = {
    * North-east corner WGS84 coordinates
    */
   northEast: LngLat;
-}
+};
 
 export type ArrayBBox = [
   /**

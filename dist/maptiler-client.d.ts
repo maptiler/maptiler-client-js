@@ -1,4 +1,4 @@
-import { Feature, Position, FeatureCollection } from 'geojson';
+import { Position, Feature, FeatureCollection } from 'geojson';
 
 /**
  * WGS84 longitude and latitude as object
@@ -16,7 +16,7 @@ type LngLat = {
 /**
  * WGS84 longitude and latitude as array of the form [lng, lat]
  */
-type LngLatArray = [number, number];
+type ArrayLngLat = [number, number];
 type ObjectBBox = {
     /**
      * South-west corner WGS84 coordinates
@@ -287,25 +287,24 @@ declare const geocoding: {
         HEBREW: string;
         HUNGARIAN: string;
         ICELANDIC: string;
-        IRISH: string;
+        IRISH: string; /**
+         * Only search for results in the specified area.
+         */
         ITALIAN: string;
         JAPANESE: string;
         KANNADA: string;
         KAZAKH: string;
-        /**
-         * Only search for results in the specified area.
-         */
         KOREAN: string;
         ROMAN_LATIN: string;
         LATVIAN: string;
         LITHUANIAN: string;
-        LUXEMBOURGISH: string;
+        LUXEMBOURGISH: string; /**
+         * Prefer results in specific language. It’s possible to specify multiple values.
+         */
         MACEDONIAN: string;
         MALTESE: string;
         NORWEGIAN: string;
-        POLISH: string; /**
-         * Prefer results in specific language. It’s possible to specify multiple values.
-         */
+        POLISH: string;
         PORTUGUESE: string;
         ROMANIAN: string;
         ROMANSH: string;
@@ -318,9 +317,7 @@ declare const geocoding: {
         SWEDISH: string;
         THAI: string;
         TURKISH: string;
-        UKRAINIAN: string; /**
-         * Unique feature ID
-         */
+        UKRAINIAN: string;
         WELSH: string;
     };
 };
@@ -634,7 +631,7 @@ type StaticMapBaseOptions = {
      * Draw a path or polygon on top of the map. If the path is too long it will be simplified, yet remaining accurate.
      * Default: none provided
      */
-    path?: Array<LngLatArray>;
+    path?: Array<ArrayLngLat>;
     /**
      * Color of the path line. The color must be CSS compatible.
      * Examples:
@@ -750,4 +747,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, BBox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateSearchResult, CoordinateTransformResult, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { ArrayBBox, ArrayLngLat, AutomaticStaticMapOptions, BBox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, ObjectBBox, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, geocoding, geolocation, staticMaps };

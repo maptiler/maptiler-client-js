@@ -4,11 +4,9 @@ import { defaults } from "../defaults";
 import { LngLat, ArrayBBox } from "../generalTypes";
 import { ServiceError } from "./ServiceError";
 
-
 const customMessages = {
   403: "Key is missing, invalid or restricted",
 };
-
 
 export type CoordinatesSearchOptions = {
   /**
@@ -32,78 +30,75 @@ export type CoordinatesSearchOptions = {
   exports?: boolean;
 };
 
-
 export type CoordinateId = {
-  authority: string,
-  code: BigInteger,
-}
+  authority: string;
+  code: BigInteger;
+};
 
 export type CoordinateExport = {
-  proj4: string,
-  wkt: string,
-}
+  proj4: string;
+  wkt: string;
+};
 
 export type CoordinateGrid = {
-  path: string,
-}
+  path: string;
+};
 
 export type CoordinateTransformation = {
-  id: CoordinateId,
-  name: string,
-  reversible: boolean,
-  usable: boolean,
-  deprecated: boolean,
-  grids: Array<CoordinateGrid>,
-  accuracy?: number,
-  area?: string,
-  bbox?: ArrayBBox,
-  target_crs?: CoordinateId,
-  unit?: string,
-
-}
+  id: CoordinateId;
+  name: string;
+  reversible: boolean;
+  usable: boolean;
+  deprecated: boolean;
+  grids: Array<CoordinateGrid>;
+  accuracy?: number;
+  area?: string;
+  bbox?: ArrayBBox;
+  target_crs?: CoordinateId;
+  unit?: string;
+};
 
 export type CoordinateSearch = {
-  id: CoordinateId,
+  id: CoordinateId;
 
-  name: string,
+  name: string;
 
-  kind: string,
+  kind: string;
 
-  deprecated: boolean,
+  deprecated: boolean;
 
-  transformations?: Array<CoordinateTransformation | number>,
+  transformations?: Array<CoordinateTransformation | number>;
 
-  accuracy?: number,
+  accuracy?: number;
 
-  unit?: string,
+  unit?: string;
 
-  area?: string,
+  area?: string;
 
   /**
    * Bounding box of the resource in [min_lon, min_lat, max_lon, max_lat] order.
    */
-  bbox?: ArrayBBox,
+  bbox?: ArrayBBox;
 
   /**
    * Most suitable transformation for this CRS.
    */
-  default_transformation?: any,
+  default_transformation?: any;
 
-  exports: CoordinateExport,
-}
+  exports: CoordinateExport;
+};
 
 export type CoordinateSearchResult = {
   /**
    * The coordinate search results
    */
-  results: Array<CoordinateSearch>,
+  results: Array<CoordinateSearch>;
 
   /**
    * The number of results
    */
-  total: number,
-}
-
+  total: number;
+};
 
 /**
  * Search information about coordinate systems using MapTiler API.
@@ -112,7 +107,10 @@ export type CoordinateSearchResult = {
  * @param options
  * @returns
  */
-async function search(query: string, options: CoordinatesSearchOptions = {}): Promise<CoordinateSearchResult> {
+async function search(
+  query: string,
+  options: CoordinatesSearchOptions = {}
+): Promise<CoordinateSearchResult> {
   const endpoint = new URL(
     `coordinates/search/${query}.json`,
     defaults.maptilerApiURL
@@ -149,24 +147,22 @@ async function search(query: string, options: CoordinatesSearchOptions = {}): Pr
 }
 
 export type XYZ = {
-  x?: number,
-  y?: number,
-  z?: number,
-}
+  x?: number;
+  y?: number;
+  z?: number;
+};
 
 export type CoordinateTransformResult = {
-
-  results: Array<XYZ>,
+  results: Array<XYZ>;
 
   /**
-   * Transformations are selected using given ops parameter. 
-   * If no parameter is given, auto strategy is used. 
+   * Transformations are selected using given ops parameter.
+   * If no parameter is given, auto strategy is used.
    * If given, it may try to use a listed transformation,
    * then fallback to towgs84 patching, and finally boundcrs.
    */
-  transformer_selection_strategy: string,
-
-}
+  transformer_selection_strategy: string;
+};
 
 /**
  * Options that can be provided when transforming a coordinate from one CRS to another.

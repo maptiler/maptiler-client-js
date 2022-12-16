@@ -1,6 +1,6 @@
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { BBox, LngLatArray, LngLat } from "../generalTypes";
+import { BBox, ArrayLngLat, LngLat } from "../generalTypes";
 import simplify from "./simplify";
 
 /**
@@ -81,7 +81,7 @@ export type StaticMapBaseOptions = {
    * Draw a path or polygon on top of the map. If the path is too long it will be simplified, yet remaining accurate.
    * Default: none provided
    */
-  path?: Array<LngLatArray>;
+  path?: Array<ArrayLngLat>;
 
   /**
    * Color of the path line. The color must be CSS compatible.
@@ -157,7 +157,10 @@ export type StaticMapMarker = {
   color?: string;
 };
 
-function staticMapMarkerToString(marker: StaticMapMarker, includeColor = true): string {
+function staticMapMarkerToString(
+  marker: StaticMapMarker,
+  includeColor = true
+): string {
   let str = `${marker.lng},${marker.lat}`;
 
   if (marker.color && includeColor) {
@@ -168,7 +171,7 @@ function staticMapMarkerToString(marker: StaticMapMarker, includeColor = true): 
 }
 
 function simplifyAndStringify(
-  path: Array<LngLatArray>,
+  path: Array<ArrayLngLat>,
   maxNbChar = 3000
 ): string {
   let str = path.map((point) => point.join(",")).join("|");
@@ -280,7 +283,10 @@ function centered(
  * @param options
  * @returns
  */
-function bounded(boundingBox: BBox, options: BoundedStaticMapOptions = {}): string {
+function bounded(
+  boundingBox: BBox,
+  options: BoundedStaticMapOptions = {}
+): string {
   const style = options.style ?? defaults.mapStyle;
   const scale = options.hiDPI ? "@2x" : "";
   const format = options.format ?? "png";

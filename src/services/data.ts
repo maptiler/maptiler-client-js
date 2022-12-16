@@ -24,7 +24,10 @@ export type GetDataOptions = {
  * @param dataId
  * @returns
  */
-async function get(dataId: string, options: GetDataOptions = {}): Promise<FeatureCollection> {
+async function get(
+  dataId: string,
+  options: GetDataOptions = {}
+): Promise<FeatureCollection> {
   const endpoint = new URL(
     `data/${encodeURIComponent(dataId)}/features.json`,
     defaults.maptilerApiURL

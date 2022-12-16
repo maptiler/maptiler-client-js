@@ -1,5 +1,4 @@
 import { Feature, Position } from "geojson";
-import { CoordinatesSearchOptions } from "../../dist/maptiler-client";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
@@ -39,73 +38,70 @@ export type GeocodingOptions = {
   language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
 };
 
-
 export type Coordinates = Position;
 
 export type FeatureHierarchy = {
   /**
    * Unique feature ID
    */
-  id: string,
+  id: string;
 
   /**
    * Localized feature name
    */
-  text: string,
-}
+  text: string;
+};
 
 export type GeocodingFeature = Feature & {
   /**
    * Bounding box of the original feature as [w, s, e, n] array
    */
-  bbox: ArrayBBox,
+  bbox: ArrayBBox;
 
   /**
    * A [lon, lat] array of the original feature centeroid
    */
-  center: Coordinates,
+  center: Coordinates;
 
   /**
    * Formatted (including the hierarchy) and localized feature full name
    */
-  place_name: string,
+  place_name: string;
 
   /**
    * Localized feature name
    */
-  text: string,
+  text: string;
 
   /**
    * Feature hierarchy
    */
-  context?: Array<FeatureHierarchy>,
+  context?: Array<FeatureHierarchy>;
 
   /**
    * Address number, if applicable
    */
-  address?: string,
-}
+  address?: string;
+};
 
 export type GeocodingSearchResult = {
-  type: "FeatureCollection",
-  
+  type: "FeatureCollection";
+
   /**
    * Array of features found
    */
-  features: Array<GeocodingFeature>,
+  features: Array<GeocodingFeature>;
 
   /**
    * Tokenized search query
    */
-  query: Array<string>,
+  query: Array<string>;
 
   /**
    * Attribution of the result
    */
-  attribution: string,
-}
-
-
+  attribution: string;
+};
 
 /**
  * Performs a forward geocoding query to MapTiler API.
@@ -116,7 +112,10 @@ export type GeocodingSearchResult = {
  * @param options
  * @returns
  */
-async function forward(query: string, options: GeocodingOptions = {}): Promise<GeocodingSearchResult> {
+async function forward(
+  query: string,
+  options: GeocodingOptions = {}
+): Promise<GeocodingSearchResult> {
   const endpoint = new URL(
     `geocoding/${encodeURIComponent(query)}.json`,
     defaults.maptilerApiURL
@@ -197,7 +196,10 @@ export type ReverseGeocodingOptions = {
  * @param options
  * @returns
  */
-async function reverse(lngLat: LngLat, options: ReverseGeocodingOptions = {}): Promise<GeocodingSearchResult> {
+async function reverse(
+  lngLat: LngLat,
+  options: ReverseGeocodingOptions = {}
+): Promise<GeocodingSearchResult> {
   const endpoint = new URL(
     `geocoding/${lngLat.lng},${lngLat.lat}.json`,
     defaults.maptilerApiURL
