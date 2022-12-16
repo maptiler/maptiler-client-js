@@ -1,3 +1,5 @@
+import { Feature, BBox, Position } from 'geojson';
+
 /**
  * WGS84 longitude and latitude as object
  */
@@ -166,6 +168,58 @@ type GeocodingOptions = {
      */
     language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
 };
+type Coordinates = Position;
+type FeatureHierarchy = {
+    /**
+     * Unique feature ID
+     */
+    id: string;
+    /**
+     * Localized feature name
+     */
+    text: string;
+};
+type GeocodingFeature = Feature & {
+    /**
+     * Bounding box of the original feature as [w, s, e, n] array
+     */
+    bbox: BBox;
+    /**
+     * A [lon, lat] array of the original feature centeroid
+     */
+    center: Coordinates;
+    /**
+     * Formatted (including the hierarchy) and localized feature full name
+     */
+    place_name: string;
+    /**
+     * Localized feature name
+     */
+    text: string;
+    /**
+     * Feature hierarchy
+     */
+    context?: Array<FeatureHierarchy>;
+    /**
+     * Address number, if applicable
+     */
+    address?: string;
+};
+type GeocodingSearchResult = {
+    type: "FeatureCollection";
+    /**
+     * Array of features found
+     */
+    features: Array<GeocodingFeature>;
+    /**
+     * Tokenized search query
+     */
+    query: Array<string>;
+    /**
+     * Attribution of the result
+     */
+    attribution: string;
+};
 /**
  * Performs a forward geocoding query to MapTiler API.
  * Providing a human readable place name (of a city, country, street, etc.), the function returns
@@ -175,7 +229,7 @@ type GeocodingOptions = {
  * @param options
  * @returns
  */
-declare function forward(query: any, options?: GeocodingOptions): Promise<any>;
+declare function forward(query: string, options?: GeocodingOptions): Promise<GeocodingSearchResult>;
 type ReverseGeocodingOptions = {
     /**
      * Custom mapTiler Cloud API key to use instead of the one in global `config`
@@ -194,7 +248,7 @@ type ReverseGeocodingOptions = {
  * @param options
  * @returns
  */
-declare function reverse(lngLat: LngLat, options?: ReverseGeocodingOptions): Promise<any>;
+declare function reverse(lngLat: LngLat, options?: ReverseGeocodingOptions): Promise<GeocodingSearchResult>;
 /**
  * The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
  * The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)
@@ -225,16 +279,14 @@ declare const geocoding: {
         FINNISH: string;
         FRENCH: string;
         FRISIAN: string;
-        GEORGIAN: string; /**
-         * Prefer results close to a specific location.
-         */
+        GEORGIAN: string;
         GERMAN: string;
         GREEK: string;
         HEBREW: string;
-        HUNGARIAN: string;
-        ICELANDIC: string; /**
-         * Prefer results in specific language. It’s possible to specify multiple values.
+        HUNGARIAN: string; /**
+         * Custom mapTiler Cloud API key to use instead of the one in global `config`
          */
+        ICELANDIC: string;
         IRISH: string;
         ITALIAN: string;
         JAPANESE: string;
@@ -251,15 +303,6 @@ declare const geocoding: {
         POLISH: string;
         PORTUGUESE: string;
         ROMANIAN: string;
-        /**
-         * Performs a forward geocoding query to MapTiler API.
-         * Providing a human readable place name (of a city, country, street, etc.), the function returns
-         * a list of candidate locations including longitude and latitude.
-         * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-name-forward
-         * @param query
-         * @param options
-         * @returns
-         */
         ROMANSH: string;
         RUSSIAN: string;
         SCOTTISH_GAELIC: string;
@@ -561,4 +604,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, GeolocationInfoOptions, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };

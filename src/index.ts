@@ -10,6 +10,7 @@ import { geocoding } from "./services/geocoding";
 import type {
   GeocodingOptions,
   ReverseGeocodingOptions,
+  GeocodingSearchResult,
 } from "./services/geocoding";
 import { geolocation } from "./services/geolocation";
 import type { GeolocationInfoOptions } from "./services/geolocation";
@@ -36,6 +37,7 @@ export type {
   LngLat,
   GeocodingOptions,
   ReverseGeocodingOptions,
+  GeocodingSearchResult,
   Bbox,
   LngLatArray,
   CoordinatesTransformOptions,

@@ -19,7 +19,7 @@
 
       async function testGeocoding() {
         console.log(await maptilerclient.geocoding.forward('bordeaux', {language: [maptilerclient.LanguageGeocoding.AUTO, maptilerclient.LanguageGeocoding.ENGLISH]}));
-        console.log(await maptilerclient.geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']}));
+        // console.log(await maptilerclient.geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']}));
       }
 
       async function testGeolocation() {

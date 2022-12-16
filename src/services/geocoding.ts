@@ -1,13 +1,21 @@
+import { Feature, BBox as ArrayBBox, Position } from "geojson";
+import { CoordinatesSearchOptions } from "../../dist/maptiler-client";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
 import { Bbox, LngLat } from "../generalTypes";
+
 import {
   getAutoLanguageGeocoding,
   LanguageGeocoding,
   LanguageGeocodingString,
 } from "../language";
 import { ServiceError } from "./ServiceError";
+
+const customMessages = {
+  400: "Query too long / Invalid parameters",
+  403: "Key is missing, invalid or restricted",
+};
 
 export type GeocodingOptions = {
   /**
@@ -31,10 +39,73 @@ export type GeocodingOptions = {
   language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
 };
 
-const customMessages = {
-  400: "Query too long / Invalid parameters",
-  403: "Key is missing, invalid or restricted",
-};
+
+export type Coordinates = Position;
+
+export type FeatureHierarchy = {
+  /**
+   * Unique feature ID
+   */
+  id: string,
+
+  /**
+   * Localized feature name
+   */
+  text: string,
+}
+
+export type GeocodingFeature = Feature & {
+  /**
+   * Bounding box of the original feature as [w, s, e, n] array
+   */
+  bbox: ArrayBBox,
+
+  /**
+   * A [lon, lat] array of the original feature centeroid
+   */
+  center: Coordinates,
+
+  /**
+   * Formatted (including the hierarchy) and localized feature full name
+   */
+  place_name: string,
+
+  /**
+   * Localized feature name
+   */
+  text: string,
+
+  /**
+   * Feature hierarchy
+   */
+  context?: Array<FeatureHierarchy>,
+
+  /**
+   * Address number, if applicable
+   */
+  address?: string,
+}
+
+export type GeocodingSearchResult = {
+  type: "FeatureCollection",
+  
+  /**
+   * Array of features found
+   */
+  features: Array<GeocodingFeature>,
+
+  /**
+   * Tokenized search query
+   */
+  query: Array<string>,
+
+  /**
+   * Attribution of the result
+   */
+  attribution: string,
+}
+
+
 
 /**
  * Performs a forward geocoding query to MapTiler API.
@@ -45,7 +116,7 @@ const customMessages = {
  * @param options
  * @returns
  */
-async function forward(query, options: GeocodingOptions = {}) {
+async function forward(query: string, options: GeocodingOptions = {}): Promise<GeocodingSearchResult> {
   const endpoint = new URL(
     `geocoding/${encodeURIComponent(query)}.json`,
     defaults.maptilerApiURL
@@ -103,7 +174,7 @@ async function forward(query, options: GeocodingOptions = {}) {
   }
 
   const obj = await res.json();
-  return obj;
+  return obj as GeocodingSearchResult;
 }
 
 export type ReverseGeocodingOptions = {
@@ -126,7 +197,7 @@ export type ReverseGeocodingOptions = {
  * @param options
  * @returns
  */
-async function reverse(lngLat: LngLat, options: ReverseGeocodingOptions = {}) {
+async function reverse(lngLat: LngLat, options: ReverseGeocodingOptions = {}): Promise<GeocodingSearchResult> {
   const endpoint = new URL(
     `geocoding/${lngLat.lng},${lngLat.lat}.json`,
     defaults.maptilerApiURL
@@ -159,7 +230,7 @@ async function reverse(lngLat: LngLat, options: ReverseGeocodingOptions = {}) {
   }
 
   const obj = await res.json();
-  return obj;
+  return obj as GeocodingSearchResult;
 }
 
 /**
