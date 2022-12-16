@@ -157,7 +157,7 @@ export type StaticMapMarker = {
   color?: string;
 };
 
-function staticMapMarkerToString(marker: StaticMapMarker, includeColor = true) {
+function staticMapMarkerToString(marker: StaticMapMarker, includeColor = true): string {
   let str = `${marker.lng},${marker.lat}`;
 
   if (marker.color && includeColor) {
@@ -280,7 +280,7 @@ function centered(
  * @param options
  * @returns
  */
-function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
+function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}): string {
   const style = options.style ?? defaults.mapStyle;
   const scale = options.hiDPI ? "@2x" : "";
   const format = options.format ?? "png";
@@ -373,7 +373,7 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
  * @param options
  * @returns
  */
-function automatic(options: AutomaticStaticMapOptions = {}) {
+function automatic(options: AutomaticStaticMapOptions = {}): string {
   if (!("marker" in options) && !("path" in options)) {
     throw new Error(
       "Automatic static maps require markers and/or path to be created."
