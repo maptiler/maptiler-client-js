@@ -1,5 +1,5 @@
 // Types import
-import type { Bbox, LngLat, LngLatArray } from "./generalTypes";
+import type { BBox, LngLat, LngLatArray } from "./generalTypes";
 
 import { ClientConfig, config } from "./config";
 import type { FetchFunction } from "./config";
@@ -18,6 +18,8 @@ import { coordinates } from "./services/coordinates";
 import type {
   CoordinatesSearchOptions,
   CoordinatesTransformOptions,
+  CoordinateTransformResult,
+  CoordinateSearchResult,
 } from "./services/coordinates";
 import { data } from "./services/data";
 import type { GetDataOptions } from "./services/data";
@@ -38,9 +40,11 @@ export type {
   GeocodingOptions,
   ReverseGeocodingOptions,
   GeocodingSearchResult,
-  Bbox,
+  BBox,
   LngLatArray,
   CoordinatesTransformOptions,
+  CoordinateTransformResult,
+  CoordinateSearchResult,
   CoordinatesSearchOptions,
   StaticMapMarker,
   StaticMapBaseOptions,

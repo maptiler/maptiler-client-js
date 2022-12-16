@@ -550,7 +550,7 @@ The URL of static maps can then be used within a `<img />` markup element, as th
 | Name | Type |
 | :------ | :------ |
 | `automatic` | (`options`: [`BoundedStaticMapOptions`](README.md#boundedstaticmapoptions)) => `string` |
-| `bounded` | (`boundingBox`: [`Bbox`](README.md#bbox), `options`: [`BoundedStaticMapOptions`](README.md#boundedstaticmapoptions)) => `string` |
+| `bounded` | (`boundingBox`: [`BBox`](README.md#bbox), `options`: [`BoundedStaticMapOptions`](README.md#boundedstaticmapoptions)) => `string` |
 | `centered` | (`center`: [`LngLat`](README.md#lnglat), `zoom`: `number`, `options`: [`StaticMapBaseOptions`](README.md#staticmapbaseoptions)) => `string` |
 
 #### Defined in

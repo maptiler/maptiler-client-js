@@ -17,39 +17,42 @@ export type LngLat = {
  */
 export type LngLatArray = [number, number];
 
+
+export type ObjectBBox = {
+  /**
+   * South-west corner WGS84 coordinates
+   */
+  southWest: LngLat;
+
+  /**
+   * North-east corner WGS84 coordinates
+   */
+  northEast: LngLat;
+}
+
+export type ArrayBBox = [
+  /**
+   * Minimum along longitude (east bound)
+   */
+  number,
+
+  /**
+   * Minimum along latitude (south bound)
+   */
+  number,
+
+  /**
+   * Maximum along longitude (west bound)
+   */
+  number,
+
+  /**
+   * Maximum along latitude (north bound)
+   */
+  number
+];
+
 /**
  * Bounding box (lng/lat axis aligned)
  */
-export type Bbox =
-  | {
-      /**
-       * South-west corner WGS84 coordinates
-       */
-      southWest: LngLat;
-
-      /**
-       * North-east corner WGS84 coordinates
-       */
-      northEast: LngLat;
-    }
-  | [
-      /**
-       * Minimum along longitude (east bound)
-       */
-      number,
-
-      /**
-       * Minimum along latitude (south bound)
-       */
-      number,
-
-      /**
-       * Maximum along longitude (west bound)
-       */
-      number,
-
-      /**
-       * Maximum along latitude (north bound)
-       */
-      number
-    ];
+export type BBox = ObjectBBox | ArrayBBox;

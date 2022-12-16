@@ -1,4 +1,4 @@
-import { Feature, BBox, Position } from 'geojson';
+import { Feature, Position } from 'geojson';
 
 /**
  * WGS84 longitude and latitude as object
@@ -17,10 +17,7 @@ type LngLat = {
  * WGS84 longitude and latitude as array of the form [lng, lat]
  */
 type LngLatArray = [number, number];
-/**
- * Bounding box (lng/lat axis aligned)
- */
-type Bbox = {
+type ObjectBBox = {
     /**
      * South-west corner WGS84 coordinates
      */
@@ -29,7 +26,8 @@ type Bbox = {
      * North-east corner WGS84 coordinates
      */
     northEast: LngLat;
-} | [
+};
+type ArrayBBox = [
     /**
      * Minimum along longitude (east bound)
      */
@@ -47,6 +45,10 @@ type Bbox = {
      */
     number
 ];
+/**
+ * Bounding box (lng/lat axis aligned)
+ */
+type BBox = ObjectBBox | ArrayBBox;
 
 type FetchFunction = (url: string, options: object) => Promise<any>;
 /**
@@ -158,7 +160,7 @@ type GeocodingOptions = {
     /**
      * Only search for results in the specified area.
      */
-    bbox?: Bbox;
+    bbox?: BBox;
     /**
      * Prefer results close to a specific location.
      */
@@ -183,7 +185,7 @@ type GeocodingFeature = Feature & {
     /**
      * Bounding box of the original feature as [w, s, e, n] array
      */
-    bbox: BBox;
+    bbox: ArrayBBox;
     /**
      * A [lon, lat] array of the original feature centeroid
      */
@@ -283,15 +285,16 @@ declare const geocoding: {
         GERMAN: string;
         GREEK: string;
         HEBREW: string;
-        HUNGARIAN: string; /**
-         * Custom mapTiler Cloud API key to use instead of the one in global `config`
-         */
+        HUNGARIAN: string;
         ICELANDIC: string;
         IRISH: string;
         ITALIAN: string;
         JAPANESE: string;
         KANNADA: string;
         KAZAKH: string;
+        /**
+         * Only search for results in the specified area.
+         */
         KOREAN: string;
         ROMAN_LATIN: string;
         LATVIAN: string;
@@ -300,7 +303,9 @@ declare const geocoding: {
         MACEDONIAN: string;
         MALTESE: string;
         NORWEGIAN: string;
-        POLISH: string;
+        POLISH: string; /**
+         * Prefer results in specific language. It’s possible to specify multiple values.
+         */
         PORTUGUESE: string;
         ROMANIAN: string;
         ROMANSH: string;
@@ -313,7 +318,9 @@ declare const geocoding: {
         SWEDISH: string;
         THAI: string;
         TURKISH: string;
-        UKRAINIAN: string;
+        UKRAINIAN: string; /**
+         * Unique feature ID
+         */
         WELSH: string;
     };
 };
@@ -359,6 +366,59 @@ type CoordinatesSearchOptions = {
      */
     exports?: boolean;
 };
+type CoordinateId = {
+    authority: string;
+    code: BigInteger;
+};
+type CoordinateExport = {
+    proj4: string;
+    wkt: string;
+};
+type CoordinateGrid = {
+    path: string;
+};
+type CoordinateTransformation = {
+    id: CoordinateId;
+    name: string;
+    reversible: boolean;
+    usable: boolean;
+    deprecated: boolean;
+    grids: Array<CoordinateGrid>;
+    accuracy?: number;
+    area?: string;
+    bbox?: ArrayBBox;
+    target_crs?: CoordinateId;
+    unit?: string;
+};
+type CoordinateSearch = {
+    id: CoordinateId;
+    name: string;
+    kind: string;
+    deprecated: boolean;
+    transformations?: Array<CoordinateTransformation | number>;
+    accuracy?: number;
+    unit?: string;
+    area?: string;
+    /**
+     * Bounding box of the resource in [min_lon, min_lat, max_lon, max_lat] order.
+     */
+    bbox?: ArrayBBox;
+    /**
+     * Most suitable transformation for this CRS.
+     */
+    default_transformation?: any;
+    exports: CoordinateExport;
+};
+type CoordinateSearchResult = {
+    /**
+     * The coordinate search results
+     */
+    results: Array<CoordinateSearch>;
+    /**
+     * The number of results
+     */
+    total: number;
+};
 /**
  * Search information about coordinate systems using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/coordinates/#search-coordinate-systems
@@ -366,7 +426,22 @@ type CoordinatesSearchOptions = {
  * @param options
  * @returns
  */
-declare function search(query: string, options?: CoordinatesSearchOptions): Promise<any>;
+declare function search(query: string, options?: CoordinatesSearchOptions): Promise<CoordinateSearchResult>;
+type XYZ = {
+    x?: number;
+    y?: number;
+    z?: number;
+};
+type CoordinateTransformResult = {
+    results: Array<XYZ>;
+    /**
+     * Transformations are selected using given ops parameter.
+     * If no parameter is given, auto strategy is used.
+     * If given, it may try to use a listed transformation,
+     * then fallback to towgs84 patching, and finally boundcrs.
+     */
+    transformer_selection_strategy: string;
+};
 /**
  * Options that can be provided when transforming a coordinate from one CRS to another.
  */
@@ -395,7 +470,7 @@ type CoordinatesTransformOptions = {
  * @param options
  * @returns
  */
-declare function transform(coordinates: LngLat | Array<LngLat>, options?: CoordinatesTransformOptions): Promise<any>;
+declare function transform(coordinates: LngLat | Array<LngLat>, options?: CoordinatesTransformOptions): Promise<CoordinateTransformResult>;
 /**
  * The **coordinate** namespace contains asynchronous functions to call the [MapTiler Coordinate API](https://docs.maptiler.com/cloud/api/coordinates/).
  * The goal of the **Coordinate API* is query information about spatial coordinate reference system (CRS) as well as to transform coordinates from one CRS to another.
@@ -576,7 +651,7 @@ declare function centered(center: LngLat, zoom: number, options?: CenteredStatic
  * @param options
  * @returns
  */
-declare function bounded(boundingBox: Bbox, options?: BoundedStaticMapOptions): string;
+declare function bounded(boundingBox: BBox, options?: BoundedStaticMapOptions): string;
 /**
  * Construct the URL for a static map automatically fitted around the provided path or markers.
  * Note: this function does not fetch the binary content of the image since
@@ -604,4 +679,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { AutomaticStaticMapOptions, BBox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateSearchResult, CoordinateTransformResult, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };

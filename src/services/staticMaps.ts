@@ -1,6 +1,6 @@
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { Bbox, LngLatArray, LngLat } from "../generalTypes";
+import { BBox, LngLatArray, LngLat } from "../generalTypes";
 import simplify from "./simplify";
 
 /**
@@ -280,7 +280,7 @@ function centered(
  * @param options
  * @returns
  */
-function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}): string {
+function bounded(boundingBox: BBox, options: BoundedStaticMapOptions = {}): string {
   const style = options.style ?? defaults.mapStyle;
   const scale = options.hiDPI ? "@2x" : "";
   const format = options.format ?? "png";

@@ -1,9 +1,9 @@
-import { Feature, BBox as ArrayBBox, Position } from "geojson";
+import { Feature, Position } from "geojson";
 import { CoordinatesSearchOptions } from "../../dist/maptiler-client";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { Bbox, LngLat } from "../generalTypes";
+import { BBox, ArrayBBox, LngLat } from "../generalTypes";
 
 import {
   getAutoLanguageGeocoding,
@@ -26,7 +26,7 @@ export type GeocodingOptions = {
   /**
    * Only search for results in the specified area.
    */
-  bbox?: Bbox;
+  bbox?: BBox;
 
   /**
    * Prefer results close to a specific location.

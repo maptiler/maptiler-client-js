@@ -19,7 +19,7 @@
 
       async function testGeocoding() {
         console.log(await maptilerclient.geocoding.forward('bordeaux', {language: [maptilerclient.LanguageGeocoding.AUTO, maptilerclient.LanguageGeocoding.ENGLISH]}));
-        // console.log(await maptilerclient.geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']}));
+        console.log(await maptilerclient.geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']}));
       }
 
       async function testGeolocation() {
@@ -28,15 +28,15 @@
 
       async function testCoordinates() {
         // searching
-        console.log(await maptilerclient.coordinates.search('mercator', {transformations: true}));
-        console.log(await maptilerclient.coordinates.search('plate carree'));
-        console.log(await maptilerclient.coordinates.search('france'));
-        console.log(await maptilerclient.coordinates.search('4326', {transformations: true}));
-        console.log(await maptilerclient.coordinates.search('4326'));
+        // console.log(await maptilerclient.coordinates.search('mercator', {transformations: true}));
+        // console.log(await maptilerclient.coordinates.search('plate carree'));
+        // console.log(await maptilerclient.coordinates.search('france'));
+        // console.log(await maptilerclient.coordinates.search('4326', {transformations: true}));
+        // console.log(await maptilerclient.coordinates.search('4326'));
 
-        // Transforming from wgs84 (default) to lambert93
+        // // Transforming from wgs84 (default) to lambert93
         console.log(await maptilerclient.coordinates.transform({lng: 1, lat: 45}, {targetCrs: 9793}));
-        console.log(await maptilerclient.coordinates.transform([{lng: 10, lat: 48},{lng: 1, lat: 45}], {targetCrs: 9793}));
+        // console.log(await maptilerclient.coordinates.transform([{lng: 10, lat: 48},{lng: 1, lat: 45}], {targetCrs: 9793}));
       }
 
       async function testData() {
@@ -76,9 +76,9 @@
 
 
       (async () => {
-        await testGeocoding();
+        // await testGeocoding();
         // await testGeolocation();
-        // await testCoordinates();
+        await testCoordinates();
         // await testData();
         // staticMapTest();
       })()
