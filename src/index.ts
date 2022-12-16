@@ -13,7 +13,10 @@ import type {
   GeocodingSearchResult,
 } from "./services/geocoding";
 import { geolocation } from "./services/geolocation";
-import type { GeolocationInfoOptions } from "./services/geolocation";
+import type {
+  GeolocationInfoOptions,
+  GeolocationResult,
+} from "./services/geolocation";
 import { coordinates } from "./services/coordinates";
 import type {
   CoordinatesSearchOptions,
@@ -55,6 +58,7 @@ export type {
   LanguageGeocodingString,
   GetDataOptions,
   GeolocationInfoOptions,
+  GeolocationResult,
 };
 
 // Exporting classes, objects, functions, etc.
