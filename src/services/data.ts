@@ -1,3 +1,4 @@
+import { FeatureCollection } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
@@ -23,7 +24,7 @@ export type GetDataOptions = {
  * @param dataId
  * @returns
  */
-async function get(dataId: string, options: GetDataOptions = {}) {
+async function get(dataId: string, options: GetDataOptions = {}): Promise<FeatureCollection> {
   const endpoint = new URL(
     `data/${encodeURIComponent(dataId)}/features.json`,
     defaults.maptilerApiURL

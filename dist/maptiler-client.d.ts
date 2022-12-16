@@ -1,4 +1,4 @@
-import { Feature, Position } from 'geojson';
+import { Feature, Position, FeatureCollection } from 'geojson';
 
 /**
  * WGS84 longitude and latitude as object
@@ -495,7 +495,7 @@ type GetDataOptions = {
  * @param dataId
  * @returns
  */
-declare function get(dataId: string, options?: GetDataOptions): Promise<any>;
+declare function get(dataId: string, options?: GetDataOptions): Promise<FeatureCollection>;
 /**
  * The **data** namespace contains an asynchronous function to call the [MapTiler Data API](https://docs.maptiler.com/cloud/api/data/).
  * The **Data API** provides a way to retrieve user data in GeoJSON format.
