@@ -111,6 +111,10 @@ async function search(
   query: string,
   options: CoordinatesSearchOptions = {}
 ): Promise<CoordinateSearchResult> {
+  if (typeof query !== "string" || query.trim().length === 0) {
+    throw new Error("The query must be a non-empty string");
+  }
+
   const endpoint = new URL(
     `coordinates/search/${query}.json`,
     defaults.maptilerApiURL
@@ -200,9 +204,7 @@ async function transform(
   positions: Position | Array<Position>,
   options: CoordinatesTransformOptions = {}
 ): Promise<CoordinateTransformResult> {
-  const coordinatesStr = (
-    Array.isArray(positions[0]) ? positions : [positions]
-  )
+  const coordinatesStr = (Array.isArray(positions[0]) ? positions : [positions])
     .map((coord) => `${coord[0]},${coord[1]}`)
     .join(";");
 

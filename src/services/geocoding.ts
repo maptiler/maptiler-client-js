@@ -115,6 +115,10 @@ async function forward(
   query: string,
   options: GeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
+  if (typeof query !== "string" || query.trim().length === 0) {
+    throw new Error("The query must be a non-empty string");
+  }
+
   const endpoint = new URL(
     `geocoding/${encodeURIComponent(query)}.json`,
     defaults.maptilerApiURL
@@ -182,6 +186,10 @@ async function reverse(
   position: Position,
   options: ReverseGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
+  if (!Array.isArray(position) || position.length < 2) {
+    throw new Error("The position must be an array of form [lng, lat].");
+  }
+
   const endpoint = new URL(
     `geocoding/${position[0]},${position[1]}.json`,
     defaults.maptilerApiURL

@@ -172,6 +172,9 @@ const customMessages$3 = {
 function forward(_0) {
   return __async$3(this, arguments, function* (query, options = {}) {
     var _a;
+    if (typeof query !== "string" || query.trim().length === 0) {
+      throw new Error("The query must be a non-empty string");
+    }
     const endpoint = new URL(
       `geocoding/${encodeURIComponent(query)}.json`,
       defaults.maptilerApiURL
@@ -208,6 +211,9 @@ function forward(_0) {
 function reverse(_0) {
   return __async$3(this, arguments, function* (position, options = {}) {
     var _a;
+    if (!Array.isArray(position) || position.length < 2) {
+      throw new Error("The position must be an array of form [lng, lat].");
+    }
     const endpoint = new URL(
       `geocoding/${position[0]},${position[1]}.json`,
       defaults.maptilerApiURL
@@ -311,6 +317,9 @@ const customMessages$1 = {
 function search(_0) {
   return __async$1(this, arguments, function* (query, options = {}) {
     var _a;
+    if (typeof query !== "string" || query.trim().length === 0) {
+      throw new Error("The query must be a non-empty string");
+    }
     const endpoint = new URL(
       `coordinates/search/${query}.json`,
       defaults.maptilerApiURL
@@ -404,6 +413,9 @@ const customMessages = {
 function get(_0) {
   return __async(this, arguments, function* (dataId, options = {}) {
     var _a;
+    if (typeof dataId !== "string" || dataId.trim().length === 0) {
+      throw new Error("The data ID must be a non-empty string");
+    }
     const endpoint = new URL(
       `data/${encodeURIComponent(dataId)}/features.json`,
       defaults.maptilerApiURL

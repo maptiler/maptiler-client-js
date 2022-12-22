@@ -28,6 +28,10 @@ async function get(
   dataId: string,
   options: GetDataOptions = {}
 ): Promise<FeatureCollection> {
+  if (typeof dataId !== "string" || dataId.trim().length === 0) {
+    throw new Error("The data ID must be a non-empty string");
+  }
+
   const endpoint = new URL(
     `data/${encodeURIComponent(dataId)}/features.json`,
     defaults.maptilerApiURL
