@@ -20,7 +20,7 @@ class ClientConfig {
   /**
    * MapTiler Cloud API key
    */
-  private _apiKey = "Not defined yet.";
+  private _apiKey = "";
 
   /**
    * The fetch function. To be set if in Node < 18, otherwise
