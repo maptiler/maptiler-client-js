@@ -1,6 +1,6 @@
+import { BBox, Position } from "geojson";
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { BBox, ArrayLngLat, LngLat } from "../generalTypes";
 import simplify from "./simplify";
 
 /**
@@ -52,7 +52,7 @@ export type StaticMapBaseOptions = {
    * A marker or list of markers to show on the map
    * Default: none provided
    */
-  marker?: StaticMapMarker | Array<StaticMapMarker>;
+  markers?: StaticMapMarker | Array<StaticMapMarker>;
 
   /**
    * URL of the marker image. Applies only if one or multiple markers positions are provided.
@@ -81,7 +81,7 @@ export type StaticMapBaseOptions = {
    * Draw a path or polygon on top of the map. If the path is too long it will be simplified, yet remaining accurate.
    * Default: none provided
    */
-  path?: Array<ArrayLngLat>;
+  path?: Array<Position>;
 
   /**
    * Color of the path line. The color must be CSS compatible.
@@ -142,38 +142,35 @@ export type AutomaticStaticMapOptions = BoundedStaticMapOptions;
 /**
  * Definition of a maker to show on a static map
  */
-export type StaticMapMarker = {
+export type StaticMapMarker = [
   /**
    * Longitude of the marker
    */
-  lng: number;
+  number,
   /**
    * latitude of the marker
    */
-  lat: number;
+  number,
   /**
    * Color of the marker with CSS syntax. Applies only if a custom `markerIcon` is not provided.
    */
-  color?: string;
-};
+  string
+];
 
 function staticMapMarkerToString(
   marker: StaticMapMarker,
   includeColor = true
 ): string {
-  let str = `${marker.lng},${marker.lat}`;
+  let str = `${marker[0]},${marker[1]}`;
 
-  if (marker.color && includeColor) {
-    str += `,${marker.color}`;
+  if (marker.length === 3 && includeColor) {
+    str += `,${marker[2]}`;
   }
 
   return str;
 }
 
-function simplifyAndStringify(
-  path: Array<ArrayLngLat>,
-  maxNbChar = 3000
-): string {
+function simplifyAndStringify(path: Array<Position>, maxNbChar = 3000): string {
   let str = path.map((point) => point.join(",")).join("|");
   let tolerance = 0.000005;
   const toleranceStep = 0.00001;
@@ -199,7 +196,7 @@ function simplifyAndStringify(
  * @returns
  */
 function centered(
-  center: LngLat,
+  center: Position,
   zoom: number,
   options: CenteredStaticMapOptions = {}
 ): string {
@@ -215,8 +212,8 @@ function centered(
   }
 
   const endpoint = new URL(
-    `maps/${encodeURIComponent(style)}/static/${center.lng},${
-      center.lat
+    `maps/${encodeURIComponent(style)}/static/${center[0]},${
+      center[1]
     },${zoom}/${width}x${height}${scale}.${format}`,
     defaults.maptilerApiURL
   );
@@ -225,7 +222,7 @@ function centered(
     endpoint.searchParams.set("attribution", options.attribution.toString());
   }
 
-  if ("marker" in options) {
+  if ("markers" in options) {
     let markerStr = "";
 
     const hasIcon = "markerIcon" in options;
@@ -242,9 +239,9 @@ function centered(
       markerStr += `scale:2|`;
     }
 
-    const markerList = Array.isArray(options.marker)
-      ? options.marker
-      : [options.marker];
+    const markerList = Array.isArray(options.markers[0])
+      ? options.markers
+      : [options.markers];
     markerStr += markerList
       .map((m) => staticMapMarkerToString(m, !hasIcon))
       .join("|");
@@ -298,19 +295,10 @@ function bounded(
     height = ~~(height / 2);
   }
 
-  const bbox = Array.isArray(boundingBox)
-    ? {
-        southWest: { lng: boundingBox[0], lat: boundingBox[1] },
-        northEast: { lng: boundingBox[2], lat: boundingBox[3] },
-      }
-    : boundingBox;
-
   const endpoint = new URL(
-    `maps/${encodeURIComponent(style)}/static/${bbox.southWest.lng},${
-      bbox.southWest.lat
-    },${bbox.northEast.lng},${
-      bbox.northEast.lat
-    }/${width}x${height}${scale}.${format}`,
+    `maps/${encodeURIComponent(style)}/static/${boundingBox[0]},${
+      boundingBox[1]
+    },${boundingBox[2]},${boundingBox[3]}/${width}x${height}${scale}.${format}`,
     defaults.maptilerApiURL
   );
 
@@ -322,7 +310,7 @@ function bounded(
     endpoint.searchParams.set("padding", options.padding.toString());
   }
 
-  if ("marker" in options) {
+  if ("markers" in options) {
     let markerStr = "";
 
     const hasIcon = "markerIcon" in options;
@@ -339,9 +327,9 @@ function bounded(
       markerStr += `scale:2|`;
     }
 
-    const markerList = Array.isArray(options.marker)
-      ? options.marker
-      : [options.marker];
+    const markerList = Array.isArray(options.markers[0])
+      ? options.markers
+      : [options.markers];
     markerStr += markerList
       .map((m) => staticMapMarkerToString(m, !hasIcon))
       .join("|");
@@ -380,7 +368,7 @@ function bounded(
  * @returns
  */
 function automatic(options: AutomaticStaticMapOptions = {}): string {
-  if (!("marker" in options) && !("path" in options)) {
+  if (!("markers" in options) && !("path" in options)) {
     throw new Error(
       "Automatic static maps require markers and/or path to be created."
     );
@@ -412,7 +400,7 @@ function automatic(options: AutomaticStaticMapOptions = {}): string {
     endpoint.searchParams.set("padding", options.padding.toString());
   }
 
-  if ("marker" in options) {
+  if ("markers" in options) {
     let markerStr = "";
 
     const hasIcon = "markerIcon" in options;
@@ -429,9 +417,9 @@ function automatic(options: AutomaticStaticMapOptions = {}): string {
       markerStr += `scale:2|`;
     }
 
-    const markerList = Array.isArray(options.marker)
-      ? options.marker
-      : [options.marker];
+    const markerList = Array.isArray(options.markers[0])
+      ? options.markers
+      : [options.markers];
     markerStr += markerList
       .map((m) => staticMapMarkerToString(m, !hasIcon))
       .join("|");

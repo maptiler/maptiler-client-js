@@ -72,7 +72,7 @@ Read more about forward geocoding on our official [API documentation](https://do
 You wan to tknow the name of a place, given a longitude-latitude? Use the reverse geocoding:
 ```ts
 // in an async function, or as a 'thenable':
-const result = await maptilerClient.geocoding.reverse({ lng: 6.249638, lat: 46.402056 });
+const result = await maptilerClient.geocoding.reverse([6.249638, 46.402056]);
 ```
 The same option object as the forward geocoding can be provided.
 
@@ -124,10 +124,10 @@ If not provided, both the source (`sourceCrs`) and the destination (`targetCrs`)
 // in an async function, or as a 'thenable':
 
 // Providing one coordinate to transform, with a target CRS being EPSG:9793 (RGF93 v2 / Lambert-93, France official CRS)
-const resultA = await maptilerClient.coordinates.transform({lng: 1, lat: 45}, {targetCrs: 9793})
+const resultA = await maptilerClient.coordinates.transform([1, 45], {targetCrs: 9793})
 
 // Using the same logic, we can pass up to 50 coordinates to be transformed
-const resultB = await maptilerClient.coordinates.transform([{lng: 10, lat: 48}, {lng: 1, lat: 45}], {targetCrs: 9793})
+const resultB = await maptilerClient.coordinates.transform([[10, 48], [1, 45]], {targetCrs: 9793})
 ```
 
 Read more about transforming coordinates on our official [API documentation](https://docs.maptiler.com/cloud/api/coordinates/#transform-coordinates).
@@ -159,7 +159,7 @@ Note that if a path or markers are provided, the framing of the map will not aut
 ```ts
 const imageLink = maptiler.staticMaps.centered(
   // center position (Boston)
-  {lng: -71.06080, lat: 42.362114}, 
+  [-71.06080, 42.362114], 
 
   // zoom level
   12.5, 
@@ -187,10 +187,12 @@ This type of map requires a bounding box made of two points: the south-west boun
 ```ts
 const imageLink = maptiler.staticMaps.bounded(
   // The bounding box on Europe
-  {
-    southWest: { lng: -24, lat: 34.5 },
-    northEast: { lng: 32, lat: 71 },
-  },
+  [
+    -24,  // west bound (min x)
+    34.5, // south bound (min y)
+    32,   // east bound (max x)
+    71,   // north bound (max y)
+  ],
 
   // Options
   {
@@ -234,9 +236,6 @@ const bikeTrack = await maptilerClient.data.get('the-id-of-a-bike-track-in-montr
 const trackPoints = bikeTrack.features[0].geometry.coordinates[0]
   .map(p => p.slice(0, 2));
 
-// We will need the starting point to create a nice marker
-const departure = { lng: trackPoints[0][0], lat: trackPoints[0][1] };
-
 const imageLink = maptiler.staticMaps.automatic({
   // hiDPI/Retina precision
   hiDPI: true,
@@ -251,8 +250,8 @@ const imageLink = maptiler.staticMaps.automatic({
   // Draw a path with the trackpoints
   path: trackPoints,
 
-  // Adding a marker for the starting point, with a custom color
-  marker: {lng: trackPoints[0][0], lat: trackPoints[0][1], color: '#0a0'},
+  // Adding a marker for the starting point, with a custom color (array of shape [lng, lat, color])
+  marker: [trackPoints[0][0], trackPoints[0][1], '#0a0'],
 
   // Showing the track in red
   pathStrokeColor: 'red',

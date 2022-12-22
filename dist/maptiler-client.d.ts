@@ -1,54 +1,5 @@
-import { Position, Feature, FeatureCollection } from 'geojson';
-
-/**
- * WGS84 longitude and latitude as object
- */
-type LngLat = {
-    /**
-     * Longitude
-     */
-    lng: number;
-    /**
-     * Latitude
-     */
-    lat: number;
-};
-/**
- * WGS84 longitude and latitude as array of the form [lng, lat]
- */
-type ArrayLngLat = [number, number];
-type ObjectBBox = {
-    /**
-     * South-west corner WGS84 coordinates
-     */
-    southWest: LngLat;
-    /**
-     * North-east corner WGS84 coordinates
-     */
-    northEast: LngLat;
-};
-type ArrayBBox = [
-    /**
-     * Minimum along longitude (east bound)
-     */
-    number,
-    /**
-     * Minimum along latitude (south bound)
-     */
-    number,
-    /**
-     * Maximum along longitude (west bound)
-     */
-    number,
-    /**
-     * Maximum along latitude (north bound)
-     */
-    number
-];
-/**
- * Bounding box (lng/lat axis aligned)
- */
-type BBox = ObjectBBox | ArrayBBox;
+import { BBox, Position, Feature, FeatureCollection } from 'geojson';
+export { BBox, Position } from 'geojson';
 
 type FetchFunction = (url: string, options: object) => Promise<any>;
 /**
@@ -164,7 +115,7 @@ type GeocodingOptions = {
     /**
      * Prefer results close to a specific location.
      */
-    proximity?: LngLat;
+    proximity?: Position;
     /**
      * Prefer results in specific language. It’s possible to specify multiple values.
      */
@@ -185,7 +136,7 @@ type GeocodingFeature = Feature & {
     /**
      * Bounding box of the original feature as [w, s, e, n] array
      */
-    bbox: ArrayBBox;
+    bbox: BBox;
     /**
      * A [lon, lat] array of the original feature centeroid
      */
@@ -246,11 +197,11 @@ type ReverseGeocodingOptions = {
  * Perform a reverse geocoding query to MapTiler API.
  * Providing a longitude and latitude, this function returns a set of human readable information abou this place (country, city, street, etc.)
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse
- * @param lngLat
+ * @param position
  * @param options
  * @returns
  */
-declare function reverse(lngLat: LngLat, options?: ReverseGeocodingOptions): Promise<GeocodingSearchResult>;
+declare function reverse(position: Position, options?: ReverseGeocodingOptions): Promise<GeocodingSearchResult>;
 /**
  * The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
  * The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)
@@ -278,18 +229,21 @@ declare const geocoding: {
         ENGLISH: string;
         ESPERANTO: string;
         ESTONIAN: string;
+        /**
+         * Custom mapTiler Cloud API key to use instead of the one in global `config`
+         */
         FINNISH: string;
         FRENCH: string;
         FRISIAN: string;
         GEORGIAN: string;
         GERMAN: string;
         GREEK: string;
-        HEBREW: string;
-        HUNGARIAN: string;
-        ICELANDIC: string;
-        IRISH: string; /**
+        HEBREW: string; /**
          * Only search for results in the specified area.
          */
+        HUNGARIAN: string;
+        ICELANDIC: string;
+        IRISH: string;
         ITALIAN: string;
         JAPANESE: string;
         KANNADA: string;
@@ -298,9 +252,7 @@ declare const geocoding: {
         ROMAN_LATIN: string;
         LATVIAN: string;
         LITHUANIAN: string;
-        LUXEMBOURGISH: string; /**
-         * Prefer results in specific language. It’s possible to specify multiple values.
-         */
+        LUXEMBOURGISH: string;
         MACEDONIAN: string;
         MALTESE: string;
         NORWEGIAN: string;
@@ -346,7 +298,7 @@ type GeolocationResult = {
      * Bounds of the country in WGS84 degrees [west, south, east, north].
      * Example: [5.95538,45.818852,10.490936,47.809357]
      */
-    country_bounds?: ArrayBBox;
+    country_bounds?: BBox;
     /**
      * Official country languages in ISO 639-1 format. ISO 639-1 codes
      * Example: ["de","fr","it"]
@@ -454,7 +406,7 @@ type CoordinateTransformation = {
     grids: Array<CoordinateGrid>;
     accuracy?: number;
     area?: string;
-    bbox?: ArrayBBox;
+    bbox?: BBox;
     target_crs?: CoordinateId;
     unit?: string;
 };
@@ -470,7 +422,7 @@ type CoordinateSearch = {
     /**
      * Bounding box of the resource in [min_lon, min_lat, max_lon, max_lat] order.
      */
-    bbox?: ArrayBBox;
+    bbox?: BBox;
     /**
      * Most suitable transformation for this CRS.
      */
@@ -534,11 +486,11 @@ type CoordinatesTransformOptions = {
 /**
  * Transforms coordinates from a source reference system to a target reference system using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/coordinates/#transform-coordinates
- * @param coordinates
+ * @param positions
  * @param options
  * @returns
  */
-declare function transform(coordinates: LngLat | Array<LngLat>, options?: CoordinatesTransformOptions): Promise<CoordinateTransformResult>;
+declare function transform(positions: Position | Array<Position>, options?: CoordinatesTransformOptions): Promise<CoordinateTransformResult>;
 /**
  * The **coordinate** namespace contains asynchronous functions to call the [MapTiler Coordinate API](https://docs.maptiler.com/cloud/api/coordinates/).
  * The goal of the **Coordinate API* is query information about spatial coordinate reference system (CRS) as well as to transform coordinates from one CRS to another.
@@ -614,7 +566,7 @@ type StaticMapBaseOptions = {
      * A marker or list of markers to show on the map
      * Default: none provided
      */
-    marker?: StaticMapMarker | Array<StaticMapMarker>;
+    markers?: StaticMapMarker | Array<StaticMapMarker>;
     /**
      * URL of the marker image. Applies only if one or multiple markers positions are provided.
      * Default: none provided
@@ -631,7 +583,7 @@ type StaticMapBaseOptions = {
      * Draw a path or polygon on top of the map. If the path is too long it will be simplified, yet remaining accurate.
      * Default: none provided
      */
-    path?: Array<ArrayLngLat>;
+    path?: Array<Position>;
     /**
      * Color of the path line. The color must be CSS compatible.
      * Examples:
@@ -685,20 +637,20 @@ type AutomaticStaticMapOptions = BoundedStaticMapOptions;
 /**
  * Definition of a maker to show on a static map
  */
-type StaticMapMarker = {
+type StaticMapMarker = [
     /**
      * Longitude of the marker
      */
-    lng: number;
+    number,
     /**
      * latitude of the marker
      */
-    lat: number;
+    number,
     /**
      * Color of the marker with CSS syntax. Applies only if a custom `markerIcon` is not provided.
      */
-    color?: string;
-};
+    string
+];
 /**
  * Construct the URL for a static map centered on one point.
  * Note: this function does not fetch the binary content of the image since
@@ -709,7 +661,7 @@ type StaticMapMarker = {
  * @param options
  * @returns
  */
-declare function centered(center: LngLat, zoom: number, options?: CenteredStaticMapOptions): string;
+declare function centered(center: Position, zoom: number, options?: CenteredStaticMapOptions): string;
 /**
  * Construct the URL for a static map using a bounding box
  * Note: this function does not fetch the binary content of the image since
@@ -747,4 +699,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { ArrayBBox, ArrayLngLat, AutomaticStaticMapOptions, BBox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, ObjectBBox, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, geocoding, geolocation, staticMaps };

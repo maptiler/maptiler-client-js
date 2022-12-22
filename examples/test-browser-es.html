@@ -29,16 +29,15 @@
       config.apiKey = 'wvElBzv1zqf8XeNE37ip';
 
       async function testGeocoding() {
-        const result1 = await geocoding.forward('london', {language: [LanguageGeocoding.AUTO]});
-        console.log(result1);
-
-        const result2 = await geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']});
-        console.log(result2);
+        console.log(await geocoding.forward('bordeaux', {language: [geocoding.language.SPANISH, geocoding.language.ENGLISH]}));
+        console.log(await geocoding.forward('bordeaux',  {
+          bbox: [-7.638157121837139, 33.595474163650685, -7.624914050102235, 33.600446760011856]
+        }));
+        console.log(await geocoding.reverse([6.249638, 46.402056], {language: ['es', 'en']}));
       }
 
       async function testGeolocation() {
-        const result = await geolocation.info();
-        console.log(result);
+        console.log(await geolocation.info());
       }
 
       async function testCoordinates() {
@@ -50,8 +49,8 @@
         console.log(await coordinates.search('4326'));
 
         // Transforming from wgs84 (default) to lambert93
-        console.log(await coordinates.transform({lng: 1, lat: 45}, {targetCrs: 9793}));
-        console.log(await coordinates.transform([{lng: 10, lat: 48},{lng: 1, lat: 45}], {targetCrs: 9793}));
+        console.log(await coordinates.transform([1, 45], {targetCrs: 9793}));
+        console.log(await coordinates.transform([[10, 48], [1, 45]], {targetCrs: 9793}));
       }
 
       async function testData() {
@@ -65,18 +64,18 @@
       }
 
       function staticMapTest() {
-        config.apiKey = "ZFEK2gQSwT4Jcimbtcy7";
-
-        const imageLinkCentered = staticMaps.centered({lng: 7, lat: 46.8}, 5, {
+        const imageLinkCentered = staticMaps.centered([7, 46.8], 5, {
           hiDPI: true,
           width: 1000,
           height: 500,
           style: 'winter',
+          markers: [[7, 46, 'green'], [8, 47, '#982']],
+          apiKey: "ZFEK2gQSwT4Jcimbtcy7",
         });
 
         addImage(imageLinkCentered);
 
-        const imageLinkBounded = staticMaps.bounded({southWest: { lng: -9.8905, lat: 36.6274 }, northEast: { lng: -6.0453, lat: 42.3208 }}, {
+        const imageLinkBounded = staticMaps.bounded([-9.8905, 36.6274, -6.0453, 42.3208], {
           hiDPI: true,
           width: 1024,
           height: 2048,
@@ -84,6 +83,7 @@
           path: [[-9.8905, 36.6274], [-9.8905, 42.3208], [-6.0453, 42.3208], [-6.0453, 36.6274], [-9.8905, 36.6274]],
           pathStrokeColor: 'red',
           pathWidth: 4,
+          apiKey: "ZFEK2gQSwT4Jcimbtcy7",
         });
 
         addImage(imageLinkBounded);

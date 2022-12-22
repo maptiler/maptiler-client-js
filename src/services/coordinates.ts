@@ -1,7 +1,7 @@
+import { BBox, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { LngLat, ArrayBBox } from "../generalTypes";
 import { ServiceError } from "./ServiceError";
 
 const customMessages = {
@@ -53,7 +53,7 @@ export type CoordinateTransformation = {
   grids: Array<CoordinateGrid>;
   accuracy?: number;
   area?: string;
-  bbox?: ArrayBBox;
+  bbox?: BBox;
   target_crs?: CoordinateId;
   unit?: string;
 };
@@ -78,7 +78,7 @@ export type CoordinateSearch = {
   /**
    * Bounding box of the resource in [min_lon, min_lat, max_lon, max_lat] order.
    */
-  bbox?: ArrayBBox;
+  bbox?: BBox;
 
   /**
    * Most suitable transformation for this CRS.
@@ -192,18 +192,18 @@ export type CoordinatesTransformOptions = {
 /**
  * Transforms coordinates from a source reference system to a target reference system using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/coordinates/#transform-coordinates
- * @param coordinates
+ * @param positions
  * @param options
  * @returns
  */
 async function transform(
-  coordinates: LngLat | Array<LngLat>,
+  positions: Position | Array<Position>,
   options: CoordinatesTransformOptions = {}
 ): Promise<CoordinateTransformResult> {
   const coordinatesStr = (
-    Array.isArray(coordinates) ? coordinates : [coordinates]
+    Array.isArray(positions[0]) ? positions : [positions]
   )
-    .map((coord) => `${coord.lng},${coord.lat}`)
+    .map((coord) => `${coord[0]},${coord[1]}`)
     .join(";");
 
   const endpoint = new URL(

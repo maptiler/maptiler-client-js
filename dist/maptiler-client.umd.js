@@ -180,25 +180,10 @@
       );
       endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
       if ("bbox" in options) {
-        const bbox = Array.isArray(options.bbox) ? {
-          southWest: { lng: options.bbox[0], lat: options.bbox[1] },
-          northEast: { lng: options.bbox[2], lat: options.bbox[3] }
-        } : options.bbox;
-        endpoint.searchParams.set(
-          "bbox",
-          [
-            bbox.southWest.lng,
-            bbox.southWest.lat,
-            bbox.northEast.lng,
-            bbox.northEast.lat
-          ].join(",")
-        );
+        endpoint.searchParams.set("bbox", options.bbox.join(","));
       }
       if ("proximity" in options) {
-        endpoint.searchParams.set(
-          "proximity",
-          [options.proximity.lng, options.proximity.lat].join(",")
-        );
+        endpoint.searchParams.set("proximity", options.proximity.join(","));
       }
       if ("language" in options) {
         const languages = Array.from(
@@ -223,10 +208,10 @@
     });
   }
   function reverse(_0) {
-    return __async$3(this, arguments, function* (lngLat, options = {}) {
+    return __async$3(this, arguments, function* (position, options = {}) {
       var _a;
       const endpoint = new URL(
-        `geocoding/${lngLat.lng},${lngLat.lat}.json`,
+        `geocoding/${position[0]},${position[1]}.json`,
         defaults.maptilerApiURL
       );
       endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
@@ -358,9 +343,9 @@
     });
   }
   function transform(_0) {
-    return __async$1(this, arguments, function* (coordinates2, options = {}) {
+    return __async$1(this, arguments, function* (positions, options = {}) {
       var _a;
-      const coordinatesStr = (Array.isArray(coordinates2) ? coordinates2 : [coordinates2]).map((coord) => `${coord.lng},${coord.lat}`).join(";");
+      const coordinatesStr = (Array.isArray(positions[0]) ? positions : [positions]).map((coord) => `${coord[0]},${coord[1]}`).join(";");
       const endpoint = new URL(
         `coordinates/transform/${coordinatesStr}.json`,
         defaults.maptilerApiURL
@@ -494,9 +479,9 @@
   }
 
   function staticMapMarkerToString(marker, includeColor = true) {
-    let str = `${marker.lng},${marker.lat}`;
-    if (marker.color && includeColor) {
-      str += `,${marker.color}`;
+    let str = `${marker[0]},${marker[1]}`;
+    if (marker.length === 3 && includeColor) {
+      str += `,${marker[2]}`;
     }
     return str;
   }
@@ -523,13 +508,13 @@
       height = ~~(height / 2);
     }
     const endpoint = new URL(
-      `maps/${encodeURIComponent(style)}/static/${center.lng},${center.lat},${zoom}/${width}x${height}${scale}.${format}`,
+      `maps/${encodeURIComponent(style)}/static/${center[0]},${center[1]},${zoom}/${width}x${height}${scale}.${format}`,
       defaults.maptilerApiURL
     );
     if ("attribution" in options) {
       endpoint.searchParams.set("attribution", options.attribution.toString());
     }
-    if ("marker" in options) {
+    if ("markers" in options) {
       let markerStr = "";
       const hasIcon = "markerIcon" in options;
       if (hasIcon) {
@@ -541,7 +526,7 @@
       if (hasIcon && options.hiDPI) {
         markerStr += `scale:2|`;
       }
-      const markerList = Array.isArray(options.marker) ? options.marker : [options.marker];
+      const markerList = Array.isArray(options.markers[0]) ? options.markers : [options.markers];
       markerStr += markerList.map((m) => staticMapMarkerToString(m, !hasIcon)).join("|");
       endpoint.searchParams.set("markers", markerStr);
     }
@@ -572,12 +557,8 @@
       width = ~~(width / 2);
       height = ~~(height / 2);
     }
-    const bbox = Array.isArray(boundingBox) ? {
-      southWest: { lng: boundingBox[0], lat: boundingBox[1] },
-      northEast: { lng: boundingBox[2], lat: boundingBox[3] }
-    } : boundingBox;
     const endpoint = new URL(
-      `maps/${encodeURIComponent(style)}/static/${bbox.southWest.lng},${bbox.southWest.lat},${bbox.northEast.lng},${bbox.northEast.lat}/${width}x${height}${scale}.${format}`,
+      `maps/${encodeURIComponent(style)}/static/${boundingBox[0]},${boundingBox[1]},${boundingBox[2]},${boundingBox[3]}/${width}x${height}${scale}.${format}`,
       defaults.maptilerApiURL
     );
     if ("attribution" in options) {
@@ -586,7 +567,7 @@
     if ("padding" in options) {
       endpoint.searchParams.set("padding", options.padding.toString());
     }
-    if ("marker" in options) {
+    if ("markers" in options) {
       let markerStr = "";
       const hasIcon = "markerIcon" in options;
       if (hasIcon) {
@@ -598,7 +579,7 @@
       if (hasIcon && options.hiDPI) {
         markerStr += `scale:2|`;
       }
-      const markerList = Array.isArray(options.marker) ? options.marker : [options.marker];
+      const markerList = Array.isArray(options.markers[0]) ? options.markers : [options.markers];
       markerStr += markerList.map((m) => staticMapMarkerToString(m, !hasIcon)).join("|");
       endpoint.searchParams.set("markers", markerStr);
     }
@@ -620,7 +601,7 @@
   }
   function automatic(options = {}) {
     var _a, _b, _c, _d, _e, _f;
-    if (!("marker" in options) && !("path" in options)) {
+    if (!("markers" in options) && !("path" in options)) {
       throw new Error(
         "Automatic static maps require markers and/or path to be created."
       );
@@ -646,7 +627,7 @@
     if ("padding" in options) {
       endpoint.searchParams.set("padding", options.padding.toString());
     }
-    if ("marker" in options) {
+    if ("markers" in options) {
       let markerStr = "";
       const hasIcon = "markerIcon" in options;
       if (hasIcon) {
@@ -658,7 +639,7 @@
       if (hasIcon && options.hiDPI) {
         markerStr += `scale:2|`;
       }
-      const markerList = Array.isArray(options.marker) ? options.marker : [options.marker];
+      const markerList = Array.isArray(options.markers[0]) ? options.markers : [options.markers];
       markerStr += markerList.map((m) => staticMapMarkerToString(m, !hasIcon)).join("|");
       endpoint.searchParams.set("markers", markerStr);
     }

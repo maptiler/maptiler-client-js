@@ -2,14 +2,10 @@
  * This code is borrowed from https://github.com/mourner/simplify-js and reworked a little.
  */
 
-import { ArrayLngLat } from "../generalTypes";
+import { Position } from "geojson";
 
 // square distance from a point to a segment
-function getSqSegDist(
-  p: ArrayLngLat,
-  p1: ArrayLngLat,
-  p2: ArrayLngLat
-): number {
+function getSqSegDist(p: Position, p1: Position, p2: Position): number {
   let x = p1[0],
     y = p1[1],
     dx = p2[0] - x,
@@ -34,11 +30,11 @@ function getSqSegDist(
 }
 
 function simplifyDPStep(
-  points: Array<ArrayLngLat>,
+  points: Array<Position>,
   first: number,
   last: number,
   sqTolerance: number,
-  simplified: Array<ArrayLngLat>
+  simplified: Array<Position>
 ) {
   let maxSqDist = sqTolerance,
     index;
@@ -66,9 +62,9 @@ function simplifyDPStep(
 
 // simplification using Ramer-Douglas-Peucker algorithm
 function simplifyDouglasPeucker(
-  points: Array<ArrayLngLat>,
+  points: Array<Position>,
   sqTolerance: number
-): Array<ArrayLngLat> {
+): Array<Position> {
   const last = points.length - 1;
   const simplified = [points[0]];
   simplifyDPStep(points, 0, last, sqTolerance, simplified);
@@ -78,9 +74,9 @@ function simplifyDouglasPeucker(
 
 // both algorithms combined for awesome performance
 export default function simplify(
-  points: Array<ArrayLngLat>,
+  points: Array<Position>,
   tolerance: number
-): Array<ArrayLngLat> {
+): Array<Position> {
   if (points.length <= 2) {
     return points;
   }

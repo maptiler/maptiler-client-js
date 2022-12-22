@@ -1,8 +1,7 @@
-import { Feature, Position } from "geojson";
+import { BBox, Feature, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { BBox, ArrayBBox, LngLat } from "../generalTypes";
 
 import {
   getAutoLanguageGeocoding,
@@ -30,7 +29,7 @@ export type GeocodingOptions = {
   /**
    * Prefer results close to a specific location.
    */
-  proximity?: LngLat;
+  proximity?: Position;
 
   /**
    * Prefer results in specific language. It’s possible to specify multiple values.
@@ -56,7 +55,7 @@ export type GeocodingFeature = Feature & {
   /**
    * Bounding box of the original feature as [w, s, e, n] array
    */
-  bbox: ArrayBBox;
+  bbox: BBox;
 
   /**
    * A [lon, lat] array of the original feature centeroid
@@ -123,28 +122,11 @@ async function forward(
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("bbox" in options) {
-    const bbox = Array.isArray(options.bbox)
-      ? {
-          southWest: { lng: options.bbox[0], lat: options.bbox[1] },
-          northEast: { lng: options.bbox[2], lat: options.bbox[3] },
-        }
-      : options.bbox;
-    endpoint.searchParams.set(
-      "bbox",
-      [
-        bbox.southWest.lng,
-        bbox.southWest.lat,
-        bbox.northEast.lng,
-        bbox.northEast.lat,
-      ].join(",")
-    );
+    endpoint.searchParams.set("bbox", options.bbox.join(","));
   }
 
   if ("proximity" in options) {
-    endpoint.searchParams.set(
-      "proximity",
-      [options.proximity.lng, options.proximity.lat].join(",")
-    );
+    endpoint.searchParams.set("proximity", options.proximity.join(","));
   }
 
   if ("language" in options) {
@@ -192,16 +174,16 @@ export type ReverseGeocodingOptions = {
  * Perform a reverse geocoding query to MapTiler API.
  * Providing a longitude and latitude, this function returns a set of human readable information abou this place (country, city, street, etc.)
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse
- * @param lngLat
+ * @param position
  * @param options
  * @returns
  */
 async function reverse(
-  lngLat: LngLat,
+  position: Position,
   options: ReverseGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   const endpoint = new URL(
-    `geocoding/${lngLat.lng},${lngLat.lat}.json`,
+    `geocoding/${position[0]},${position[1]}.json`,
     defaults.maptilerApiURL
   );
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);

@@ -1,7 +1,7 @@
+import { BBox } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { ArrayBBox } from "../generalTypes";
 import { ServiceError } from "./ServiceError";
 
 const customMessages = {
@@ -35,7 +35,7 @@ export type GeolocationResult = {
    * Bounds of the country in WGS84 degrees [west, south, east, north].
    * Example: [5.95538,45.818852,10.490936,47.809357]
    */
-  country_bounds?: ArrayBBox;
+  country_bounds?: BBox;
 
   /**
    * Official country languages in ISO 639-1 format. ISO 639-1 codes

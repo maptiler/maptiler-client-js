@@ -1,12 +1,4 @@
-// Types import
-import type {
-  BBox,
-  LngLat,
-  ArrayLngLat,
-  ObjectBBox,
-  ArrayBBox,
-} from "./generalTypes";
-
+import { BBox, Position } from "geojson";
 import { ClientConfig, config } from "./config";
 import type { FetchFunction } from "./config";
 import { LanguageGeocoding, LanguageGeocodingString } from "./language";
@@ -54,7 +46,8 @@ import { ServiceError } from "./services/ServiceError";
 
 // Exporting types
 export type {
-  LngLat,
+  Position,
+  BBox,
   GeocodingOptions,
   ReverseGeocodingOptions,
   GeocodingSearchResult,
@@ -65,10 +58,6 @@ export type {
   CoordinateId,
   FeatureHierarchy,
   Coordinates,
-  BBox,
-  ArrayLngLat,
-  ObjectBBox,
-  ArrayBBox,
   CoordinatesTransformOptions,
   CoordinateTransformResult,
   CoordinateSearchResult,
