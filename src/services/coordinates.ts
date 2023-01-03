@@ -1,10 +1,19 @@
+import { BBox, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { LngLat } from "../generalTypes";
 import { ServiceError } from "./ServiceError";
 
+const customMessages = {
+  403: "Key is missing, invalid or restricted",
+};
+
 export type CoordinatesSearchOptions = {
+  /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+  apiKey?: string;
+
   /**
    * Maximum number of results returned (default: 10)
    */
@@ -21,8 +30,74 @@ export type CoordinatesSearchOptions = {
   exports?: boolean;
 };
 
-const customMessages = {
-  403: "Key is missing, invalid or restricted",
+export type CoordinateId = {
+  authority: string;
+  code: BigInteger;
+};
+
+export type CoordinateExport = {
+  proj4: string;
+  wkt: string;
+};
+
+export type CoordinateGrid = {
+  path: string;
+};
+
+export type CoordinateTransformation = {
+  id: CoordinateId;
+  name: string;
+  reversible: boolean;
+  usable: boolean;
+  deprecated: boolean;
+  grids: Array<CoordinateGrid>;
+  accuracy?: number;
+  area?: string;
+  bbox?: BBox;
+  target_crs?: CoordinateId;
+  unit?: string;
+};
+
+export type CoordinateSearch = {
+  id: CoordinateId;
+
+  name: string;
+
+  kind: string;
+
+  deprecated: boolean;
+
+  transformations?: Array<CoordinateTransformation | number>;
+
+  accuracy?: number;
+
+  unit?: string;
+
+  area?: string;
+
+  /**
+   * Bounding box of the resource in [min_lon, min_lat, max_lon, max_lat] order.
+   */
+  bbox?: BBox;
+
+  /**
+   * Most suitable transformation for this CRS.
+   */
+  default_transformation?: any;
+
+  exports: CoordinateExport;
+};
+
+export type CoordinateSearchResult = {
+  /**
+   * The coordinate search results
+   */
+  results: Array<CoordinateSearch>;
+
+  /**
+   * The number of results
+   */
+  total: number;
 };
 
 /**
@@ -32,12 +107,19 @@ const customMessages = {
  * @param options
  * @returns
  */
-async function search(query: string, options: CoordinatesSearchOptions = {}) {
+async function search(
+  query: string,
+  options: CoordinatesSearchOptions = {}
+): Promise<CoordinateSearchResult> {
+  if (typeof query !== "string" || query.trim().length === 0) {
+    throw new Error("The query must be a non-empty string");
+  }
+
   const endpoint = new URL(
     `coordinates/search/${query}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("limit" in options) {
     endpoint.searchParams.set("limit", options.limit.toString());
@@ -65,13 +147,36 @@ async function search(query: string, options: CoordinatesSearchOptions = {}) {
   }
 
   const obj = await res.json();
-  return obj;
+  return obj as CoordinateSearchResult;
 }
+
+export type XYZ = {
+  x?: number;
+  y?: number;
+  z?: number;
+};
+
+export type CoordinateTransformResult = {
+  results: Array<XYZ>;
+
+  /**
+   * Transformations are selected using given ops parameter.
+   * If no parameter is given, auto strategy is used.
+   * If given, it may try to use a listed transformation,
+   * then fallback to towgs84 patching, and finally boundcrs.
+   */
+  transformer_selection_strategy: string;
+};
 
 /**
  * Options that can be provided when transforming a coordinate from one CRS to another.
  */
 export type CoordinatesTransformOptions = {
+  /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+  apiKey?: string;
+
   /**
    * Source coordinate reference system (default: 4326)
    */
@@ -91,25 +196,23 @@ export type CoordinatesTransformOptions = {
 /**
  * Transforms coordinates from a source reference system to a target reference system using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/coordinates/#transform-coordinates
- * @param coordinates
+ * @param positions
  * @param options
  * @returns
  */
 async function transform(
-  coordinates: LngLat | Array<LngLat>,
+  positions: Position | Array<Position>,
   options: CoordinatesTransformOptions = {}
-) {
-  const coordinatesStr = (
-    Array.isArray(coordinates) ? coordinates : [coordinates]
-  )
-    .map((coord) => `${coord.lng},${coord.lat}`)
+): Promise<CoordinateTransformResult> {
+  const coordinatesStr = (Array.isArray(positions[0]) ? positions : [positions])
+    .map((coord) => `${coord[0]},${coord[1]}`)
     .join(";");
 
   const endpoint = new URL(
     `coordinates/transform/${coordinatesStr}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("sourceCrs" in options) {
     endpoint.searchParams.set("s_srs", options.sourceCrs.toString());
@@ -140,7 +243,7 @@ async function transform(
   }
 
   const obj = await res.json();
-  return obj;
+  return obj as CoordinateTransformResult;
 }
 
 /**

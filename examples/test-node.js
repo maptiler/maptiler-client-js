@@ -12,7 +12,7 @@ import {
 import fetch from 'node-fetch';
 
 config.fetch = fetch;
-config.apiKey = 'wvElBzv1zqf8XeNE37ip';
+config.apiKey = 'YOUR_API_KEY';
 
 async function testGeocoding() {
   const result1 = await geocoding.forward('bordeaux', {language: [LanguageGeocoding.AUTO, LanguageGeocoding.ENGLISH]});

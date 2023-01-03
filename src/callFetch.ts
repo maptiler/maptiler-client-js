@@ -7,5 +7,12 @@ export async function callFetch(resource, options = {}) {
     );
   }
 
+  //  Control if URL contains the api key
+  if (new URL(resource).searchParams.get("key").trim() === "") {
+    throw new Error(
+      "The MapTiler Cloud API key is missing. Set it in `config.apiKey` or get one for free at https://maptiler.com"
+    );
+  }
+
   return config.fetch(resource, options);
 }

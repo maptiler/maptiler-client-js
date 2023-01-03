@@ -6,6 +6,10 @@
   "types": "dist/maptiler-client.d.ts",
   "type": "module",
   "author": "MapTiler",
+  "exports": {
+    "import": "./dist/maptiler-client.mjs",
+    "require": "./dist/maptiler-client.cjs"
+  },
   "keywords": [
     "geocoding",
     "reverse geocoding",
@@ -25,7 +29,9 @@
     "devserve": "rm -rf dist/*; NODE_ENV=development rollup -c -w & serve && fg",
     "format": "prettier --write \"src/**/*.{js,ts,tsx}\"",
     "lint": "eslint --fix \"src/**/*.{js,ts}\"",
-    "doc": "rm -rf docs/*; typedoc --plugin typedoc-plugin-markdown --readme none --out docs src/index.ts; cp -r images docs/",
+    "docmd": "rm -rf docsmd/*; typedoc --readme none --plugin typedoc-plugin-markdown --out docsmd src/index.ts; cp -r images docsmd/",
+    "dochtml": "rm -rf docs/*; typedoc --plugin none --out docs src/index.ts; cp -r images docs/",
+    "doc": "npm run docmd; npm run dochtml",
     "prepare": "npm run format; npm run lint; npm run build; npm run doc"
   },
   "repository": {
@@ -51,5 +57,8 @@
     "typedoc": "^0.23.21",
     "typedoc-plugin-markdown": "^3.13.6",
     "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "@types/geojson": "^7946.0.10"
   }
 }

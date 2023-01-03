@@ -1,7 +1,8 @@
+import { BBox, Feature, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { Bbox, LngLat } from "../generalTypes";
+
 import {
   getAutoLanguageGeocoding,
   LanguageGeocoding,
@@ -9,16 +10,26 @@ import {
 } from "../language";
 import { ServiceError } from "./ServiceError";
 
+const customMessages = {
+  400: "Query too long / Invalid parameters",
+  403: "Key is missing, invalid or restricted",
+};
+
 export type GeocodingOptions = {
+  /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+  apiKey?: string;
+
   /**
    * Only search for results in the specified area.
    */
-  bbox?: Bbox;
+  bbox?: BBox;
 
   /**
    * Prefer results close to a specific location.
    */
-  proximity?: LngLat;
+  proximity?: Position;
 
   /**
    * Prefer results in specific language. It’s possible to specify multiple values.
@@ -26,9 +37,69 @@ export type GeocodingOptions = {
   language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
 };
 
-const customMessages = {
-  400: "Query too long / Invalid parameters",
-  403: "Key is missing, invalid or restricted",
+export type Coordinates = Position;
+
+export type FeatureHierarchy = {
+  /**
+   * Unique feature ID
+   */
+  id: string;
+
+  /**
+   * Localized feature name
+   */
+  text: string;
+};
+
+export type GeocodingFeature = Feature & {
+  /**
+   * Bounding box of the original feature as [w, s, e, n] array
+   */
+  bbox: BBox;
+
+  /**
+   * A [lon, lat] array of the original feature centeroid
+   */
+  center: Coordinates;
+
+  /**
+   * Formatted (including the hierarchy) and localized feature full name
+   */
+  place_name: string;
+
+  /**
+   * Localized feature name
+   */
+  text: string;
+
+  /**
+   * Feature hierarchy
+   */
+  context?: Array<FeatureHierarchy>;
+
+  /**
+   * Address number, if applicable
+   */
+  address?: string;
+};
+
+export type GeocodingSearchResult = {
+  type: "FeatureCollection";
+
+  /**
+   * Array of features found
+   */
+  features: Array<GeocodingFeature>;
+
+  /**
+   * Tokenized search query
+   */
+  query: Array<string>;
+
+  /**
+   * Attribution of the result
+   */
+  attribution: string;
 };
 
 /**
@@ -40,30 +111,26 @@ const customMessages = {
  * @param options
  * @returns
  */
-async function forward(query, options: GeocodingOptions = {}) {
+async function forward(
+  query: string,
+  options: GeocodingOptions = {}
+): Promise<GeocodingSearchResult> {
+  if (typeof query !== "string" || query.trim().length === 0) {
+    throw new Error("The query must be a non-empty string");
+  }
+
   const endpoint = new URL(
     `geocoding/${encodeURIComponent(query)}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("bbox" in options) {
-    endpoint.searchParams.set(
-      "bbox",
-      [
-        options.bbox.southWest.lng,
-        options.bbox.southWest.lat,
-        options.bbox.northEast.lng,
-        options.bbox.northEast.lat,
-      ].join(",")
-    );
+    endpoint.searchParams.set("bbox", options.bbox.join(","));
   }
 
   if ("proximity" in options) {
-    endpoint.searchParams.set(
-      "proximity",
-      [options.proximity.lng, options.proximity.lat].join(",")
-    );
+    endpoint.searchParams.set("proximity", options.proximity.join(","));
   }
 
   if ("language" in options) {
@@ -92,42 +159,42 @@ async function forward(query, options: GeocodingOptions = {}) {
   }
 
   const obj = await res.json();
-  return obj;
+  return obj as GeocodingSearchResult;
 }
+
+export type ReverseGeocodingOptions = {
+  /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+  apiKey?: string;
+
+  /**
+   * Prefer results in specific language. It’s possible to specify multiple values.
+   */
+  language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+};
 
 /**
  * Perform a reverse geocoding query to MapTiler API.
  * Providing a longitude and latitude, this function returns a set of human readable information abou this place (country, city, street, etc.)
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse
- * @param lngLat
+ * @param position
  * @param options
  * @returns
  */
-async function reverse(lngLat: LngLat, options: GeocodingOptions = {}) {
+async function reverse(
+  position: Position,
+  options: ReverseGeocodingOptions = {}
+): Promise<GeocodingSearchResult> {
+  if (!Array.isArray(position) || position.length < 2) {
+    throw new Error("The position must be an array of form [lng, lat].");
+  }
+
   const endpoint = new URL(
-    `geocoding/${lngLat.lng},${lngLat.lat}.json`,
+    `geocoding/${position[0]},${position[1]}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", config.apiKey);
-
-  if ("bbox" in options) {
-    endpoint.searchParams.set(
-      "bbox",
-      [
-        options.bbox.southWest.lng,
-        options.bbox.southWest.lat,
-        options.bbox.northEast.lng,
-        options.bbox.northEast.lat,
-      ].join(",")
-    );
-  }
-
-  if ("proximity" in options) {
-    endpoint.searchParams.set(
-      "proximity",
-      [options.proximity.lng, options.proximity.lat].join(",")
-    );
-  }
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("language" in options) {
     const languages = Array.from(
@@ -155,7 +222,7 @@ async function reverse(lngLat: LngLat, options: GeocodingOptions = {}) {
   }
 
   const obj = await res.json();
-  return obj;
+  return obj as GeocodingSearchResult;
 }
 
 /**
@@ -166,6 +233,7 @@ async function reverse(lngLat: LngLat, options: GeocodingOptions = {}) {
 const geocoding = {
   forward,
   reverse,
+  language: LanguageGeocoding,
 };
 
 export { geocoding };

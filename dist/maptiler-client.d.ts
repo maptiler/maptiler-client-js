@@ -1,33 +1,5 @@
-/**
- * WGS84 longitude and latitude as object
- */
-type LngLat = {
-    /**
-     * Longitude
-     */
-    lng: number;
-    /**
-     * Latitude
-     */
-    lat: number;
-};
-/**
- * WGS84 longitude and latitude as array of the form [lng, lat]
- */
-type LngLatArray = [number, number];
-/**
- * Bounding box (lng/lat axis aligned)
- */
-type Bbox = {
-    /**
-     * South-west corner WGS84 coordinates
-     */
-    southWest: LngLat;
-    /**
-     * North-east corner WGS84 coordinates
-     */
-    northEast: LngLat;
-};
+import { BBox, Position, Feature, FeatureCollection } from 'geojson';
+export { BBox, Position } from 'geojson';
 
 type FetchFunction = (url: string, options: object) => Promise<any>;
 /**
@@ -133,17 +105,73 @@ type LanguageGeocodingString = Values<typeof LanguageGeocoding>;
 
 type GeocodingOptions = {
     /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
+    /**
      * Only search for results in the specified area.
      */
-    bbox?: Bbox;
+    bbox?: BBox;
     /**
      * Prefer results close to a specific location.
      */
-    proximity?: LngLat;
+    proximity?: Position;
     /**
      * Prefer results in specific language. It’s possible to specify multiple values.
      */
     language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+};
+type Coordinates = Position;
+type FeatureHierarchy = {
+    /**
+     * Unique feature ID
+     */
+    id: string;
+    /**
+     * Localized feature name
+     */
+    text: string;
+};
+type GeocodingFeature = Feature & {
+    /**
+     * Bounding box of the original feature as [w, s, e, n] array
+     */
+    bbox: BBox;
+    /**
+     * A [lon, lat] array of the original feature centeroid
+     */
+    center: Coordinates;
+    /**
+     * Formatted (including the hierarchy) and localized feature full name
+     */
+    place_name: string;
+    /**
+     * Localized feature name
+     */
+    text: string;
+    /**
+     * Feature hierarchy
+     */
+    context?: Array<FeatureHierarchy>;
+    /**
+     * Address number, if applicable
+     */
+    address?: string;
+};
+type GeocodingSearchResult = {
+    type: "FeatureCollection";
+    /**
+     * Array of features found
+     */
+    features: Array<GeocodingFeature>;
+    /**
+     * Tokenized search query
+     */
+    query: Array<string>;
+    /**
+     * Attribution of the result
+     */
+    attribution: string;
 };
 /**
  * Performs a forward geocoding query to MapTiler API.
@@ -154,16 +182,26 @@ type GeocodingOptions = {
  * @param options
  * @returns
  */
-declare function forward(query: any, options?: GeocodingOptions): Promise<any>;
+declare function forward(query: string, options?: GeocodingOptions): Promise<GeocodingSearchResult>;
+type ReverseGeocodingOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
+    /**
+     * Prefer results in specific language. It’s possible to specify multiple values.
+     */
+    language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+};
 /**
  * Perform a reverse geocoding query to MapTiler API.
  * Providing a longitude and latitude, this function returns a set of human readable information abou this place (country, city, street, etc.)
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse
- * @param lngLat
+ * @param position
  * @param options
  * @returns
  */
-declare function reverse(lngLat: LngLat, options?: GeocodingOptions): Promise<any>;
+declare function reverse(position: Position, options?: ReverseGeocodingOptions): Promise<GeocodingSearchResult>;
 /**
  * The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
  * The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)
@@ -172,14 +210,156 @@ declare function reverse(lngLat: LngLat, options?: GeocodingOptions): Promise<an
 declare const geocoding: {
     forward: typeof forward;
     reverse: typeof reverse;
+    language: {
+        AUTO: string;
+        ALBANIAN: string;
+        ARABIC: string;
+        ARMENIAN: string;
+        AZERBAIJANI: string;
+        BELORUSSIAN: string;
+        BOSNIAN: string;
+        BRETON: string;
+        BULGARIAN: string;
+        CATALAN: string;
+        CHINESE: string;
+        CROATIAN: string;
+        CZECH: string;
+        DANISH: string;
+        DUTCH: string;
+        ENGLISH: string;
+        ESPERANTO: string;
+        ESTONIAN: string;
+        /**
+         * Custom mapTiler Cloud API key to use instead of the one in global `config`
+         */
+        FINNISH: string;
+        FRENCH: string;
+        FRISIAN: string;
+        GEORGIAN: string;
+        GERMAN: string;
+        GREEK: string;
+        HEBREW: string; /**
+         * Only search for results in the specified area.
+         */
+        HUNGARIAN: string;
+        ICELANDIC: string;
+        IRISH: string;
+        ITALIAN: string;
+        JAPANESE: string;
+        KANNADA: string;
+        KAZAKH: string;
+        KOREAN: string;
+        ROMAN_LATIN: string;
+        LATVIAN: string;
+        LITHUANIAN: string;
+        LUXEMBOURGISH: string;
+        MACEDONIAN: string;
+        MALTESE: string;
+        NORWEGIAN: string;
+        POLISH: string;
+        PORTUGUESE: string;
+        ROMANIAN: string;
+        ROMANSH: string;
+        RUSSIAN: string;
+        SCOTTISH_GAELIC: string;
+        SERBIAN_CYRILLIC: string;
+        SLOVAK: string;
+        SLOVENE: string;
+        SPANISH: string;
+        SWEDISH: string;
+        THAI: string;
+        TURKISH: string;
+        UKRAINIAN: string;
+        WELSH: string;
+    };
 };
 
+/**
+ * Options that can be provided to get user data.
+ */
+type GeolocationInfoOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
+};
+type GeolocationResult = {
+    /**
+     * Name of the country
+     * Example: Switzerland
+     */
+    country?: string;
+    /**
+     * Two-letter code of the country ISO 3166-1 alpha-2 codes
+     * Example: CH
+     */
+    country_code?: string;
+    /**
+     * Bounds of the country in WGS84 degrees [west, south, east, north].
+     * Example: [5.95538,45.818852,10.490936,47.809357]
+     */
+    country_bounds?: BBox;
+    /**
+     * Official country languages in ISO 639-1 format. ISO 639-1 codes
+     * Example: ["de","fr","it"]
+     */
+    country_languages?: Array<string>;
+    /**
+     * Name of the continent
+     * Example: Europe
+     */
+    continent?: string;
+    /**
+     * Two-letter code of the continent
+     * Example: EU
+     */
+    continent_code?: string;
+    /**
+     * Indicated whether the country is part of the European Union.
+     */
+    eu?: boolean;
+    /**
+     * Name of the city
+     * Example: Zurich
+     */
+    city?: string;
+    /**
+     * Latitude of the location
+     * Example: 47.36667
+     */
+    latitude?: number;
+    /**
+     * Longitude of the location
+     * Example: 8.55
+     */
+    longitude?: number;
+    /**
+     * Postal code
+     * Example: 8000
+     */
+    postal?: string;
+    /**
+     * If known, the ISO 3166-2 name for the first level region. ISO 3166-2 codes
+     * Example: Zurich
+     */
+    region?: string;
+    /**
+     * If known, the ISO 3166-2 code for the first level region. ISO 3166-2 codes
+     * Example: ZH
+     */
+    region_code?: string;
+    /**
+     * Name of the timezone
+     * Example: Europe/Zurich
+     */
+    timezone?: string;
+};
 /**
  * Looks up geolocation details from IP address using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geolocation/#ip-geolocation
  * @returns
  */
-declare function info(): Promise<any>;
+declare function info(options?: GeolocationInfoOptions): Promise<GeolocationResult>;
 /**
  * The **geolocation** namespace contains an asynchronous function to call the [MapTiler Geolocation API](https://docs.maptiler.com/cloud/api/geolocation/).
  * The **Geolocation API** provides a way to retrieve the IP address as well as geographic informations of a machine performing the query (most likely: a user)
@@ -189,6 +369,10 @@ declare const geolocation: {
 };
 
 type CoordinatesSearchOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
     /**
      * Maximum number of results returned (default: 10)
      */
@@ -202,6 +386,59 @@ type CoordinatesSearchOptions = {
      */
     exports?: boolean;
 };
+type CoordinateId = {
+    authority: string;
+    code: BigInteger;
+};
+type CoordinateExport = {
+    proj4: string;
+    wkt: string;
+};
+type CoordinateGrid = {
+    path: string;
+};
+type CoordinateTransformation = {
+    id: CoordinateId;
+    name: string;
+    reversible: boolean;
+    usable: boolean;
+    deprecated: boolean;
+    grids: Array<CoordinateGrid>;
+    accuracy?: number;
+    area?: string;
+    bbox?: BBox;
+    target_crs?: CoordinateId;
+    unit?: string;
+};
+type CoordinateSearch = {
+    id: CoordinateId;
+    name: string;
+    kind: string;
+    deprecated: boolean;
+    transformations?: Array<CoordinateTransformation | number>;
+    accuracy?: number;
+    unit?: string;
+    area?: string;
+    /**
+     * Bounding box of the resource in [min_lon, min_lat, max_lon, max_lat] order.
+     */
+    bbox?: BBox;
+    /**
+     * Most suitable transformation for this CRS.
+     */
+    default_transformation?: any;
+    exports: CoordinateExport;
+};
+type CoordinateSearchResult = {
+    /**
+     * The coordinate search results
+     */
+    results: Array<CoordinateSearch>;
+    /**
+     * The number of results
+     */
+    total: number;
+};
 /**
  * Search information about coordinate systems using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/coordinates/#search-coordinate-systems
@@ -209,11 +446,30 @@ type CoordinatesSearchOptions = {
  * @param options
  * @returns
  */
-declare function search(query: string, options?: CoordinatesSearchOptions): Promise<any>;
+declare function search(query: string, options?: CoordinatesSearchOptions): Promise<CoordinateSearchResult>;
+type XYZ = {
+    x?: number;
+    y?: number;
+    z?: number;
+};
+type CoordinateTransformResult = {
+    results: Array<XYZ>;
+    /**
+     * Transformations are selected using given ops parameter.
+     * If no parameter is given, auto strategy is used.
+     * If given, it may try to use a listed transformation,
+     * then fallback to towgs84 patching, and finally boundcrs.
+     */
+    transformer_selection_strategy: string;
+};
 /**
  * Options that can be provided when transforming a coordinate from one CRS to another.
  */
 type CoordinatesTransformOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
     /**
      * Source coordinate reference system (default: 4326)
      */
@@ -230,11 +486,11 @@ type CoordinatesTransformOptions = {
 /**
  * Transforms coordinates from a source reference system to a target reference system using MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/coordinates/#transform-coordinates
- * @param coordinates
+ * @param positions
  * @param options
  * @returns
  */
-declare function transform(coordinates: LngLat | Array<LngLat>, options?: CoordinatesTransformOptions): Promise<any>;
+declare function transform(positions: Position | Array<Position>, options?: CoordinatesTransformOptions): Promise<CoordinateTransformResult>;
 /**
  * The **coordinate** namespace contains asynchronous functions to call the [MapTiler Coordinate API](https://docs.maptiler.com/cloud/api/coordinates/).
  * The goal of the **Coordinate API* is query information about spatial coordinate reference system (CRS) as well as to transform coordinates from one CRS to another.
@@ -245,12 +501,21 @@ declare const coordinates: {
 };
 
 /**
+ * Options that can be provided to get user data.
+ */
+type GetDataOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
+};
+/**
  * Get user data and returns it as GeoJSON using the MapTiler API.
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/data/#geojson
  * @param dataId
  * @returns
  */
-declare function get(dataId: string): Promise<any>;
+declare function get(dataId: string, options?: GetDataOptions): Promise<FeatureCollection>;
 /**
  * The **data** namespace contains an asynchronous function to call the [MapTiler Data API](https://docs.maptiler.com/cloud/api/data/).
  * The **Data API** provides a way to retrieve user data in GeoJSON format.
@@ -263,6 +528,10 @@ declare const data: {
  * Base set of options that can be provided to all the types of static maps
  */
 type StaticMapBaseOptions = {
+    /**
+     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
     /**
      * Style of the map (not full style URL). Example: "winter", "streets-v2".
      * Default: `"streets-v2"`
@@ -297,7 +566,7 @@ type StaticMapBaseOptions = {
      * A marker or list of markers to show on the map
      * Default: none provided
      */
-    marker?: StaticMapMarker | Array<StaticMapMarker>;
+    markers?: StaticMapMarker | Array<StaticMapMarker>;
     /**
      * URL of the marker image. Applies only if one or multiple markers positions are provided.
      * Default: none provided
@@ -314,7 +583,7 @@ type StaticMapBaseOptions = {
      * Draw a path or polygon on top of the map. If the path is too long it will be simplified, yet remaining accurate.
      * Default: none provided
      */
-    path?: Array<LngLatArray>;
+    path?: Array<Position>;
     /**
      * Color of the path line. The color must be CSS compatible.
      * Examples:
@@ -368,20 +637,20 @@ type AutomaticStaticMapOptions = BoundedStaticMapOptions;
 /**
  * Definition of a maker to show on a static map
  */
-type StaticMapMarker = {
+type StaticMapMarker = [
     /**
      * Longitude of the marker
      */
-    lng: number;
+    number,
     /**
      * latitude of the marker
      */
-    lat: number;
+    number,
     /**
      * Color of the marker with CSS syntax. Applies only if a custom `markerIcon` is not provided.
      */
-    color?: string;
-};
+    string
+];
 /**
  * Construct the URL for a static map centered on one point.
  * Note: this function does not fetch the binary content of the image since
@@ -392,7 +661,7 @@ type StaticMapMarker = {
  * @param options
  * @returns
  */
-declare function centered(center: LngLat, zoom: number, options?: CenteredStaticMapOptions): string;
+declare function centered(center: Position, zoom: number, options?: CenteredStaticMapOptions): string;
 /**
  * Construct the URL for a static map using a bounding box
  * Note: this function does not fetch the binary content of the image since
@@ -402,7 +671,7 @@ declare function centered(center: LngLat, zoom: number, options?: CenteredStatic
  * @param options
  * @returns
  */
-declare function bounded(boundingBox: Bbox, options?: BoundedStaticMapOptions): string;
+declare function bounded(boundingBox: BBox, options?: BoundedStaticMapOptions): string;
 /**
  * Construct the URL for a static map automatically fitted around the provided path or markers.
  * Note: this function does not fetch the binary content of the image since
@@ -430,4 +699,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, Bbox, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinatesSearchOptions, CoordinatesTransformOptions, FetchFunction, GeocodingOptions, LanguageGeocoding, LanguageGeocodingString, LngLat, LngLatArray, ServiceError, StaticMapBaseOptions, StaticMapMarker, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, geocoding, geolocation, staticMaps };

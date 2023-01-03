@@ -1,12 +1,17 @@
+import { BBox, Position } from "geojson";
 import { config } from "../config";
 import { defaults } from "../defaults";
-import { Bbox, LngLatArray, LngLat } from "../generalTypes";
 import simplify from "./simplify";
 
 /**
  * Base set of options that can be provided to all the types of static maps
  */
 export type StaticMapBaseOptions = {
+  /**
+   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   */
+  apiKey?: string;
+
   /**
    * Style of the map (not full style URL). Example: "winter", "streets-v2".
    * Default: `"streets-v2"`
@@ -47,7 +52,7 @@ export type StaticMapBaseOptions = {
    * A marker or list of markers to show on the map
    * Default: none provided
    */
-  marker?: StaticMapMarker | Array<StaticMapMarker>;
+  markers?: StaticMapMarker | Array<StaticMapMarker>;
 
   /**
    * URL of the marker image. Applies only if one or multiple markers positions are provided.
@@ -76,7 +81,7 @@ export type StaticMapBaseOptions = {
    * Draw a path or polygon on top of the map. If the path is too long it will be simplified, yet remaining accurate.
    * Default: none provided
    */
-  path?: Array<LngLatArray>;
+  path?: Array<Position>;
 
   /**
    * Color of the path line. The color must be CSS compatible.
@@ -137,35 +142,35 @@ export type AutomaticStaticMapOptions = BoundedStaticMapOptions;
 /**
  * Definition of a maker to show on a static map
  */
-export type StaticMapMarker = {
+export type StaticMapMarker = [
   /**
    * Longitude of the marker
    */
-  lng: number;
+  number,
   /**
    * latitude of the marker
    */
-  lat: number;
+  number,
   /**
    * Color of the marker with CSS syntax. Applies only if a custom `markerIcon` is not provided.
    */
-  color?: string;
-};
+  string
+];
 
-function staticMapMarkerToString(marker: StaticMapMarker, includeColor = true) {
-  let str = `${marker.lng},${marker.lat}`;
+function staticMapMarkerToString(
+  marker: StaticMapMarker,
+  includeColor = true
+): string {
+  let str = `${marker[0]},${marker[1]}`;
 
-  if (marker.color && includeColor) {
-    str += `,${marker.color}`;
+  if (marker.length === 3 && includeColor) {
+    str += `,${marker[2]}`;
   }
 
   return str;
 }
 
-function simplifyAndStringify(
-  path: Array<LngLatArray>,
-  maxNbChar = 3000
-): string {
+function simplifyAndStringify(path: Array<Position>, maxNbChar = 3000): string {
   let str = path.map((point) => point.join(",")).join("|");
   let tolerance = 0.000005;
   const toleranceStep = 0.00001;
@@ -191,7 +196,7 @@ function simplifyAndStringify(
  * @returns
  */
 function centered(
-  center: LngLat,
+  center: Position,
   zoom: number,
   options: CenteredStaticMapOptions = {}
 ): string {
@@ -207,8 +212,8 @@ function centered(
   }
 
   const endpoint = new URL(
-    `maps/${encodeURIComponent(style)}/static/${center.lng},${
-      center.lat
+    `maps/${encodeURIComponent(style)}/static/${center[0]},${
+      center[1]
     },${zoom}/${width}x${height}${scale}.${format}`,
     defaults.maptilerApiURL
   );
@@ -217,7 +222,7 @@ function centered(
     endpoint.searchParams.set("attribution", options.attribution.toString());
   }
 
-  if ("marker" in options) {
+  if ("markers" in options) {
     let markerStr = "";
 
     const hasIcon = "markerIcon" in options;
@@ -234,9 +239,9 @@ function centered(
       markerStr += `scale:2|`;
     }
 
-    const markerList = Array.isArray(options.marker)
-      ? options.marker
-      : [options.marker];
+    const markerList = Array.isArray(options.markers[0])
+      ? options.markers
+      : [options.markers];
     markerStr += markerList
       .map((m) => staticMapMarkerToString(m, !hasIcon))
       .join("|");
@@ -261,7 +266,7 @@ function centered(
     endpoint.searchParams.set("path", pathStr);
   }
 
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   return endpoint.toString();
 }
@@ -275,7 +280,10 @@ function centered(
  * @param options
  * @returns
  */
-function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
+function bounded(
+  boundingBox: BBox,
+  options: BoundedStaticMapOptions = {}
+): string {
   const style = options.style ?? defaults.mapStyle;
   const scale = options.hiDPI ? "@2x" : "";
   const format = options.format ?? "png";
@@ -288,11 +296,9 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
   }
 
   const endpoint = new URL(
-    `maps/${encodeURIComponent(style)}/static/${boundingBox.southWest.lng},${
-      boundingBox.southWest.lat
-    },${boundingBox.northEast.lng},${
-      boundingBox.northEast.lat
-    }/${width}x${height}${scale}.${format}`,
+    `maps/${encodeURIComponent(style)}/static/${boundingBox[0]},${
+      boundingBox[1]
+    },${boundingBox[2]},${boundingBox[3]}/${width}x${height}${scale}.${format}`,
     defaults.maptilerApiURL
   );
 
@@ -304,7 +310,7 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
     endpoint.searchParams.set("padding", options.padding.toString());
   }
 
-  if ("marker" in options) {
+  if ("markers" in options) {
     let markerStr = "";
 
     const hasIcon = "markerIcon" in options;
@@ -321,9 +327,9 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
       markerStr += `scale:2|`;
     }
 
-    const markerList = Array.isArray(options.marker)
-      ? options.marker
-      : [options.marker];
+    const markerList = Array.isArray(options.markers[0])
+      ? options.markers
+      : [options.markers];
     markerStr += markerList
       .map((m) => staticMapMarkerToString(m, !hasIcon))
       .join("|");
@@ -348,7 +354,7 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
     endpoint.searchParams.set("path", pathStr);
   }
 
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   return endpoint.toString();
 }
@@ -361,8 +367,8 @@ function bounded(boundingBox: Bbox, options: BoundedStaticMapOptions = {}) {
  * @param options
  * @returns
  */
-function automatic(options: AutomaticStaticMapOptions = {}) {
-  if (!("marker" in options) && !("path" in options)) {
+function automatic(options: AutomaticStaticMapOptions = {}): string {
+  if (!("markers" in options) && !("path" in options)) {
     throw new Error(
       "Automatic static maps require markers and/or path to be created."
     );
@@ -394,7 +400,7 @@ function automatic(options: AutomaticStaticMapOptions = {}) {
     endpoint.searchParams.set("padding", options.padding.toString());
   }
 
-  if ("marker" in options) {
+  if ("markers" in options) {
     let markerStr = "";
 
     const hasIcon = "markerIcon" in options;
@@ -411,9 +417,9 @@ function automatic(options: AutomaticStaticMapOptions = {}) {
       markerStr += `scale:2|`;
     }
 
-    const markerList = Array.isArray(options.marker)
-      ? options.marker
-      : [options.marker];
+    const markerList = Array.isArray(options.markers[0])
+      ? options.markers
+      : [options.markers];
     markerStr += markerList
       .map((m) => staticMapMarkerToString(m, !hasIcon))
       .join("|");
@@ -438,7 +444,7 @@ function automatic(options: AutomaticStaticMapOptions = {}) {
     endpoint.searchParams.set("path", pathStr);
   }
 
-  endpoint.searchParams.set("key", config.apiKey);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   return endpoint.toString();
 }

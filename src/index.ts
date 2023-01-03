@@ -1,20 +1,38 @@
-// Types import
-import type { Bbox, LngLat, LngLatArray } from "./generalTypes";
-
+import { BBox, Position } from "geojson";
 import { ClientConfig, config } from "./config";
 import type { FetchFunction } from "./config";
 import { LanguageGeocoding, LanguageGeocodingString } from "./language";
 
 // Importing services
 import { geocoding } from "./services/geocoding";
-import type { GeocodingOptions } from "./services/geocoding";
+import type {
+  GeocodingOptions,
+  ReverseGeocodingOptions,
+  GeocodingSearchResult,
+  GeocodingFeature,
+  FeatureHierarchy,
+  Coordinates,
+} from "./services/geocoding";
 import { geolocation } from "./services/geolocation";
+import type {
+  GeolocationInfoOptions,
+  GeolocationResult,
+} from "./services/geolocation";
 import { coordinates } from "./services/coordinates";
 import type {
   CoordinatesSearchOptions,
   CoordinatesTransformOptions,
+  CoordinateTransformResult,
+  CoordinateSearchResult,
+  CoordinateSearch,
+  XYZ,
+  CoordinateTransformation,
+  CoordinateId,
+  CoordinateExport,
+  CoordinateGrid,
 } from "./services/coordinates";
 import { data } from "./services/data";
+import type { GetDataOptions } from "./services/data";
 import { staticMaps } from "./services/staticMaps";
 import type {
   StaticMapMarker,
@@ -28,11 +46,23 @@ import { ServiceError } from "./services/ServiceError";
 
 // Exporting types
 export type {
-  LngLat,
+  Position,
+  BBox,
   GeocodingOptions,
-  Bbox,
-  LngLatArray,
+  ReverseGeocodingOptions,
+  GeocodingSearchResult,
+  GeocodingFeature,
+  CoordinateExport,
+  CoordinateGrid,
+  CoordinateTransformation,
+  CoordinateId,
+  FeatureHierarchy,
+  Coordinates,
   CoordinatesTransformOptions,
+  CoordinateTransformResult,
+  CoordinateSearchResult,
+  XYZ,
+  CoordinateSearch,
   CoordinatesSearchOptions,
   StaticMapMarker,
   StaticMapBaseOptions,
@@ -41,6 +71,9 @@ export type {
   AutomaticStaticMapOptions,
   FetchFunction,
   LanguageGeocodingString,
+  GetDataOptions,
+  GeolocationInfoOptions,
+  GeolocationResult,
 };
 
 // Exporting classes, objects, functions, etc.
