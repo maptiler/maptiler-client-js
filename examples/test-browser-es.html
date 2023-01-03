@@ -26,7 +26,7 @@
 
       console.log(LanguageGeocoding);
 
-      // config.apiKey = 'wvElBzv1zqf8XeNE37ip';
+      config.apiKey = 'YOUR_API_KEY';
 
       async function testGeocoding() {
         console.log(await geocoding.forward('bordeaux', {language: [geocoding.language.SPANISH, geocoding.language.ENGLISH]}));
@@ -70,7 +70,7 @@
           height: 500,
           style: 'winter',
           markers: [[7, 46, 'green'], [8, 47, '#982']],
-          apiKey: "ZFEK2gQSwT4Jcimbtcy7",
+          apiKey: "YOUR_PRO_API_KEY",
         });
 
         addImage(imageLinkCentered);
@@ -83,7 +83,7 @@
           path: [[-9.8905, 36.6274], [-9.8905, 42.3208], [-6.0453, 42.3208], [-6.0453, 36.6274], [-9.8905, 36.6274]],
           pathStrokeColor: 'red',
           pathWidth: 4,
-          apiKey: "ZFEK2gQSwT4Jcimbtcy7",
+          apiKey: "YOUR_PRO_API_KEY",
         });
 
         addImage(imageLinkBounded);
