@@ -11,6 +11,10 @@
     "import": "./dist/maptiler-client.mjs",
     "require": "./dist/maptiler-client.cjs"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "keywords": [
     "geocoding",
     "reverse geocoding",
