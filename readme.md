@@ -267,9 +267,9 @@ And voila!
 Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#auto-fitted-image).
 
 # From NodeJS
-NodeJS includes a stable `fetch()` function only fronm its version *18*, and this client does not contain a polyfill. If the `fetch()` function exists (browser or Node >= 18) then it is going to be resolved automatically, Yet, a custom `fetch()` function can be provided to the `config` object for Node < 18.
+NodeJS includes a stable `fetch()` function only from its version *18*, and this client does not contain a polyfill. If the `fetch()` function exists (browser or Node >= 18) then it is going to be resolved automatically, Yet, a custom `fetch()` function can be provided to the `config` object for Node < 18.
 
-In [this NodeJS example](examples/test-node.js), you can see that the package [Node Fetch](https://www.npmjs.com/package/node-fetch) has been `npm install`ed and is passed to the config obejct of the *MapTiler Client*.
+In [this NodeJS example](examples/test-node.js), you can see that the package [Node Fetch](https://www.npmjs.com/package/node-fetch) has been `npm install`ed and is passed to the config object of the *MapTiler Client*.
 
 ```js
 import {
