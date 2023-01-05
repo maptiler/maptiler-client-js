@@ -1,6 +1,6 @@
 {
   "name": "@maptiler/client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Javascript & Typescript wrapper to MapTiler Cloud API",
   "module": "dist/maptiler-client.mjs",
   "types": "dist/maptiler-client.d.ts",
@@ -37,7 +37,8 @@
     "docmd": "rm -rf docsmd/*; typedoc --readme none --plugin typedoc-plugin-markdown --out docsmd src/index.ts; cp -r images docsmd/",
     "dochtml": "rm -rf docs/*; typedoc --plugin none --out docs src/index.ts; cp -r images docs/",
     "doc": "npm run docmd; npm run dochtml",
-    "prepare": "npm run format; npm run lint; npm run build; npm run doc"
+    "prepare": "npm run format; npm run lint; npm run build; npm run doc",
+    "test": "echo 'tests'"
   },
   "repository": {
     "type": "git",
