@@ -1,0 +1,75 @@
+
+
+body {
+  background: #fff;
+}
+
+.tsd-page-toolbar {
+  background: #fff;
+}
+
+#tsd-search > .title {
+  background-image: url(/images/maptiler-logo.svg); 
+  background-repeat: no-repeat;
+  color: #0000;
+  font-size: 1.5em;
+}
+
+.tsd-page-title  h2 {
+  display: none;
+}
+
+.tsd-page-toolbar--hide {
+  transform: none;
+}
+
+.col-menu--hide {
+  top: 4em;
+}
+
+
+.tsd-page-toolbar {
+  border-color: #d3dbec;
+}
+
+.col-menu {
+  border-left: none;
+  background-color: aliceblue;
+}
+
+.menu-sticky-wrap {
+  top: 2.5rem;
+  margin-top: 2.5rem;
+  /* height: 100vh; */
+  height: calc(100vh - 2.5rem);
+}
+
+.tsd-generator {
+  display: none;
+}
+
+.settings {
+  display: none;
+}
+
+.tsd-navigation.primary ul li a:hover {
+  border-color: #b3deff;
+}
+
+.tsd-navigation.primary li.selected > a,
+.tsd-navigation.primary li.current > a {
+  border-color: #8bc9f9;
+}
+
+.tsd-index-panel > .tsd-index-heading {
+  display: none;
+}
+
+#tsd-search.has-focus {
+  background-color: #fff;
+}
+
+.tsd-navigation.secondary {
+  border-top: solid 1px #d3dbec;
+  padding-top: 1rem;
+}
