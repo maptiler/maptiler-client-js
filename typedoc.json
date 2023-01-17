@@ -1,10 +1,14 @@
 {
-  "entryPoints": ["./src/index.ts"],
-  "name": "MapTiler Client JS",
+  "entryPoints": ["./src/services/*.ts", "./src/language.ts", "src/config.ts"],
+  "name": "MapTiler Client",
+  "plugin": [],
   "out": "docs",
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeExternals": true,
   "excludeNotDocumented": false,
-  "excludeInternal": true
+  "excludeInternal": true,
+  "theme": "default",
+  "customCss": "typedoc.css",
+  "includeVersion": true
 }
