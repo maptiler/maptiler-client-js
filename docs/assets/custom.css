@@ -2,6 +2,13 @@
 
 body {
   background: #fff;
+  font-family: "Open Sans", sans-serif;
+  color: #6B7C92;
+}
+
+h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
+  font-family: "Ubuntu","Open Sans",sans-serif;
+  color: #525a65; 
 }
 
 .tsd-page-toolbar {
@@ -34,7 +41,7 @@ body {
 
 .col-menu {
   border-left: none;
-  background-color: aliceblue;
+  background-color: #F3F6FF;
 }
 
 .menu-sticky-wrap {
@@ -72,4 +79,13 @@ body {
 .tsd-navigation.secondary {
   border-top: solid 1px #d3dbec;
   padding-top: 1rem;
+}
+
+pre {
+  border-color: #d3dbec;
+}
+
+code, pre {
+  border-radius: 3px;
+  background-color: #fafbff;
 }
