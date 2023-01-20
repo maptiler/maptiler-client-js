@@ -45,7 +45,7 @@ npm install --save @maptiler/client
 ```
 
 # API documentation
-In addition to the details and examples provided in this readme, check out the [complete API documentation](docs/README.md)).
+In addition to the details and examples provided in this readme, check out the [complete API documentation](docs/README.md).
 
 # Quick start
 ```ts
@@ -99,7 +99,7 @@ For both *forward* and *reverse* geocoding, this library provides a list of supp
 const result = await maptilerClient.geocoding.forward('paris', {language: [maptilerClient.geocoding.languages.SPANISH, maptilerClient.geocoding.languages.KOREAN]})
 ```
 
-The special language `AUTO` will detect the plateform/browser prefered language.
+The special language `AUTO` will detect the platform/browser preferred language.
 
 ## 🕵️‍♂️ Geolocation
 The geolocation service provides an accurate location insight of a website visitor using its IP address.
@@ -171,7 +171,7 @@ This type of map is centered on a longitude-latitude coordinate and the zoom lev
 Note that if a path or markers are provided, the framing of the map will not automatically adapt to include those (use the `automatic` mode for that).
 
 ```ts
-const imageLink = maptiler.staticMaps.centered(
+const imageLink = maptilerClient.staticMaps.centered(
   // center position (Boston)
   [-71.06080, 42.362114], 
 
@@ -199,7 +199,7 @@ Read more about centered static maps on our official [API documentation](https:/
 This type of map requires a bounding box made of two points: the south-west bound and the north-east bound. The zoom level cannot be provided and is automatically deduced from the size of the bounding box.
 
 ```ts
-const imageLink = maptiler.staticMaps.bounded(
+const imageLink = maptilerClient.staticMaps.bounded(
   // The bounding box on Europe
   [
     -24,  // west bound (min x)
@@ -227,7 +227,7 @@ Since the zoom level cannot be provided, the level of details is dictated by the
 | :-----------: | :-----------: |
 | ![](images/screenshots/static-bounded-europe-2048.png)      | ![](images/screenshots/static-bounded-europe-1024.png)       |
 
-As you may notice, the geo bounding box could have very different proportions than the output image size. In the following example, we place the very same bounding box around Portugal, which has a this particular strip looking shape. We also add a `path` that repeats exactely the same bounding box to show the difference between the provided bounding box and the final image. We kept the default padding of 10%:
+As you may notice, the geo bounding box could have very different proportions than the output image size. In the following example, we place the very same bounding box around Portugal, which has a this particular strip looking shape. We also add a `path` that repeats exactly the same bounding box to show the difference between the provided bounding box and the final image. We kept the default padding of 10%:
 
 
 | `2048 x 2048`      | `1024 x 2048` |
@@ -240,7 +240,7 @@ Read more about bounded static maps on our official [API documentation](https://
 ### Automatic static maps
 As we have seen with centered and bounded maps, providing all the parameters is nice but can be cumbersome for the simplest use cases. This is why MapTiler Cloud also provides static maps that fits automatically whatever you need to place inside: path or markers.
 
-In the following example, we are going to load a cycling track recorded by one of our team members in Montreal, Canada. The track, originally a GPX file, was pushed to MapTiler Data and is now made avalable as a GeoJSON:
+In the following example, we are going to load a cycling track recorded by one of our team members in Montreal, Canada. The track, originally a GPX file, was pushed to MapTiler Data and is now made available as a GeoJSON:
 
 ```ts
 // Fetching the GeoJSON
@@ -250,11 +250,11 @@ const bikeTrack = await maptilerClient.data.get('the-id-of-a-bike-track-in-montr
 const trackPoints = bikeTrack.features[0].geometry.coordinates[0]
   .map(p => p.slice(0, 2));
 
-const imageLink = maptiler.staticMaps.automatic({
+const imageLink = maptilerClient.staticMaps.automatic({
   // hiDPI/Retina precision
   hiDPI: true,
 
-  // A farily large output image
+  // A fairly large output image
   width: 2048,
   height: 1024 ,
 
@@ -276,7 +276,7 @@ And voila!
 
 ![static map with bike path](images/screenshots/static-with-path.png)
 
-> 📣 *__Note:__* The GeoJSON for this track contains 9380 couples of coordinates, which is a lot! In order to send the track to MapTiler Cloud static maps API, the client simplifies the long paths while keeing a high degree of precision using a very fast [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm).
+> 📣 *__Note:__* The GeoJSON for this track contains 9380 couples of coordinates, which is a lot! In order to send the track to MapTiler Cloud static maps API, the client simplifies the long paths while keeping a high degree of precision using a very fast [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm).
 
 Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#auto-fitted-image).
 
