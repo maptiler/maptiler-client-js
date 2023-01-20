@@ -14,7 +14,10 @@
   <img src="https://img.shields.io/twitter/follow/maptiler?style=social"></img>
 </p>
 
-# What and why?
+# API Client Library for JavaScript / TypeScript
+
+## What?
+
 The **MapTiler Client JS** exposes a number of handy functions that wrap API call to [MapTiler Cloud API services](https://docs.maptiler.com/cloud/api), such as:
 - Geocoding forward and reverse
 - Geolocation from visitor's IP address
@@ -22,7 +25,17 @@ The **MapTiler Client JS** exposes a number of handy functions that wrap API cal
 - User data fetching as GeoJSON
 - Static maps of all sorts
 
+## Why?
+
 The project is entirely written in TypeScript and all the function arguments are nicely documented and typed.
+
+- Better developer experience of working with APIs in the code editor - with parameter info, quick info, and member lists.
+  - Code completion: reducing typos and other common mistakes
+  - Content assist and code hinting providing contextual help
+- Type safety - for higher quality code and testing
+- Backward compatibility: guaranteed on changes to API endpoints
+- Runs: in Node.js or in browser
+- Open source license
 
 > 📣 *__Note:__* If you need *this* API wrapper **AND** a complete SDK to display beautiful interactive maps, then checkout [MapTiler SDK JS](https://github.com/maptiler/maptiler-sdk-js), it contains it all!
 
