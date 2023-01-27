@@ -1,4 +1,27 @@
-
+/* Overiding the default dark mode with color scheme from the light mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--light-color-background);
+    --color-background-secondary: var(--light-color-background-secondary);
+    --color-background-warning: var(--light-color-background-warning);
+    --color-warning-text: var(--light-color-warning-text);
+    --color-icon-background: var(--light-color-icon-background);
+    --color-accent: var(--light-color-accent);
+    --color-text: var(--light-color-text);
+    --color-text-aside: var(--light-color-text-aside);
+    --color-link: var(--light-color-link);
+    --color-ts: var(--light-color-ts);
+    --color-ts-interface: var(--light-color-ts-interface);
+    --color-ts-enum: var(--light-color-ts-enum);
+    --color-ts-class: var(--light-color-ts-class);
+    --color-ts-function: var(--light-color-ts-function);
+    --color-ts-namespace: var(--light-color-ts-namespace);
+    --color-ts-private: var(--light-color-ts-private);
+    --color-ts-variable: var(--light-color-ts-variable);
+    --external-icon: var(--light-external-icon);
+    --color-scheme: var(--light-color-scheme);
+  }
+}
 
 body {
   background: #fff;
@@ -57,6 +80,10 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 
 .settings {
   display: none;
+}
+
+.tsd-navigation a {
+  color: #252525;
 }
 
 .tsd-navigation.primary ul li a:hover {
