@@ -69,6 +69,8 @@ The [examples](examples/) folder includes are featuring usages for **NodeJS**, *
 Here is the list of service wrapper functions that are built-in:
 
 ## 🔍 Geocoding
+> ⚖️ Please note that you must not **store**, **cache** or **redistribute** *geocoding* responses, unless you have a written agreement with MapTiler. In case of doubt, read the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use).
+
 ### Forward
 You want to know the longitude and latitude of a specific place, use the forward geocoding:
 ```ts
@@ -102,6 +104,8 @@ const result = await maptilerClient.geocoding.forward('paris', {language: [mapti
 The special language `AUTO` will detect the plateform/browser prefered language.
 
 ## 🕵️‍♂️ Geolocation
+> ⚖️ Please note that you must not **store**, **cache** or **redistribute** *geolocation* responses, unless you have a written agreement with MapTiler. In case of doubt, read the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use).
+
 The geolocation service provides an accurate location insight of a website visitor using its IP address.
 
 There is only a single function:
@@ -113,6 +117,8 @@ const result = await maptilerClient.geolocation.info();
 Read more about geolocation on our official [API documentation](https://docs.maptiler.com/cloud/api/geolocation/).
 
 ## 🌐 Coordinates
+> ⚖️ Please note that you must not **store**, **cache** or **redistribute** *coordinate* responses, unless you have a written agreement with MapTiler. In case of doubt, read the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use).
+
 If you are already familiar with [epsg.io](https://epsg.io/) (created by MapTiler), then you may find convenient to access the details of more than 10 thousands of coordinate reference systems (CRS) programmatically, as well as transforming coordinates from one system to another!
 
 ### Search
@@ -165,6 +171,8 @@ Maptiler Cloud provides many possibilities for creating static maps as PNG, JPEG
 Three modes are available: `centered`, `bounded` and `automatic`.
 
 > 📣 *__important:__* Contrary to the geolocation/geocoding/coordinates/data service wrappers, the static maps function **does not** perform any query to the MapTiler API, instead they build the image URL. We took this decision because images are most likely going to be displayed  in `<img src="path.png"></img>` markups and will naturaly be fetched by the web browser.
+
+> ⚖️ Please note that you must not **store**, **cache** or **redistribute** *static maps*, unless you have a written agreement with MapTiler. In case of doubt, read the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use).
 
 ### Centered static maps
 This type of map is centered on a longitude-latitude coordinate and the zoom level must also be provided (from `0`: very zoomed out, to `22`: very zoomed in).  
@@ -299,3 +307,6 @@ config.fetch = fetch;
 
 // ...
 ```
+
+# Terms and usage limitations
+The data fetched from MapTiler Cloud API, with or without this library, cannot be stored or redistributed in any ways. If you have any doubt about your specific usecase, please consult our [legal terms](https://www.maptiler.com/cloud/terms/) or contact us at **sales@maptiler.com** .
