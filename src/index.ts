@@ -44,6 +44,16 @@ import type {
 
 import { ServiceError } from "./services/ServiceError";
 
+import type { MapStylePreset, MapStyleType } from "./mapstyle";
+
+import {
+  MapStyleVariant,
+  ReferenceMapStyle,
+  mapStylePresetList,
+  MapStyle,
+  styleToStyle,
+} from "./mapstyle";
+
 // Exporting types
 export type {
   Position,
@@ -74,6 +84,8 @@ export type {
   GetDataOptions,
   GeolocationInfoOptions,
   GeolocationResult,
+  MapStylePreset,
+  MapStyleType,
 };
 
 // Exporting classes, objects, functions, etc.
@@ -87,4 +99,9 @@ export {
   data,
   staticMaps,
   LanguageGeocoding,
+  MapStyleVariant,
+  ReferenceMapStyle,
+  mapStylePresetList,
+  MapStyle,
+  styleToStyle,
 };
