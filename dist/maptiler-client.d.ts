@@ -525,6 +525,399 @@ declare const data: {
 };
 
 /**
+ * Type for object containing style details
+ */
+type MapStylePreset = {
+    referenceStyleID: string;
+    name: string;
+    description: string;
+    variants: Array<{
+        id: string;
+        name: string;
+        variantType: string;
+        description: string;
+        imageURL: string;
+    }>;
+};
+/**
+ * An instance of MapStyleVariant contains information about a style to use that belong to a reference style
+ */
+declare class MapStyleVariant {
+    /**
+     * Human-friendly name
+     */
+    private name;
+    /**
+     * Variant name the variant is addressed to from its reference style: `MapStyle.REFERNCE_STYLE_NAME.VARIANT_TYPE`
+     */
+    private variantType;
+    /**
+     * MapTiler Cloud id
+     */
+    private id;
+    /**
+     * Reference map style, used to retrieve sibling variants
+     */
+    private referenceStyle;
+    /**
+     * Human-friendly description
+     */
+    private description;
+    /**
+     * URL to an image describing the style variant
+     */
+    private imageURL;
+    constructor(
+    /**
+     * Human-friendly name
+     */
+    name: string, 
+    /**
+     * Variant name the variant is addressed to from its reference style: `MapStyle.REFERNCE_STYLE_NAME.VARIANT_TYPE`
+     */
+    variantType: string, 
+    /**
+     * MapTiler Cloud id
+     */
+    id: string, 
+    /**
+     * Reference map style, used to retrieve sibling variants
+     */
+    referenceStyle: ReferenceMapStyle, 
+    /**
+     * Human-friendly description
+     */
+    description: string, 
+    /**
+     * URL to an image describing the style variant
+     */
+    imageURL: string);
+    /**
+     * Get the human-friendly name
+     * @returns
+     */
+    getName(): string;
+    getFullName(): string;
+    /**
+     * Get the variant type (eg. "DEFAULT", "DARK", "PASTEL", etc.)
+     * @returns
+     */
+    getType(): string;
+    /**
+     * Get the MapTiler Cloud id
+     * @returns
+     */
+    getId(): string;
+    /**
+     * Get the human-friendly description
+     */
+    getDescription(): string;
+    /**
+     * Get the reference style this variant belongs to
+     * @returns
+     */
+    getReferenceStyle(): ReferenceMapStyle;
+    /**
+     * Check if a variant of a given type exists for _this_ variants
+     * (eg. if this is a "DARK", then we can check if there is a "LIGHT" variant of it)
+     * @param variantType
+     * @returns
+     */
+    hasVariant(variantType: string): boolean;
+    /**
+     * Retrieve the variant of a given type. If not found, will return the "DEFAULT" variant.
+     * (eg. _this_ "DARK" variant does not have any "PASTEL" variant, then the "DEFAULT" is returned)
+     * @param variantType
+     * @returns
+     */
+    getVariant(variantType: string): MapStyleVariant;
+    /**
+     * Get all the variants for _this_ variants, except _this_ current one
+     * @returns
+     */
+    getVariants(): Array<MapStyleVariant>;
+    /**
+     * Get the image URL that represent _this_ variant
+     * @returns
+     */
+    getImageURL(): string;
+}
+/**
+ * An instance of reference style contains a list of StyleVariants ordered by relevance
+ */
+declare class ReferenceMapStyle {
+    /**
+     * Human-friendly name of this reference style
+     */
+    private name;
+    /**
+     * ID of this reference style
+     */
+    private id;
+    /**
+     * Variants that belong to this reference style, key being the reference type
+     */
+    private variants;
+    /**
+     * Variants that belong to this reference style, ordered by relevance
+     */
+    private orderedVariants;
+    constructor(
+    /**
+     * Human-friendly name of this reference style
+     */
+    name: string, 
+    /**
+     * ID of this reference style
+     */
+    id: string);
+    /**
+     * Get the human-friendly name of this reference style
+     * @returns
+     */
+    getName(): string;
+    /**
+     * Get the id of _this_ reference style
+     * @returns
+     */
+    getId(): string;
+    /**
+     * Add a variant to _this_ reference style
+     * @param v
+     */
+    addVariant(v: MapStyleVariant): void;
+    /**
+     * Check if a given variant type exists for this reference style
+     * @param variantType
+     * @returns
+     */
+    hasVariant(variantType: string): boolean;
+    /**
+     * Get a given variant. If the given type of variant does not exist for this reference style,
+     * then the most relevant default variant is returned instead
+     * @param variantType
+     * @returns
+     */
+    getVariant(variantType: string): MapStyleVariant;
+    /**
+     * Get the list of variants for this reference style
+     * @returns
+     */
+    getVariants(): Array<MapStyleVariant>;
+    /**
+     * Get the defualt variant for this reference style
+     * @returns
+     */
+    getDefaultVariant(): MapStyleVariant;
+}
+/**
+ * All the styles and variants maintained by MapTiler.
+ */
+type MapStyleType = {
+    /**
+     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings
+     */
+    STREETS: ReferenceMapStyle & {
+        /**
+         * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings.
+         */
+        DEFAULT: MapStyleVariant;
+        /**
+         * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in dark mode.
+         */
+        DARK: MapStyleVariant;
+        /**
+         * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in light mode.
+         */
+        LIGHT: MapStyleVariant;
+        /**
+         * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, with a pastel color palette.
+         */
+        PASTEL: MapStyleVariant;
+    };
+    /**
+     * Suitable for outdoor activities. With elevation isolines and hillshading.
+     */
+    OUTDOOR: ReferenceMapStyle & {
+        /**
+         * Suitable for outdoor activities. With elevation isolines and hillshading.
+         */
+        DEFAULT: MapStyleVariant;
+    };
+    /**
+     * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading.
+     */
+    WINTER: ReferenceMapStyle & {
+        /**
+         * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading.
+         */
+        DEFAULT: MapStyleVariant;
+    };
+    /**
+     * High resolution imagery only, without any label.
+     */
+    SATELLITE: ReferenceMapStyle & {
+        /**
+         * High resolution imagery only, without any label.
+         */
+        DEFAULT: MapStyleVariant;
+    };
+    /**
+     * High resolution imagery with labels, political borders and roads.
+     */
+    HYBRID: ReferenceMapStyle & {
+        /**
+         * High resolution imagery with labels, political borders and roads.
+         */
+        DEFAULT: MapStyleVariant;
+    };
+    /**
+     * A minimalist street-oriented style without POI
+     */
+    BASIC: ReferenceMapStyle & {
+        /**
+         * A minimalist street-oriented style without POI
+         */
+        DEFAULT: MapStyleVariant;
+        /**
+         * A minimalist street-oriented style without POI, in dark mode
+         */
+        DARK: MapStyleVariant;
+        /**
+         * A minimalist street-oriented style without POI, in light mode
+         */
+        LIGHT: MapStyleVariant;
+    };
+    /**
+     * A bright street-oriented style, a nice alternative to `streets`
+     */
+    BRIGHT: ReferenceMapStyle & {
+        /**
+         * A bright street-oriented style, a nice alternative to `streets`
+         */
+        DEFAULT: MapStyleVariant;
+        /**
+         * A bright street-oriented style, a nice alternative to `streets`, in dark mode
+         */
+        DARK: MapStyleVariant;
+        /**
+         * A bright street-oriented style, a nice alternative to `streets`, in light mode
+         */
+        LIGHT: MapStyleVariant;
+        /**
+         * A bright street-oriented style, a nice alternative to `streets`, with a soft pastel color palette
+         */
+        PASTEL: MapStyleVariant;
+    };
+    /**
+     * Classic OpenStreetMap style
+     */
+    OPENSTREETMAP: ReferenceMapStyle & {
+        DEFAULT: MapStyleVariant;
+    };
+    /**
+     * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
+     */
+    TOPO: ReferenceMapStyle & {
+        /**
+         * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
+         */
+        DEFAULT: MapStyleVariant;
+        /**
+         * A nice high-contrast, and high saturation alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
+         */
+        SHINY: MapStyleVariant;
+        /**
+         * A nice low-contrast, alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details, using a soft pastel color palette
+         */
+        PASTEL: MapStyleVariant;
+        /**
+         * A nice very high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
+         */
+        TOPOGRAPHIQUE: MapStyleVariant;
+    };
+    /**
+     * A nice alternative to `streets` with a soft color palette
+     */
+    VOYAGER: ReferenceMapStyle & {
+        /**
+         * A nice alternative to `streets` with a soft color palette
+         */
+        DEFAULT: MapStyleVariant;
+        /**
+         * A nice alternative to `streets`, in very dark mode
+         */
+        DARK: MapStyleVariant;
+        /**
+         * A nice alternative to `streets`, in light mode
+         */
+        LIGHT: MapStyleVariant;
+        /**
+         * A nice alternative to `streets` with a soft sepia color palette and vintage look
+         */
+        VINTAGE: MapStyleVariant;
+    };
+    /**
+     * A bold very high contrast black and white (no gray!) style for the city
+     */
+    TONER: ReferenceMapStyle & {
+        /**
+         * A bold very high contrast black and white (no gray!) style for the city
+         */
+        DEFAULT: MapStyleVariant;
+        /**
+         * A bold very high contrast black and white (no gray!) style for the city, without any label
+         */
+        BACKGROUND: MapStyleVariant;
+        /**
+         * A bold very high contrast, yet faded, style for the city
+         */
+        LITE: MapStyleVariant;
+        /**
+         * A bold very high contrast black and white (no gray!) style for the city, with no building, only roads!
+         */
+        LINES: MapStyleVariant;
+    };
+    /**
+     * Minimalist style, perfect for data visualization
+     */
+    STAGE: ReferenceMapStyle & {
+        /**
+         *  Minimalist style, perfect for data visualization
+         */
+        DEFAULT: MapStyleVariant;
+        /**
+         *  Minimalist style, perfect for data visualization in dark mode
+         */
+        DARK: MapStyleVariant;
+        /**
+         *  Minimalist style, perfect for data visualization in light mode
+         */
+        LIGHT: MapStyleVariant;
+    };
+    /**
+     * Explore deep see trenches and mountains, with isolines and depth labels
+     */
+    OCEAN: ReferenceMapStyle & {
+        /**
+         * Explore deep see trenches and mountains, with isolines and depth labels
+         */
+        DEFAULT: MapStyleVariant;
+    };
+};
+declare const mapStylePresetList: Array<MapStylePreset>;
+declare function styleToStyle(style: string | ReferenceMapStyle | MapStyleVariant | null | undefined): string;
+/**
+ * Contains all the reference map style created by MapTiler team as well as all the variants.
+ * For example, `MapStyle.STREETS` and the variants:
+ * - `MapStyle.STREETS.DARK`
+ * - `MapStyle.STREETS.LIGHT`
+ * - `MapStyle.STREETS.PASTEL`
+ *
+ */
+declare const MapStyle: MapStyleType;
+
+/**
  * Base set of options that can be provided to all the types of static maps
  */
 type StaticMapBaseOptions = {
@@ -536,7 +929,7 @@ type StaticMapBaseOptions = {
      * Style of the map (not full style URL). Example: "winter", "streets-v2".
      * Default: `"streets-v2"`
      */
-    style?: string;
+    style?: string | ReferenceMapStyle | MapStyleVariant;
     /**
      * Double the size of the static map image to support hiDPI/Retina monitors.
      * Default: `false`
@@ -699,4 +1092,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, geocoding, geolocation, staticMaps };
+export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, geocoding, geolocation, mapStylePresetList, staticMaps, styleToStyle };
