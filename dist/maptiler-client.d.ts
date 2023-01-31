@@ -525,6 +525,12 @@ declare const data: {
 };
 
 /**
+ * Expand the map style provided as argument of the Map constructor
+ * @param style
+ * @returns
+ */
+declare function expandMapStyle(style: any): string;
+/**
  * Type for object containing style details
  */
 type MapStylePreset = {
@@ -911,7 +917,6 @@ type MapStyleType = {
     };
 };
 declare const mapStylePresetList: Array<MapStylePreset>;
-declare function styleToStyle(style: string | ReferenceMapStyle | MapStyleVariant | null | undefined): string;
 /**
  * Contains all the reference map style created by MapTiler team as well as all the variants.
  * For example, `MapStyle.STREETS` and the variants:
@@ -1097,4 +1102,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, geocoding, geolocation, mapStylePresetList, staticMaps, styleToStyle };
+export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, expandMapStyle, geocoding, geolocation, mapStylePresetList, staticMaps };

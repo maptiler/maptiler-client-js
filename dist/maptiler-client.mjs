@@ -1236,5 +1236,5 @@ const staticMaps = {
   automatic
 };
 
-export { ClientConfig, LanguageGeocoding, MapStyle, MapStyleVariant, ReferenceMapStyle, ServiceError, config, coordinates, data, geocoding, geolocation, mapStylePresetList, staticMaps, styleToStyle };
+export { ClientConfig, LanguageGeocoding, MapStyle, MapStyleVariant, ReferenceMapStyle, ServiceError, config, coordinates, data, expandMapStyle, geocoding, geolocation, mapStylePresetList, staticMaps };
 //# sourceMappingURL=maptiler-client.mjs.map

@@ -1251,11 +1251,11 @@
   exports.config = config;
   exports.coordinates = coordinates;
   exports.data = data;
+  exports.expandMapStyle = expandMapStyle;
   exports.geocoding = geocoding;
   exports.geolocation = geolocation;
   exports.mapStylePresetList = mapStylePresetList;
   exports.staticMaps = staticMaps;
-  exports.styleToStyle = styleToStyle;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
