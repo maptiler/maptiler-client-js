@@ -641,6 +641,11 @@ declare class MapStyleVariant {
      * @returns
      */
     getImageURL(): string;
+    /**
+     * Get the style as usable by MapLibre, a string (URL) or a plain style description (StyleSpecification)
+     * @returns
+     */
+    getExpandedStyleURL(): string;
 }
 /**
  * An instance of reference style contains a list of StyleVariants ordered by relevance

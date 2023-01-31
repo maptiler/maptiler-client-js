@@ -457,6 +457,20 @@ const data = {
   get
 };
 
+function expandMapStyle(style) {
+  const maptilerDomainRegex = /^maptiler:\/\/(.*)/;
+  let match;
+  const trimmed = style.trim();
+  let expandedStyle;
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    expandedStyle = trimmed;
+  } else if ((match = maptilerDomainRegex.exec(trimmed)) !== null) {
+    expandedStyle = `https://api.maptiler.com/maps/${match[1]}/style.json`;
+  } else {
+    expandedStyle = `https://api.maptiler.com/maps/${trimmed}/style.json`;
+  }
+  return expandedStyle;
+}
 class MapStyleVariant {
   constructor(name, variantType, id, referenceStyle, description, imageURL) {
     this.name = name;
@@ -534,6 +548,13 @@ class MapStyleVariant {
    */
   getImageURL() {
     return this.imageURL;
+  }
+  /**
+   * Get the style as usable by MapLibre, a string (URL) or a plain style description (StyleSpecification)
+   * @returns
+   */
+  getExpandedStyleURL() {
+    return expandMapStyle(this.getId());
   }
 }
 class ReferenceMapStyle {
