@@ -13,18 +13,37 @@ function tryGettingFetch() {
 }
 class ClientConfig {
   constructor() {
+    /**
+     * MapTiler Cloud API key
+     */
     this._apiKey = "";
+    /**
+     * The fetch function. To be set if in Node < 18, otherwise
+     * will be automatically resolved.
+     */
     this._fetch = tryGettingFetch();
   }
+  /**
+   * Set the MapTiler Cloud API key
+   */
   set apiKey(k) {
     this._apiKey = k;
   }
+  /**
+   * Get the MapTiler Cloud API key
+   */
   get apiKey() {
     return this._apiKey;
   }
+  /**
+   * Set a the custom fetch function to replace the default one
+   */
   set fetch(f) {
     this._fetch = f;
   }
+  /**
+   * Get the fetch fucntion
+   */
   get fetch() {
     return this._fetch;
   }
@@ -451,33 +470,72 @@ class MapStyleVariant {
     this.description = description;
     this.imageURL = imageURL;
   }
+  /**
+   * Get the human-friendly name
+   * @returns
+   */
   getName() {
     return this.name;
   }
   getFullName() {
     return `${this.referenceStyle.getName()} ${this.name}`;
   }
+  /**
+   * Get the variant type (eg. "DEFAULT", "DARK", "PASTEL", etc.)
+   * @returns
+   */
   getType() {
     return this.variantType;
   }
+  /**
+   * Get the MapTiler Cloud id
+   * @returns
+   */
   getId() {
     return this.id;
   }
+  /**
+   * Get the human-friendly description
+   */
   getDescription() {
     return this.description;
   }
+  /**
+   * Get the reference style this variant belongs to
+   * @returns
+   */
   getReferenceStyle() {
     return this.referenceStyle;
   }
+  /**
+   * Check if a variant of a given type exists for _this_ variants
+   * (eg. if this is a "DARK", then we can check if there is a "LIGHT" variant of it)
+   * @param variantType
+   * @returns
+   */
   hasVariant(variantType) {
     return this.referenceStyle.hasVariant(variantType);
   }
+  /**
+   * Retrieve the variant of a given type. If not found, will return the "DEFAULT" variant.
+   * (eg. _this_ "DARK" variant does not have any "PASTEL" variant, then the "DEFAULT" is returned)
+   * @param variantType
+   * @returns
+   */
   getVariant(variantType) {
     return this.referenceStyle.getVariant(variantType);
   }
+  /**
+   * Get all the variants for _this_ variants, except _this_ current one
+   * @returns
+   */
   getVariants() {
     return this.referenceStyle.getVariants().filter((v) => v !== this);
   }
+  /**
+   * Get the image URL that represent _this_ variant
+   * @returns
+   */
   getImageURL() {
     return this.imageURL;
   }
@@ -486,28 +544,65 @@ class ReferenceMapStyle {
   constructor(name, id) {
     this.name = name;
     this.id = id;
+    /**
+     * Variants that belong to this reference style, key being the reference type
+     */
     this.variants = {};
+    /**
+     * Variants that belong to this reference style, ordered by relevance
+     */
     this.orderedVariants = [];
   }
+  /**
+   * Get the human-friendly name of this reference style
+   * @returns
+   */
   getName() {
     return this.name;
   }
+  /**
+   * Get the id of _this_ reference style
+   * @returns
+   */
   getId() {
     return this.id;
   }
+  /**
+   * Add a variant to _this_ reference style
+   * @param v
+   */
   addVariant(v) {
     this.variants[v.getType()] = v;
     this.orderedVariants.push(v);
   }
+  /**
+   * Check if a given variant type exists for this reference style
+   * @param variantType
+   * @returns
+   */
   hasVariant(variantType) {
     return variantType in this.variants;
   }
+  /**
+   * Get a given variant. If the given type of variant does not exist for this reference style,
+   * then the most relevant default variant is returned instead
+   * @param variantType
+   * @returns
+   */
   getVariant(variantType) {
     return variantType in this.variants ? this.variants[variantType] : this.orderedVariants[0];
   }
+  /**
+   * Get the list of variants for this reference style
+   * @returns
+   */
   getVariants() {
     return Object.values(this.variants);
   }
+  /**
+   * Get the defualt variant for this reference style
+   * @returns
+   */
   getDefaultVariant() {
     return this.orderedVariants[0];
   }
@@ -853,11 +948,16 @@ function buildMapStyles() {
       const variantInfo = refStyleInfo.variants[j];
       const variant = new MapStyleVariant(
         variantInfo.name,
+        // name
         variantInfo.variantType,
+        // variantType
         variantInfo.id,
+        // id
         refStyle,
+        // referenceStyle
         variantInfo.description,
         variantInfo.imageURL
+        // imageURL
       );
       refStyle.addVariant(variant);
     }

@@ -1,4 +1,4 @@
-[MapTiler Client - v1.1.0](../README.md) / MapStyleVariant
+[MapTiler Client - v1.1.1](../README.md) / MapStyleVariant
 
 # Class: MapStyleVariant
 
@@ -42,7 +42,7 @@ An instance of MapStyleVariant contains information about a style to use that be
 
 #### Defined in
 
-[mapstyle.ts:21](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L21)
+[mapstyle.ts:21](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L21)
 
 ## Methods
 
@@ -58,7 +58,7 @@ Get the human-friendly description
 
 #### Defined in
 
-[mapstyle.ts:84](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L84)
+[mapstyle.ts:84](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L84)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[mapstyle.ts:61](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L61)
+[mapstyle.ts:61](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L61)
 
 ___
 
@@ -88,7 +88,7 @@ Get the MapTiler Cloud id
 
 #### Defined in
 
-[mapstyle.ts:77](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L77)
+[mapstyle.ts:77](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L77)
 
 ___
 
@@ -104,7 +104,7 @@ Get the image URL that represent _this_ variant
 
 #### Defined in
 
-[mapstyle.ts:128](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L128)
+[mapstyle.ts:128](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L128)
 
 ___
 
@@ -120,7 +120,7 @@ Get the human-friendly name
 
 #### Defined in
 
-[mapstyle.ts:57](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L57)
+[mapstyle.ts:57](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L57)
 
 ___
 
@@ -136,7 +136,7 @@ Get the reference style this variant belongs to
 
 #### Defined in
 
-[mapstyle.ts:92](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L92)
+[mapstyle.ts:92](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L92)
 
 ___
 
@@ -152,7 +152,7 @@ Get the variant type (eg. "DEFAULT", "DARK", "PASTEL", etc.)
 
 #### Defined in
 
-[mapstyle.ts:69](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L69)
+[mapstyle.ts:69](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L69)
 
 ___
 
@@ -175,7 +175,7 @@ Retrieve the variant of a given type. If not found, will return the "DEFAULT" va
 
 #### Defined in
 
-[mapstyle.ts:112](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L112)
+[mapstyle.ts:112](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L112)
 
 ___
 
@@ -191,7 +191,7 @@ Get all the variants for _this_ variants, except _this_ current one
 
 #### Defined in
 
-[mapstyle.ts:120](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L120)
+[mapstyle.ts:120](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L120)
 
 ___
 
@@ -214,4 +214,4 @@ Check if a variant of a given type exists for _this_ variants
 
 #### Defined in
 
-[mapstyle.ts:102](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L102)
+[mapstyle.ts:102](https://github.com/maptiler/maptiler-client-js/blob/b9cff52/src/mapstyle.ts#L102)
