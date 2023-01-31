@@ -19,11 +19,11 @@
 ## What?
 
 The **MapTiler Client JS** exposes a number of handy functions that wrap API call to [MapTiler Cloud API services](https://docs.maptiler.com/cloud/api), such as:
-- [Geocoding forward and reverse](#🔍-geocoding)
-- [Geolocation from visitor's IP address](#🕵%EF%B8%8F♂%EF%B8%8F-geolocation)
-- [Coordidinate systems search and tranform](#🌐-coordinates)
-- [User data fetching as GeoJSON](#💽-data)
-- [Static maps of all sorts](#🗺%EF%B8%8F-static-maps)
+- [Geocoding forward and reverse](#-geocoding)
+- [Geolocation from visitor's IP address](#%EF%B8%8F%EF%B8%8F-geolocation)
+- [Coordidinate systems search and tranform](#-coordinates)
+- [User data fetching as GeoJSON](#-data)
+- [Static maps of all sorts](#%EF%B8%8F-static-maps)
 
 ## Why?
 
