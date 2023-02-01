@@ -35,7 +35,7 @@ An instance of reference style contains a list of StyleVariants ordered by relev
 
 #### Defined in
 
-[mapstyle.ts:180](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L180)
+[mapstyle.ts:180](https://github.com/maptiler/maptiler-client-js/blob/990a1ee/src/mapstyle.ts#L180)
 
 ## Methods
 
@@ -57,7 +57,7 @@ Add a variant to _this_ reference style
 
 #### Defined in
 
-[mapstyle.ts:212](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L212)
+[mapstyle.ts:212](https://github.com/maptiler/maptiler-client-js/blob/990a1ee/src/mapstyle.ts#L212)
 
 ___
 
@@ -73,7 +73,7 @@ Get the defualt variant for this reference style
 
 #### Defined in
 
-[mapstyle.ts:250](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L250)
+[mapstyle.ts:250](https://github.com/maptiler/maptiler-client-js/blob/990a1ee/src/mapstyle.ts#L250)
 
 ___
 
@@ -89,7 +89,7 @@ Get the id of _this_ reference style
 
 #### Defined in
 
-[mapstyle.ts:204](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L204)
+[mapstyle.ts:204](https://github.com/maptiler/maptiler-client-js/blob/990a1ee/src/mapstyle.ts#L204)
 
 ___
 
@@ -105,7 +105,7 @@ Get the human-friendly name of this reference style
 
 #### Defined in
 
-[mapstyle.ts:196](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L196)
+[mapstyle.ts:196](https://github.com/maptiler/maptiler-client-js/blob/990a1ee/src/mapstyle.ts#L196)
 
 ___
 
@@ -128,7 +128,7 @@ then the most relevant default variant is returned instead
 
 #### Defined in
 
-[mapstyle.ts:232](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L232)
+[mapstyle.ts:232](https://github.com/maptiler/maptiler-client-js/blob/990a1ee/src/mapstyle.ts#L232)
 
 ___
 
@@ -144,7 +144,7 @@ Get the list of variants for this reference style
 
 #### Defined in
 
-[mapstyle.ts:242](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L242)
+[mapstyle.ts:242](https://github.com/maptiler/maptiler-client-js/blob/990a1ee/src/mapstyle.ts#L242)
 
 ___
 
@@ -166,4 +166,4 @@ Check if a given variant type exists for this reference style
 
 #### Defined in
 
-[mapstyle.ts:222](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L222)
+[mapstyle.ts:222](https://github.com/maptiler/maptiler-client-js/blob/990a1ee/src/mapstyle.ts#L222)
