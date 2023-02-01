@@ -51,7 +51,7 @@ import {
   ReferenceMapStyle,
   mapStylePresetList,
   MapStyle,
-  styleToStyle,
+  expandMapStyle,
 } from "./mapstyle";
 
 // Exporting types
@@ -103,5 +103,5 @@ export {
   ReferenceMapStyle,
   mapStylePresetList,
   MapStyle,
-  styleToStyle,
+  expandMapStyle,
 };

@@ -1,4 +1,4 @@
-[MapTiler Client - v1.1.0](../README.md) / ServiceError
+[MapTiler Client - v1.1.1](../README.md) / ServiceError
 
 # Class: ServiceError
 
@@ -39,7 +39,7 @@ Error.constructor
 
 #### Defined in
 
-[services/ServiceError.ts:5](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/services/ServiceError.ts#L5)
+[services/ServiceError.ts:5](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/ServiceError.ts#L5)
 
 ## Properties
 
@@ -49,4 +49,4 @@ Error.constructor
 
 #### Defined in
 
-[services/ServiceError.ts:5](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/services/ServiceError.ts#L5)
+[services/ServiceError.ts:5](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/ServiceError.ts#L5)

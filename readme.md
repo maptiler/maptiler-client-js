@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://www.maptiler.com/">offcial page →</a><br>
+<a href="https://docs.maptiler.com/client-js/">offcial page →</a><br>
   <img src="images/maptiler-client-logo.svg" width="400px">
 </p>
 
@@ -19,11 +19,11 @@
 ## What?
 
 The **MapTiler Client JS** exposes a number of handy functions that wrap API call to [MapTiler Cloud API services](https://docs.maptiler.com/cloud/api), such as:
-- Geocoding forward and reverse
-- Geolocation from visitor's IP address
-- Coordidinate systems search and tranform
-- User data fetching as GeoJSON
-- Static maps of all sorts
+- [Geocoding forward and reverse](#-geocoding)
+- [Geolocation from visitor's IP address](#%EF%B8%8F%EF%B8%8F-geolocation)
+- [Coordidinate systems search and tranform](#-coordinates)
+- [User data fetching as GeoJSON](#-data)
+- [Static maps of all sorts](#%EF%B8%8F-static-maps)
 
 ## Why?
 
@@ -36,8 +36,6 @@ The project is entirely written in TypeScript and all the function arguments are
 - Backward compatibility: guaranteed on changes to API endpoints
 - Runs: in Node.js or in browser
 - Open source license
-
-> 📣 *__Note:__* If you need *this* API wrapper **AND** a complete SDK to display beautiful interactive maps, then checkout [MapTiler SDK JS](https://github.com/maptiler/maptiler-sdk-js), it contains it all!
 
 # Install
 ```shell
@@ -69,7 +67,7 @@ The [examples](examples/) folder includes are featuring usages for **NodeJS**, *
 Here is the list of service wrapper functions that are built-in:
 
 ## 🔍 Geocoding
-> ✅ Please, use geocoding responses in the context of server-side rendering, hydration or client-side rendering, but do not 🚫 store or redistribute MapTiler Cloud API data. In case of doubt, consult the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) ⚖️
+> ✅ Please, use geocoding functions only from client-side (browser) and do not 🚫 **store** or **redistribute** MapTiler Cloud API data. In case of doubt, consult the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) ⚖️
 
 ### Forward
 You want to know the longitude and latitude of a specific place, use the forward geocoding:
@@ -82,7 +80,7 @@ You can provide some options such as:
 - one of more languages to get the results into
 - a bounding geo box, to restrict the search to a given window
 
-Read more about forward geocoding on our official [API documentation](https://docs.maptiler.com/cloud/api/geocoding/#search-by-name-forward).
+Read more about forward geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#forward).
 
 ### Reverse
 You wan to tknow the name of a place, given a longitude-latitude? Use the reverse geocoding:
@@ -92,7 +90,7 @@ const result = await maptilerClient.geocoding.reverse([6.249638, 46.402056]);
 ```
 The same option object as the forward geocoding can be provided.
 
-Read more about reverse geocoding on our official [API documentation](https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse).
+Read more about reverse geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#reverse).
 
 ### Language
 For both *forward* and *reverse* geocoding, this library provides a list of supported languages as shorthands to [ISO language codes](https://en.wikipedia.org/wiki/ISO_639-1). The result will be provided in multiple languages if the `language` options is an array:
@@ -104,9 +102,9 @@ const result = await maptilerClient.geocoding.forward('paris', {language: [mapti
 The special language `AUTO` will detect the plateform/browser prefered language.
 
 ## 🕵️‍♂️ Geolocation
-> ✅ Please, use geolocation responses in the context of server-side rendering, hydration or client-side rendering, but do not 🚫 store or redistribute MapTiler Cloud API data. In case of doubt, consult the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) ⚖️
+The geolocation service provides location informations of a visitor using its IP address.
 
-The geolocation service provides an accurate location insight of a website visitor using its IP address.
+The geolocation uses the IP address of a visitors to provide informations about their location, such as city, region, country, timezone, etc. The precision is lower than GPS but does not require visitors to explicitely enable the location service from their web browser.
 
 There is only a single function:
 ```ts
@@ -114,11 +112,9 @@ There is only a single function:
 const result = await maptilerClient.geolocation.info();
 ```
 
-Read more about geolocation on our official [API documentation](https://docs.maptiler.com/cloud/api/geolocation/).
+Read more about geolocation on our [official documentation](https://docs.maptiler.com/client-js/geolocation/).
 
 ## 🌐 Coordinates
-> ✅ Please, use coordinate responses in the context of server-side rendering, hydration or client-side rendering, but do not 🚫 store or redistribute MapTiler Cloud API data. In case of doubt, consult the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) ⚖️
-
 If you are already familiar with [epsg.io](https://epsg.io/) (created by MapTiler), then you may find convenient to access the details of more than 10 thousands of coordinate reference systems (CRS) programmatically, as well as transforming coordinates from one system to another!
 
 ### Search
@@ -133,7 +129,7 @@ const resultD = await maptilerClient.coordinates.search('code:4326', {transforma
 
 The `transformations` options retrieves a lot more details about the CRS that MapTiler API is able to transform to/from than just their IDs.
 
-Read more about searching coordinate systems on our official [API documentation](https://docs.maptiler.com/cloud/api/coordinates/#search-coordinate-systems).
+Read more about searching coordinate systems on our [official documentation](https://docs.maptiler.com/client-js/coordinates/#search).
 
 ### Transform
 Transforming a couple of coordinates from one system to another can be challenging, for example, most countries have their own official system, yet web mapping tools are more often than not exclusive to [WGS84](https://epsg.io/4326).
@@ -150,7 +146,7 @@ const resultA = await maptilerClient.coordinates.transform([1, 45], {targetCrs: 
 const resultB = await maptilerClient.coordinates.transform([[10, 48], [1, 45]], {targetCrs: 9793})
 ```
 
-Read more about transforming coordinates on our official [API documentation](https://docs.maptiler.com/cloud/api/coordinates/#transform-coordinates).
+Read more about transforming coordinates on our [official documentation](https://docs.maptiler.com/client-js/coordinates/#transform).
 
 ## 💽 Data
 MapTiler Cloud give its users the possibility to [upload and create data](https://cloud.maptiler.com/data/), manually with a user interface or by uploading a GPX, GeoJSON, KML or shp file. A unique ID is associated to each dataset so that we can later on access it programmatically to retrieve a GeoJSON equivalent of it:
@@ -162,6 +158,8 @@ const result = await maptilerClient.data.get('my-dataset-unique-id')
 
 Since the result is a GeoJSON, it can easily be added to a `map` with `.addSource()` and `.addLayer()`.
 
+Read more about fetching your own data on our [official documentation](https://docs.maptiler.com/client-js/data/).
+
 ## 🗺️ Static maps
 > ✅ Please, use static maps URLs only from client side `<img>` elements, and do not 🚫 store or redistribute the static map files. In case of doubt, consult the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) ⚖️
 
@@ -172,7 +170,9 @@ Maptiler Cloud provides many possibilities for creating static maps as PNG, JPEG
 
 Three modes are available: `centered`, `bounded` and `automatic`.
 
-> 📣 *__important:__* Contrary to the geolocation/geocoding/coordinates/data service wrappers, the static maps function **does not** perform any query to the MapTiler API, instead they build the image URL. We took this decision because images are most likely going to be displayed  in `<img src="path.png"></img>` markups and will naturaly be fetched by the web browser.
+> 📣 *__important:__* <span style="text-decoration: underline">only image **URLs** are returned.</span>   
+> Contrary to the other functions of this library, the static map functions **do not** perform any query to MapTiler Cloud API, instead they build the image URL for you to use in `<img>` elements.
+
 
 ### Map Styles
 In the following static map functions, the `option` object features a `style` property that can be a string or one of the built-in style shorthand. Here is the full list:
@@ -344,4 +344,4 @@ config.fetch = fetch;
 ```
 
 # Terms and usage limitations
-The data fetched from MapTiler Cloud API, with or without this library, cannot be stored or redistributed in any ways. If you have any doubt about your specific usecase, please consult our [legal terms](https://www.maptiler.com/cloud/terms/) or contact us at **sales@maptiler.com** .
+The data fetched from MapTiler Cloud API, with or without this library, cannot be stored or redistributed in any ways. If you have any doubt about your specific usecase, please consult our [legal terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) or contact us.

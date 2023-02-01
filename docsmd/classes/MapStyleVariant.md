@@ -1,4 +1,4 @@
-[MapTiler Client - v1.1.0](../README.md) / MapStyleVariant
+[MapTiler Client - v1.1.1](../README.md) / MapStyleVariant
 
 # Class: MapStyleVariant
 
@@ -13,6 +13,7 @@ An instance of MapStyleVariant contains information about a style to use that be
 ### Methods
 
 - [getDescription](MapStyleVariant.md#getdescription)
+- [getExpandedStyleURL](MapStyleVariant.md#getexpandedstyleurl)
 - [getFullName](MapStyleVariant.md#getfullname)
 - [getId](MapStyleVariant.md#getid)
 - [getImageURL](MapStyleVariant.md#getimageurl)
@@ -42,7 +43,7 @@ An instance of MapStyleVariant contains information about a style to use that be
 
 #### Defined in
 
-[mapstyle.ts:21](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L21)
+[mapstyle.ts:46](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L46)
 
 ## Methods
 
@@ -58,7 +59,23 @@ Get the human-friendly description
 
 #### Defined in
 
-[mapstyle.ts:84](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L84)
+[mapstyle.ts:109](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L109)
+
+___
+
+### getExpandedStyleURL
+
+▸ **getExpandedStyleURL**(): `string`
+
+Get the style as usable by MapLibre, a string (URL) or a plain style description (StyleSpecification)
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[mapstyle.ts:161](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L161)
 
 ___
 
@@ -72,7 +89,7 @@ ___
 
 #### Defined in
 
-[mapstyle.ts:61](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L61)
+[mapstyle.ts:86](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L86)
 
 ___
 
@@ -88,7 +105,7 @@ Get the MapTiler Cloud id
 
 #### Defined in
 
-[mapstyle.ts:77](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L77)
+[mapstyle.ts:102](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L102)
 
 ___
 
@@ -104,7 +121,7 @@ Get the image URL that represent _this_ variant
 
 #### Defined in
 
-[mapstyle.ts:128](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L128)
+[mapstyle.ts:153](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L153)
 
 ___
 
@@ -120,7 +137,7 @@ Get the human-friendly name
 
 #### Defined in
 
-[mapstyle.ts:57](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L57)
+[mapstyle.ts:82](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L82)
 
 ___
 
@@ -136,7 +153,7 @@ Get the reference style this variant belongs to
 
 #### Defined in
 
-[mapstyle.ts:92](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L92)
+[mapstyle.ts:117](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L117)
 
 ___
 
@@ -152,7 +169,7 @@ Get the variant type (eg. "DEFAULT", "DARK", "PASTEL", etc.)
 
 #### Defined in
 
-[mapstyle.ts:69](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L69)
+[mapstyle.ts:94](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L94)
 
 ___
 
@@ -175,7 +192,7 @@ Retrieve the variant of a given type. If not found, will return the "DEFAULT" va
 
 #### Defined in
 
-[mapstyle.ts:112](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L112)
+[mapstyle.ts:137](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L137)
 
 ___
 
@@ -191,7 +208,7 @@ Get all the variants for _this_ variants, except _this_ current one
 
 #### Defined in
 
-[mapstyle.ts:120](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L120)
+[mapstyle.ts:145](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L145)
 
 ___
 
@@ -214,4 +231,4 @@ Check if a variant of a given type exists for _this_ variants
 
 #### Defined in
 
-[mapstyle.ts:102](https://github.com/maptiler/maptiler-client-js/blob/68f576e/src/mapstyle.ts#L102)
+[mapstyle.ts:127](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L127)
