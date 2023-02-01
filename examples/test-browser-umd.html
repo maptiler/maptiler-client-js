@@ -15,33 +15,34 @@
     <script src ="../dist/maptiler-client.umd.js"></script>
     
     <script>
-      maptilerclient.config.apiKey = 'YOUR_API_KEY';
+      // The API key must be in the URL param as `?key=ABCD1234`
+      maptilerClient.config.apiKey = (new URLSearchParams(location.search)).get("key");
 
       async function testGeocoding() {
-        console.log(await maptilerclient.geocoding.forward('bordeaux', {language: [maptilerclient.LanguageGeocoding.SPANISH, maptilerclient.LanguageGeocoding.ENGLISH]}));
-        console.log(await maptilerclient.geocoding.forward('bordeaux'));
-        console.log(await maptilerclient.geocoding.reverse([6.249638, 46.402056], {language: ['es', 'en']}));
+        console.log(await maptilerClient.geocoding.forward('bordeaux', {language: [maptilerClient.LanguageGeocoding.SPANISH, maptilerClient.LanguageGeocoding.ENGLISH]}));
+        console.log(await maptilerClient.geocoding.forward('bordeaux'));
+        console.log(await maptilerClient.geocoding.reverse([6.249638, 46.402056], {language: ['es', 'en']}));
       }
 
       async function testGeolocation() {
-        console.log(await maptilerclient.geolocation.info());
+        console.log(await maptilerClient.geolocation.info());
       }
 
       async function testCoordinates() {
         // searching
-        console.log(await maptilerclient.coordinates.search('mercator', {transformations: true}));
-        console.log(await maptilerclient.coordinates.search('plate carree'));
-        console.log(await maptilerclient.coordinates.search('france'));
-        console.log(await maptilerclient.coordinates.search('4326', {transformations: true}));
-        console.log(await maptilerclient.coordinates.search('4326'));
+        console.log(await maptilerClient.coordinates.search('mercator', {transformations: true}));
+        console.log(await maptilerClient.coordinates.search('plate carree'));
+        console.log(await maptilerClient.coordinates.search('france'));
+        console.log(await maptilerClient.coordinates.search('4326', {transformations: true}));
+        console.log(await maptilerClient.coordinates.search('4326'));
 
         // // Transforming from wgs84 (default) to lambert93
-        console.log(await maptilerclient.coordinates.transform([1, 45], {targetCrs: 9793}));
-        console.log(await maptilerclient.coordinates.transform([[10, 48], [1, 45]], {targetCrs: 9793}));
+        console.log(await maptilerClient.coordinates.transform([1, 45], {targetCrs: 9793}));
+        console.log(await maptilerClient.coordinates.transform([[10, 48], [1, 45]], {targetCrs: 9793}));
       }
 
       async function testData() {
-        console.log(await maptilerclient.data.get('2dd5ecc4-3ae1-4d1e-99a2-182256486357'));
+        console.log(await maptilerClient.data.get('2dd5ecc4-3ae1-4d1e-99a2-182256486357'));
       }
 
       function addImage(url) {
@@ -51,7 +52,7 @@
       }
 
       function staticMapTest() {
-        const imageLinkCentered = maptilerclient.staticMaps.centered([7, 46.8], 5, {
+        const imageLinkCentered = maptilerClient.staticMaps.centered([7, 46.8], 5, {
           hiDPI: true,
           width: 1000,
           height: 500,
@@ -62,11 +63,11 @@
 
         addImage(imageLinkCentered);
 
-        const imageLinkBounded = maptilerclient.staticMaps.bounded([-9.8905, 36.6274, -6.0453, 42.3208], {
+        const imageLinkBounded = maptilerClient.staticMaps.bounded([-9.8905, 36.6274, -6.0453, 42.3208], {
           hiDPI: true,
           width: 1024,
           height: 2048,
-          style: maptilerclient.MapStyle.STAGE.DARK,
+          style: maptilerClient.MapStyle.STAGE.DARK,
           path: [[-9.8905, 36.6274], [-9.8905, 42.3208], [-6.0453, 42.3208], [-6.0453, 36.6274], [-9.8905, 36.6274]],
           pathStrokeColor: 'red',
           pathWidth: 4,

@@ -62,7 +62,7 @@ const bundles = [
     ],
     output: [
       {
-        name: "maptilerclient",
+        name: "maptilerClient",
         file: `dist/${name}.umd.js`, 
         format: "umd",
         sourcemap: true
@@ -121,7 +121,7 @@ if (process.env.NODE_ENV === "production") {
     ],
     output: [
       {
-        name: "maptilerclient",
+        name: "maptilerClient",
         file: `dist/${name}.umd.min.js`, 
         format: "umd",
         sourcemap: false

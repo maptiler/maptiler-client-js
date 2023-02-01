@@ -26,7 +26,8 @@
 
       console.log(LanguageGeocoding);
 
-      config.apiKey = 'YOUR_API_KEY';
+      // The API key must be in the URL param as `?key=ABCD1234`
+      config.apiKey = (new URLSearchParams(location.search)).get("key");
 
       async function testGeocoding() {
         console.log(await geocoding.forward('bordeaux', {language: [geocoding.language.SPANISH, geocoding.language.ENGLISH]}));
