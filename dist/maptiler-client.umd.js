@@ -15,18 +15,37 @@
   }
   class ClientConfig {
     constructor() {
+      /**
+       * MapTiler Cloud API key
+       */
       this._apiKey = "";
+      /**
+       * The fetch function. To be set if in Node < 18, otherwise
+       * will be automatically resolved.
+       */
       this._fetch = tryGettingFetch();
     }
+    /**
+     * Set the MapTiler Cloud API key
+     */
     set apiKey(k) {
       this._apiKey = k;
     }
+    /**
+     * Get the MapTiler Cloud API key
+     */
     get apiKey() {
       return this._apiKey;
     }
+    /**
+     * Set a the custom fetch function to replace the default one
+     */
     set fetch(f) {
       this._fetch = f;
     }
+    /**
+     * Get the fetch fucntion
+     */
     get fetch() {
       return this._fetch;
     }
@@ -444,6 +463,547 @@
     get
   };
 
+  function expandMapStyle(style) {
+    const maptilerDomainRegex = /^maptiler:\/\/(.*)/;
+    let match;
+    const trimmed = style.trim();
+    let expandedStyle;
+    if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+      expandedStyle = trimmed;
+    } else if ((match = maptilerDomainRegex.exec(trimmed)) !== null) {
+      expandedStyle = `https://api.maptiler.com/maps/${match[1]}/style.json`;
+    } else {
+      expandedStyle = `https://api.maptiler.com/maps/${trimmed}/style.json`;
+    }
+    return expandedStyle;
+  }
+  class MapStyleVariant {
+    constructor(name, variantType, id, referenceStyle, description, imageURL) {
+      this.name = name;
+      this.variantType = variantType;
+      this.id = id;
+      this.referenceStyle = referenceStyle;
+      this.description = description;
+      this.imageURL = imageURL;
+    }
+    /**
+     * Get the human-friendly name
+     * @returns
+     */
+    getName() {
+      return this.name;
+    }
+    getFullName() {
+      return `${this.referenceStyle.getName()} ${this.name}`;
+    }
+    /**
+     * Get the variant type (eg. "DEFAULT", "DARK", "PASTEL", etc.)
+     * @returns
+     */
+    getType() {
+      return this.variantType;
+    }
+    /**
+     * Get the MapTiler Cloud id
+     * @returns
+     */
+    getId() {
+      return this.id;
+    }
+    /**
+     * Get the human-friendly description
+     */
+    getDescription() {
+      return this.description;
+    }
+    /**
+     * Get the reference style this variant belongs to
+     * @returns
+     */
+    getReferenceStyle() {
+      return this.referenceStyle;
+    }
+    /**
+     * Check if a variant of a given type exists for _this_ variants
+     * (eg. if this is a "DARK", then we can check if there is a "LIGHT" variant of it)
+     * @param variantType
+     * @returns
+     */
+    hasVariant(variantType) {
+      return this.referenceStyle.hasVariant(variantType);
+    }
+    /**
+     * Retrieve the variant of a given type. If not found, will return the "DEFAULT" variant.
+     * (eg. _this_ "DARK" variant does not have any "PASTEL" variant, then the "DEFAULT" is returned)
+     * @param variantType
+     * @returns
+     */
+    getVariant(variantType) {
+      return this.referenceStyle.getVariant(variantType);
+    }
+    /**
+     * Get all the variants for _this_ variants, except _this_ current one
+     * @returns
+     */
+    getVariants() {
+      return this.referenceStyle.getVariants().filter((v) => v !== this);
+    }
+    /**
+     * Get the image URL that represent _this_ variant
+     * @returns
+     */
+    getImageURL() {
+      return this.imageURL;
+    }
+    /**
+     * Get the style as usable by MapLibre, a string (URL) or a plain style description (StyleSpecification)
+     * @returns
+     */
+    getExpandedStyleURL() {
+      return expandMapStyle(this.getId());
+    }
+  }
+  class ReferenceMapStyle {
+    constructor(name, id) {
+      this.name = name;
+      this.id = id;
+      /**
+       * Variants that belong to this reference style, key being the reference type
+       */
+      this.variants = {};
+      /**
+       * Variants that belong to this reference style, ordered by relevance
+       */
+      this.orderedVariants = [];
+    }
+    /**
+     * Get the human-friendly name of this reference style
+     * @returns
+     */
+    getName() {
+      return this.name;
+    }
+    /**
+     * Get the id of _this_ reference style
+     * @returns
+     */
+    getId() {
+      return this.id;
+    }
+    /**
+     * Add a variant to _this_ reference style
+     * @param v
+     */
+    addVariant(v) {
+      this.variants[v.getType()] = v;
+      this.orderedVariants.push(v);
+    }
+    /**
+     * Check if a given variant type exists for this reference style
+     * @param variantType
+     * @returns
+     */
+    hasVariant(variantType) {
+      return variantType in this.variants;
+    }
+    /**
+     * Get a given variant. If the given type of variant does not exist for this reference style,
+     * then the most relevant default variant is returned instead
+     * @param variantType
+     * @returns
+     */
+    getVariant(variantType) {
+      return variantType in this.variants ? this.variants[variantType] : this.orderedVariants[0];
+    }
+    /**
+     * Get the list of variants for this reference style
+     * @returns
+     */
+    getVariants() {
+      return Object.values(this.variants);
+    }
+    /**
+     * Get the defualt variant for this reference style
+     * @returns
+     */
+    getDefaultVariant() {
+      return this.orderedVariants[0];
+    }
+  }
+  const mapStylePresetList = [
+    {
+      referenceStyleID: "STREETS",
+      name: "Streets",
+      description: "",
+      variants: [
+        {
+          id: "streets-v2",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "streets-v2-dark",
+          name: "Dark",
+          variantType: "DARK",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "streets-v2-light",
+          name: "Light",
+          variantType: "LIGHT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "streets-v2-pastel",
+          name: "Pastel",
+          variantType: "PASTEL",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "OUTDOOR",
+      name: "Outdoor",
+      description: "",
+      variants: [
+        {
+          id: "outdoor-v2",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "WINTER",
+      name: "Winter",
+      description: "",
+      variants: [
+        {
+          id: "winter-v2",
+          name: "Winter",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "SATELLITE",
+      name: "Satellite",
+      description: "",
+      variants: [
+        {
+          id: "satellite",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "HYBRID",
+      name: "Hybrid",
+      description: "",
+      variants: [
+        {
+          id: "hybrid",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "BASIC",
+      name: "Basic",
+      description: "",
+      variants: [
+        {
+          id: "basic-v2",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "basic-v2-dark",
+          name: "Dark",
+          variantType: "DARK",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "basic-v2-light",
+          name: "Light",
+          variantType: "LIGHT",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "BRIGHT",
+      name: "Bright",
+      description: "",
+      variants: [
+        {
+          id: "bright-v2",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "bright-v2-dark",
+          name: "Dark",
+          variantType: "DARK",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "bright-v2-light",
+          name: "Light",
+          variantType: "LIGHT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "bright-v2-pastel",
+          name: "Pastel",
+          variantType: "PASTEL",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "OPENSTREETMAP",
+      name: "OpenStreetMap",
+      description: "",
+      variants: [
+        {
+          id: "openstreetmap",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "TOPO",
+      name: "Topo",
+      description: "",
+      variants: [
+        {
+          id: "topo-v2",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "topo-v2-shiny",
+          name: "Shiny",
+          variantType: "SHINY",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "topo-v2-pastel",
+          name: "Pastel",
+          variantType: "PASTEL",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "topo-v2-topographique",
+          name: "Topographique",
+          variantType: "TOPOGRAPHIQUE",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "VOYAGER",
+      name: "Voyager",
+      description: "",
+      variants: [
+        {
+          id: "voyager-v2",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "voyager-v2-darkmatter",
+          name: "Darkmatter",
+          variantType: "DARK",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "voyager-v2-positron",
+          name: "Positron",
+          variantType: "LIGHT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "voyager-v2-vintage",
+          name: "Vintage",
+          variantType: "VINTAGE",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "TONER",
+      name: "Toner",
+      description: "",
+      variants: [
+        {
+          id: "toner-v2",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "toner-v2-background",
+          name: "Background",
+          variantType: "BACKGROUND",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "toner-v2-lite",
+          name: "Lite",
+          variantType: "LITE",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "toner-v2-lines",
+          name: "Lines",
+          variantType: "LINES",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "STAGE",
+      name: "Stage",
+      description: "",
+      variants: [
+        {
+          id: "stage",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "stage-dark",
+          name: "Dark",
+          variantType: "DARK",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "stage-light",
+          name: "Light",
+          variantType: "LIGHT",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    },
+    {
+      referenceStyleID: "OCEAN",
+      name: "Ocean",
+      description: "",
+      variants: [
+        {
+          id: "ocean",
+          name: "Default",
+          variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        }
+      ]
+    }
+  ];
+  function makeReferenceStyleProxy(referenceStyle) {
+    return new Proxy(referenceStyle, {
+      get(target, prop, receiver) {
+        if (target.hasVariant(prop)) {
+          return target.getVariant(prop);
+        }
+        if (prop.toString().toUpperCase() === prop) {
+          return referenceStyle.getDefaultVariant();
+        }
+        return Reflect.get(target, prop, receiver);
+      }
+    });
+  }
+  function buildMapStyles() {
+    const mapStyle = {};
+    for (let i = 0; i < mapStylePresetList.length; i += 1) {
+      const refStyleInfo = mapStylePresetList[i];
+      const refStyle = makeReferenceStyleProxy(
+        new ReferenceMapStyle(refStyleInfo.name, refStyleInfo.referenceStyleID)
+      );
+      for (let j = 0; j < refStyleInfo.variants.length; j += 1) {
+        const variantInfo = refStyleInfo.variants[j];
+        const variant = new MapStyleVariant(
+          variantInfo.name,
+          // name
+          variantInfo.variantType,
+          // variantType
+          variantInfo.id,
+          // id
+          refStyle,
+          // referenceStyle
+          variantInfo.description,
+          variantInfo.imageURL
+          // imageURL
+        );
+        refStyle.addVariant(variant);
+      }
+      mapStyle[refStyleInfo.referenceStyleID] = refStyle;
+    }
+    return mapStyle;
+  }
+  function styleToStyle(style) {
+    if (!style) {
+      return MapStyle[mapStylePresetList[0].referenceStyleID].getDefaultVariant().getId();
+    }
+    if (typeof style === "string" || style instanceof String) {
+      return style.trim().toLowerCase();
+    }
+    if (style instanceof MapStyleVariant) {
+      return style.getId();
+    }
+    if (style instanceof ReferenceMapStyle) {
+      return style.getDefaultVariant().getId();
+    }
+  }
+  const MapStyle = buildMapStyles();
+
   function getSqSegDist(p, p1, p2) {
     let x = p1[0], y = p1[1], dx = p2[0] - x, dy = p2[1] - y;
     if (dx !== 0 || dy !== 0) {
@@ -514,12 +1074,12 @@
     return str;
   }
   function centered(center, zoom, options = {}) {
-    var _a, _b, _c, _d, _e, _f;
-    const style = (_a = options.style) != null ? _a : defaults.mapStyle;
+    var _a, _b, _c, _d, _e;
+    const style = styleToStyle(options.style);
     const scale = options.hiDPI ? "@2x" : "";
-    const format = (_b = options.format) != null ? _b : "png";
-    let width = ~~((_c = options.width) != null ? _c : 1024);
-    let height = ~~((_d = options.height) != null ? _d : 1024);
+    const format = (_a = options.format) != null ? _a : "png";
+    let width = ~~((_b = options.width) != null ? _b : 1024);
+    let height = ~~((_c = options.height) != null ? _c : 1024);
     if (options.hiDPI) {
       width = ~~(width / 2);
       height = ~~(height / 2);
@@ -549,7 +1109,7 @@
     }
     if ("path" in options) {
       let pathStr = "";
-      pathStr += `fill:${(_e = options.pathFillColor) != null ? _e : "none"}|`;
+      pathStr += `fill:${(_d = options.pathFillColor) != null ? _d : "none"}|`;
       if ("pathStrokeColor" in options) {
         pathStr += `stroke:${options.pathStrokeColor}|`;
       }
@@ -560,16 +1120,16 @@
       pathStr += simplifyAndStringify(options.path);
       endpoint.searchParams.set("path", pathStr);
     }
-    endpoint.searchParams.set("key", (_f = options.apiKey) != null ? _f : config.apiKey);
+    endpoint.searchParams.set("key", (_e = options.apiKey) != null ? _e : config.apiKey);
     return endpoint.toString();
   }
   function bounded(boundingBox, options = {}) {
-    var _a, _b, _c, _d, _e, _f;
-    const style = (_a = options.style) != null ? _a : defaults.mapStyle;
+    var _a, _b, _c, _d, _e;
+    const style = styleToStyle(options.style);
     const scale = options.hiDPI ? "@2x" : "";
-    const format = (_b = options.format) != null ? _b : "png";
-    let width = ~~((_c = options.width) != null ? _c : 1024);
-    let height = ~~((_d = options.height) != null ? _d : 1024);
+    const format = (_a = options.format) != null ? _a : "png";
+    let width = ~~((_b = options.width) != null ? _b : 1024);
+    let height = ~~((_c = options.height) != null ? _c : 1024);
     if (options.hiDPI) {
       width = ~~(width / 2);
       height = ~~(height / 2);
@@ -602,7 +1162,7 @@
     }
     if ("path" in options) {
       let pathStr = "";
-      pathStr += `fill:${(_e = options.pathFillColor) != null ? _e : "none"}|`;
+      pathStr += `fill:${(_d = options.pathFillColor) != null ? _d : "none"}|`;
       if ("pathStrokeColor" in options) {
         pathStr += `stroke:${options.pathStrokeColor}|`;
       }
@@ -613,21 +1173,21 @@
       pathStr += simplifyAndStringify(options.path);
       endpoint.searchParams.set("path", pathStr);
     }
-    endpoint.searchParams.set("key", (_f = options.apiKey) != null ? _f : config.apiKey);
+    endpoint.searchParams.set("key", (_e = options.apiKey) != null ? _e : config.apiKey);
     return endpoint.toString();
   }
   function automatic(options = {}) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e;
     if (!("markers" in options) && !("path" in options)) {
       throw new Error(
         "Automatic static maps require markers and/or path to be created."
       );
     }
-    const style = (_a = options.style) != null ? _a : defaults.mapStyle;
+    const style = styleToStyle(options.style);
     const scale = options.hiDPI ? "@2x" : "";
-    const format = (_b = options.format) != null ? _b : "png";
-    let width = ~~((_c = options.width) != null ? _c : 1024);
-    let height = ~~((_d = options.height) != null ? _d : 1024);
+    const format = (_a = options.format) != null ? _a : "png";
+    let width = ~~((_b = options.width) != null ? _b : 1024);
+    let height = ~~((_c = options.height) != null ? _c : 1024);
     if (options.hiDPI) {
       width = ~~(width / 2);
       height = ~~(height / 2);
@@ -662,7 +1222,7 @@
     }
     if ("path" in options) {
       let pathStr = "";
-      pathStr += `fill:${(_e = options.pathFillColor) != null ? _e : "none"}|`;
+      pathStr += `fill:${(_d = options.pathFillColor) != null ? _d : "none"}|`;
       if ("pathStrokeColor" in options) {
         pathStr += `stroke:${options.pathStrokeColor}|`;
       }
@@ -673,7 +1233,7 @@
       pathStr += simplifyAndStringify(options.path);
       endpoint.searchParams.set("path", pathStr);
     }
-    endpoint.searchParams.set("key", (_f = options.apiKey) != null ? _f : config.apiKey);
+    endpoint.searchParams.set("key", (_e = options.apiKey) != null ? _e : config.apiKey);
     return endpoint.toString();
   }
   const staticMaps = {
@@ -684,12 +1244,17 @@
 
   exports.ClientConfig = ClientConfig;
   exports.LanguageGeocoding = LanguageGeocoding;
+  exports.MapStyle = MapStyle;
+  exports.MapStyleVariant = MapStyleVariant;
+  exports.ReferenceMapStyle = ReferenceMapStyle;
   exports.ServiceError = ServiceError;
   exports.config = config;
   exports.coordinates = coordinates;
   exports.data = data;
+  exports.expandMapStyle = expandMapStyle;
   exports.geocoding = geocoding;
   exports.geolocation = geolocation;
+  exports.mapStylePresetList = mapStylePresetList;
   exports.staticMaps = staticMaps;
 
   Object.defineProperty(exports, '__esModule', { value: true });

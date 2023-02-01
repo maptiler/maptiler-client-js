@@ -1,12 +1,14 @@
-MapTiler Client - v1.0.3
+MapTiler Client - v1.1.1
 
-# MapTiler Client - v1.0.3
+# MapTiler Client - v1.1.1
 
 ## Table of contents
 
 ### Classes
 
 - [ClientConfig](classes/ClientConfig.md)
+- [MapStyleVariant](classes/MapStyleVariant.md)
+- [ReferenceMapStyle](classes/ReferenceMapStyle.md)
 - [ServiceError](classes/ServiceError.md)
 
 ### Type Aliases
@@ -33,6 +35,8 @@ MapTiler Client - v1.0.3
 - [GeolocationResult](README.md#geolocationresult)
 - [GetDataOptions](README.md#getdataoptions)
 - [LanguageGeocodingString](README.md#languagegeocodingstring)
+- [MapStylePreset](README.md#mapstylepreset)
+- [MapStyleType](README.md#mapstyletype)
 - [ReverseGeocodingOptions](README.md#reversegeocodingoptions)
 - [StaticMapBaseOptions](README.md#staticmapbaseoptions)
 - [StaticMapMarker](README.md#staticmapmarker)
@@ -41,12 +45,18 @@ MapTiler Client - v1.0.3
 ### Variables
 
 - [LanguageGeocoding](README.md#languagegeocoding)
+- [MapStyle](README.md#mapstyle)
 - [config](README.md#config)
 - [coordinates](README.md#coordinates-1)
 - [data](README.md#data)
 - [geocoding](README.md#geocoding)
 - [geolocation](README.md#geolocation)
+- [mapStylePresetList](README.md#mapstylepresetlist)
 - [staticMaps](README.md#staticmaps)
+
+### Functions
+
+- [expandMapStyle](README.md#expandmapstyle)
 
 ## Type Aliases
 
@@ -58,7 +68,7 @@ Options that can be provided to automatic static maps
 
 #### Defined in
 
-[services/staticMaps.ts:140](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/staticMaps.ts#L140)
+[services/staticMaps.ts:141](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/staticMaps.ts#L141)
 
 ___
 
@@ -70,7 +80,7 @@ Options that can be provided to bounded static maps
 
 #### Defined in
 
-[services/staticMaps.ts:129](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/staticMaps.ts#L129)
+[services/staticMaps.ts:130](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/staticMaps.ts#L130)
 
 ___
 
@@ -82,7 +92,7 @@ Options that can be provided to centered static maps
 
 #### Defined in
 
-[services/staticMaps.ts:124](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/staticMaps.ts#L124)
+[services/staticMaps.ts:125](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/staticMaps.ts#L125)
 
 ___
 
@@ -99,7 +109,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:38](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L38)
+[services/coordinates.ts:38](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L38)
 
 ___
 
@@ -115,7 +125,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:43](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L43)
+[services/coordinates.ts:43](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L43)
 
 ___
 
@@ -132,7 +142,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:33](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L33)
+[services/coordinates.ts:33](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L33)
 
 ___
 
@@ -158,7 +168,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:61](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L61)
+[services/coordinates.ts:61](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L61)
 
 ___
 
@@ -175,7 +185,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:91](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L91)
+[services/coordinates.ts:91](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L91)
 
 ___
 
@@ -192,7 +202,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:159](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L159)
+[services/coordinates.ts:159](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L159)
 
 ___
 
@@ -218,7 +228,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:47](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L47)
+[services/coordinates.ts:47](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L47)
 
 ___
 
@@ -228,7 +238,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:40](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geocoding.ts#L40)
+[services/geocoding.ts:40](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geocoding.ts#L40)
 
 ___
 
@@ -247,7 +257,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:11](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L11)
+[services/coordinates.ts:11](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L11)
 
 ___
 
@@ -268,7 +278,7 @@ Options that can be provided when transforming a coordinate from one CRS to anot
 
 #### Defined in
 
-[services/coordinates.ts:174](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L174)
+[services/coordinates.ts:174](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L174)
 
 ___
 
@@ -285,7 +295,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:42](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geocoding.ts#L42)
+[services/geocoding.ts:42](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geocoding.ts#L42)
 
 ___
 
@@ -310,7 +320,7 @@ ___
 
 #### Defined in
 
-[config.ts:1](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/config.ts#L1)
+[config.ts:1](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/config.ts#L1)
 
 ___
 
@@ -320,7 +330,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:54](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geocoding.ts#L54)
+[services/geocoding.ts:54](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geocoding.ts#L54)
 
 ___
 
@@ -339,7 +349,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:18](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geocoding.ts#L18)
+[services/geocoding.ts:18](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geocoding.ts#L18)
 
 ___
 
@@ -358,7 +368,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:86](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geocoding.ts#L86)
+[services/geocoding.ts:86](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geocoding.ts#L86)
 
 ___
 
@@ -376,7 +386,7 @@ Options that can be provided to get user data.
 
 #### Defined in
 
-[services/geolocation.ts:14](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geolocation.ts#L14)
+[services/geolocation.ts:14](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geolocation.ts#L14)
 
 ___
 
@@ -405,7 +415,7 @@ ___
 
 #### Defined in
 
-[services/geolocation.ts:21](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geolocation.ts#L21)
+[services/geolocation.ts:21](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geolocation.ts#L21)
 
 ___
 
@@ -423,7 +433,7 @@ Options that can be provided to get user data.
 
 #### Defined in
 
-[services/data.ts:14](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/data.ts#L14)
+[services/data.ts:14](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/data.ts#L14)
 
 ___
 
@@ -435,7 +445,58 @@ Built-in languages values as strings
 
 #### Defined in
 
-[language.ts:69](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/language.ts#L69)
+[language.ts:69](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/language.ts#L69)
+
+___
+
+### MapStylePreset
+
+Ƭ **MapStylePreset**: `Object`
+
+Type for object containing style details
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `description` | `string` |
+| `name` | `string` |
+| `referenceStyleID` | `string` |
+| `variants` | { `description`: `string` ; `id`: `string` ; `imageURL`: `string` ; `name`: `string` ; `variantType`: `string`  }[] |
+
+#### Defined in
+
+[mapstyle.ts:29](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L29)
+
+___
+
+### MapStyleType
+
+Ƭ **MapStyleType**: `Object`
+
+All the styles and variants maintained by MapTiler.
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `BASIC` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DARK`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `LIGHT`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | A minimalist street-oriented style without POI |
+| `BRIGHT` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DARK`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `LIGHT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `PASTEL`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | A bright street-oriented style, a nice alternative to `streets` |
+| `HYBRID` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | High resolution imagery with labels, political borders and roads. |
+| `OCEAN` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | Explore deep see trenches and mountains, with isolines and depth labels |
+| `OPENSTREETMAP` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | Classic OpenStreetMap style |
+| `OUTDOOR` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | Suitable for outdoor activities. With elevation isolines and hillshading. |
+| `SATELLITE` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | High resolution imagery only, without any label. |
+| `STAGE` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DARK`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `LIGHT`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | Minimalist style, perfect for data visualization |
+| `STREETS` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DARK`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `LIGHT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `PASTEL`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings |
+| `TONER` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `BACKGROUND`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `LINES`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `LITE`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | A bold very high contrast black and white (no gray!) style for the city |
+| `TOPO` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `PASTEL`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `SHINY`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `TOPOGRAPHIQUE`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details |
+| `VOYAGER` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DARK`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `LIGHT`: [`MapStyleVariant`](classes/MapStyleVariant.md) ; `VINTAGE`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | A nice alternative to `streets` with a soft color palette |
+| `WINTER` | [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) & { `DEFAULT`: [`MapStyleVariant`](classes/MapStyleVariant.md)  } | Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading. |
+
+#### Defined in
+
+[mapstyle.ts:258](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L258)
 
 ___
 
@@ -452,7 +513,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:165](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geocoding.ts#L165)
+[services/geocoding.ts:165](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geocoding.ts#L165)
 
 ___
 
@@ -478,12 +539,12 @@ Base set of options that can be provided to all the types of static maps
 | `pathFillColor?` | `string` | Color of the filling, also works if the polygon is not closed. The color must be CSS compatible. Examples: - long form hex without transparency `"#FF0000"` (red) - short form hex without transparency `"#F00"` (red) - long form hex with transparency `"#FF000008"` (red, half opacity) - short form hex with transparency `"#F008"` (red, half opacity) - CSS color shorthands: `"red"`, `"chartreuse"`, etc. - decimal RGB values without transparency: `"rgb(128, 100, 255)"` - decimal RGB values with transparency: `"rgb(128, 100, 255, 0.5)"` Default: none (transparent filling) |
 | `pathStrokeColor?` | `string` | Color of the path line. The color must be CSS compatible. Examples: - long form hex without transparency `"#FF0000"` (red) - short form hex without transparency `"#F00"` (red) - long form hex with transparency `"#FF000008"` (red, half opacity) - short form hex with transparency `"#F008"` (red, half opacity) - CSS color shorthands: `"red"`, `"chartreuse"`, etc. - decimal RGB values without transparency: `"rgb(128, 100, 255)"` - decimal RGB values with transparency: `"rgb(128, 100, 255, 0.5)"` Default: `"blue"` |
 | `pathWidth?` | `number` | Width of the path line in pixel. It can be floating point precision (ex: `0.5`) Default: `1` if `hiDPI` is `false` and `2` if `hiDPI` is `true`. |
-| `style?` | `string` | Style of the map (not full style URL). Example: "winter", "streets-v2". Default: `"streets-v2"` |
+| `style?` | `string` \| [`ReferenceMapStyle`](classes/ReferenceMapStyle.md) \| [`MapStyleVariant`](classes/MapStyleVariant.md) | Style of the map (not full style URL). Example: "winter", "streets-v2". Default: `"streets-v2"` |
 | `width?` | `number` | Width of the output image. Maximum value: `2048`. Default: `1024` |
 
 #### Defined in
 
-[services/staticMaps.ts:9](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/staticMaps.ts#L9)
+[services/staticMaps.ts:10](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/staticMaps.ts#L10)
 
 ___
 
@@ -495,7 +556,7 @@ Definition of a maker to show on a static map
 
 #### Defined in
 
-[services/staticMaps.ts:145](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/staticMaps.ts#L145)
+[services/staticMaps.ts:146](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/staticMaps.ts#L146)
 
 ___
 
@@ -513,7 +574,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:153](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L153)
+[services/coordinates.ts:153](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L153)
 
 ## Variables
 
@@ -585,7 +646,23 @@ Languages. Note that not all the languages of this list are available but the co
 
 #### Defined in
 
-[language.ts:4](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/language.ts#L4)
+[language.ts:4](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/language.ts#L4)
+
+___
+
+### MapStyle
+
+• `Const` **MapStyle**: [`MapStyleType`](README.md#mapstyletype)
+
+Contains all the reference map style created by MapTiler team as well as all the variants.
+For example, `MapStyle.STREETS` and the variants:
+- `MapStyle.STREETS.DARK`
+- `MapStyle.STREETS.LIGHT`
+- `MapStyle.STREETS.PASTEL`
+
+#### Defined in
+
+[mapstyle.ts:874](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L874)
 
 ___
 
@@ -597,7 +674,7 @@ Configuration object
 
 #### Defined in
 
-[config.ts:63](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/config.ts#L63)
+[config.ts:63](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/config.ts#L63)
 
 ___
 
@@ -617,7 +694,7 @@ The goal of the **Coordinate API* is query information about spatial coordinate 
 
 #### Defined in
 
-[services/coordinates.ts:253](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/coordinates.ts#L253)
+[services/coordinates.ts:253](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/coordinates.ts#L253)
 
 ___
 
@@ -636,7 +713,7 @@ The **Data API** provides a way to retrieve user data in GeoJSON format.
 
 #### Defined in
 
-[services/data.ts:59](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/data.ts#L59)
+[services/data.ts:59](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/data.ts#L59)
 
 ___
 
@@ -713,7 +790,7 @@ and to get the location details (country, city, street, etc.) from a geographic 
 
 #### Defined in
 
-[services/geocoding.ts:233](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geocoding.ts#L233)
+[services/geocoding.ts:233](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geocoding.ts#L233)
 
 ___
 
@@ -732,7 +809,17 @@ The **Geolocation API** provides a way to retrieve the IP address as well as geo
 
 #### Defined in
 
-[services/geolocation.ts:135](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/geolocation.ts#L135)
+[services/geolocation.ts:135](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/geolocation.ts#L135)
+
+___
+
+### mapStylePresetList
+
+• `Const` **mapStylePresetList**: [`MapStylePreset`](README.md#mapstylepreset)[]
+
+#### Defined in
+
+[mapstyle.ts:466](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L466)
 
 ___
 
@@ -753,4 +840,26 @@ The URL of static maps can then be used within a `<img />` markup element, as th
 
 #### Defined in
 
-[services/staticMaps.ts:456](https://github.com/maptiler/maptiler-client-js/blob/1b5c2ae/src/services/staticMaps.ts#L456)
+[services/staticMaps.ts:457](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/services/staticMaps.ts#L457)
+
+## Functions
+
+### expandMapStyle
+
+▸ **expandMapStyle**(`style`): `string`
+
+Expand the map style provided as argument of the Map constructor
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `style` | `any` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[mapstyle.ts:6](https://github.com/maptiler/maptiler-client-js/blob/bcbe9d3/src/mapstyle.ts#L6)

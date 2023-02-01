@@ -1,6 +1,7 @@
 import { BBox, Position } from "geojson";
 import { config } from "../config";
 import { defaults } from "../defaults";
+import { MapStyleVariant, ReferenceMapStyle, styleToStyle } from "../mapstyle";
 import simplify from "./simplify";
 
 /**
@@ -16,7 +17,7 @@ export type StaticMapBaseOptions = {
    * Style of the map (not full style URL). Example: "winter", "streets-v2".
    * Default: `"streets-v2"`
    */
-  style?: string;
+  style?: string | ReferenceMapStyle | MapStyleVariant;
 
   /**
    * Double the size of the static map image to support hiDPI/Retina monitors.
@@ -200,7 +201,7 @@ function centered(
   zoom: number,
   options: CenteredStaticMapOptions = {}
 ): string {
-  const style = options.style ?? defaults.mapStyle;
+  const style = styleToStyle(options.style);
   const scale = options.hiDPI ? "@2x" : "";
   const format = options.format ?? "png";
   let width = ~~(options.width ?? 1024);
@@ -284,7 +285,7 @@ function bounded(
   boundingBox: BBox,
   options: BoundedStaticMapOptions = {}
 ): string {
-  const style = options.style ?? defaults.mapStyle;
+  const style = styleToStyle(options.style);
   const scale = options.hiDPI ? "@2x" : "";
   const format = options.format ?? "png";
   let width = ~~(options.width ?? 1024);
@@ -374,7 +375,7 @@ function automatic(options: AutomaticStaticMapOptions = {}): string {
     );
   }
 
-  const style = options.style ?? defaults.mapStyle;
+  const style = styleToStyle(options.style);
   const scale = options.hiDPI ? "@2x" : "";
   const format = options.format ?? "png";
   let width = ~~(options.width ?? 1024);
