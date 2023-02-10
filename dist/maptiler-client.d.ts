@@ -892,7 +892,7 @@ type MapStyleType = {
     /**
      * Minimalist style, perfect for data visualization
      */
-    STAGE: ReferenceMapStyle & {
+    DATAVIZ: ReferenceMapStyle & {
         /**
          *  Minimalist style, perfect for data visualization
          */

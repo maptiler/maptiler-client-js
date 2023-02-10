@@ -435,7 +435,7 @@ export type MapStyleType = {
   /**
    * Minimalist style, perfect for data visualization
    */
-  STAGE: ReferenceMapStyle & {
+  DATAVIZ: ReferenceMapStyle & {
     /**
      *  Minimalist style, perfect for data visualization
      */
@@ -749,26 +749,26 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   },
 
   {
-    referenceStyleID: "STAGE",
-    name: "Stage",
+    referenceStyleID: "DATAVIZ",
+    name: "Dataviz",
     description: "",
     variants: [
       {
-        id: "stage",
+        id: "dataviz",
         name: "Default",
         variantType: "DEFAULT",
         description: "",
         imageURL: "",
       },
       {
-        id: "stage-dark",
+        id: "dataviz-dark",
         name: "Dark",
         variantType: "DARK",
         description: "",
         imageURL: "",
       },
       {
-        id: "stage-light",
+        id: "dataviz-light",
         name: "Light",
         variantType: "LIGHT",
         description: "",

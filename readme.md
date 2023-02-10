@@ -205,9 +205,9 @@ In the following static map functions, the `option` object features a `style` pr
   - `MapStyle.TONER.LITE` (variant)
   - `MapStyle.TONER.LINES` (variant)
 - `MapStyle.OPENSTREETMAP` (reference style, this one does not have any variants)
-- `MapStyle.STAGE`, the perfect style for data visualization, with very little noise
-  - `MapStyle.STAGE.DARK` (variant)
-  - `MapStyle.STAGE.LIGHT` (variant)
+- `MapStyle.DATAVIZ`, the perfect style for data visualization, with very little noise
+  - `MapStyle.DATAVIZ.DARK` (variant)
+  - `MapStyle.DATAVIZ.LIGHT` (variant)
 
 ### Centered static maps
 This type of map is centered on a longitude-latitude coordinate and the zoom level must also be provided (from `0`: very zoomed out, to `22`: very zoomed in).  
