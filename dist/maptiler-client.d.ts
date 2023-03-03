@@ -103,11 +103,27 @@ type Values<T> = T[keyof T];
  */
 type LanguageGeocodingString = Values<typeof LanguageGeocoding>;
 
-type GeocodingOptions = {
+type LanguageGeocodingOptions = {
     /**
-     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     * Prefer results in specific language. It’s possible to specify multiple values.
+     */
+    language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+};
+type CommonForwardAndReverseGeocodingOptions = LanguageGeocodingOptions & {
+    /**
+     * Custom MapTiler Cloud API key to use instead of the one in global `config`
      */
     apiKey?: string;
+    /**
+     * Maximum number of results to show. Must be between 1 and 10. Default is 5 for forward and 1 for reverse geocoding.
+     */
+    limit?: number;
+    /**
+     * Filter of feature types to return. If not specified, all available feature types are returned.
+     */
+    types?: ("country" | "region" | "subregion" | "county" | "joint_municipality" | "joint_submunicipality" | "municipality" | "municipal_district" | "locality" | "neighbourhood" | "place" | "postal_code" | "address")[];
+};
+type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
     /**
      * Only search for results in the specified area.
      */
@@ -117,10 +133,21 @@ type GeocodingOptions = {
      */
     proximity?: Position;
     /**
-     * Prefer results in specific language. It’s possible to specify multiple values.
+     * Limit search to specific country/countries specified as list of Alpha-2 ISO 3166-1 codes.
      */
-    language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+    country?: string[];
+    /**
+     * Set to `false` to disable fuzzy (typo-tolerant) search. Default is `true`.
+     */
+    fuzzyMatch?: boolean;
+    /**
+     * Set to `true` to use autocomplete, `false` to disable it.
+     * Default (`undefined`) is to combine autocomplete with non-autocomplete results.
+     */
+    autocomplete?: boolean;
 };
+type ReverseGeocodingOptions = CommonForwardAndReverseGeocodingOptions;
+type ByIdGeocodingOptions = LanguageGeocodingOptions;
 type Coordinates = Position;
 type FeatureHierarchy = {
     /**
@@ -183,25 +210,25 @@ type GeocodingSearchResult = {
  * @returns
  */
 declare function forward(query: string, options?: GeocodingOptions): Promise<GeocodingSearchResult>;
-type ReverseGeocodingOptions = {
-    /**
-     * Custom mapTiler Cloud API key to use instead of the one in global `config`
-     */
-    apiKey?: string;
-    /**
-     * Prefer results in specific language. It’s possible to specify multiple values.
-     */
-    language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
-};
 /**
  * Perform a reverse geocoding query to MapTiler API.
- * Providing a longitude and latitude, this function returns a set of human readable information abou this place (country, city, street, etc.)
+ * Providing a longitude and latitude, this function returns a set of human readable information about this place (country, city, street, etc.)
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse
  * @param position
  * @param options
  * @returns
  */
 declare function reverse(position: Position, options?: ReverseGeocodingOptions): Promise<GeocodingSearchResult>;
+/**
+ * Perform a geocoding query to MapTiler API to obtain fature by its ID.
+ * Providing a feature ID, this function returns a feature which includes its full geometry.
+ * Note that the feature ID is not stable and it changes when the database is re-indexed.
+ * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-feature-id
+ * @param id
+ * @param options
+ * @returns
+ */
+declare function byId(id: string, options?: ByIdGeocodingOptions): Promise<GeocodingSearchResult>;
 /**
  * The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
  * The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)
@@ -210,6 +237,7 @@ declare function reverse(position: Position, options?: ReverseGeocodingOptions):
 declare const geocoding: {
     forward: typeof forward;
     reverse: typeof reverse;
+    byId: typeof byId;
     language: {
         AUTO: string;
         ALBANIAN: string;
@@ -229,18 +257,13 @@ declare const geocoding: {
         ENGLISH: string;
         ESPERANTO: string;
         ESTONIAN: string;
-        /**
-         * Custom mapTiler Cloud API key to use instead of the one in global `config`
-         */
         FINNISH: string;
         FRENCH: string;
         FRISIAN: string;
         GEORGIAN: string;
         GERMAN: string;
         GREEK: string;
-        HEBREW: string; /**
-         * Only search for results in the specified area.
-         */
+        HEBREW: string;
         HUNGARIAN: string;
         ICELANDIC: string;
         IRISH: string;
@@ -255,7 +278,9 @@ declare const geocoding: {
         LUXEMBOURGISH: string;
         MACEDONIAN: string;
         MALTESE: string;
-        NORWEGIAN: string;
+        NORWEGIAN: string; /**
+         * Maximum number of results to show. Must be between 1 and 10. Default is 5 for forward and 1 for reverse geocoding.
+         */
         POLISH: string;
         PORTUGUESE: string;
         ROMANIAN: string;
@@ -279,7 +304,7 @@ declare const geocoding: {
  */
 type GeolocationInfoOptions = {
     /**
-     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     * Custom MapTiler Cloud API key to use instead of the one in global `config`
      */
     apiKey?: string;
 };
@@ -370,7 +395,7 @@ declare const geolocation: {
 
 type CoordinatesSearchOptions = {
     /**
-     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     * Custom MapTiler Cloud API key to use instead of the one in global `config`
      */
     apiKey?: string;
     /**
@@ -467,7 +492,7 @@ type CoordinateTransformResult = {
  */
 type CoordinatesTransformOptions = {
     /**
-     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     * Custom MapTiler Cloud API key to use instead of the one in global `config`
      */
     apiKey?: string;
     /**
@@ -505,7 +530,7 @@ declare const coordinates: {
  */
 type GetDataOptions = {
     /**
-     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     * Custom MapTiler Cloud API key to use instead of the one in global `config`
      */
     apiKey?: string;
 };
@@ -932,7 +957,7 @@ declare const MapStyle: MapStyleType;
  */
 type StaticMapBaseOptions = {
     /**
-     * Custom mapTiler Cloud API key to use instead of the one in global `config`
+     * Custom MapTiler Cloud API key to use instead of the one in global `config`
      */
     apiKey?: string;
     /**
@@ -1102,4 +1127,4 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, expandMapStyle, geocoding, geolocation, mapStylePresetList, staticMaps };
+export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CommonForwardAndReverseGeocodingOptions, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingOptions, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, expandMapStyle, geocoding, geolocation, mapStylePresetList, staticMaps };
