@@ -15,12 +15,46 @@ const customMessages = {
   403: "Key is missing, invalid or restricted",
 };
 
-export type GeocodingOptions = {
+export type LanguageGeocodingOptions = {
   /**
-   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   * Prefer results in specific language. It’s possible to specify multiple values.
    */
-  apiKey?: string;
+  language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+};
 
+export type CommonForwardAndReverseGeocodingOptions =
+  LanguageGeocodingOptions & {
+    /**
+     * Custom MapTiler Cloud API key to use instead of the one in global `config`
+     */
+    apiKey?: string;
+
+    /**
+     * Maximum number of results to show. Must be between 1 and 10. Default is 5 for forward and 1 for reverse geocoding.
+     */
+    limit?: number;
+
+    /**
+     * Filter of feature types to return. If not specified, all available feature types are returned.
+     */
+    types?: (
+      | "country"
+      | "region"
+      | "subregion"
+      | "county"
+      | "joint_municipality"
+      | "joint_submunicipality"
+      | "municipality"
+      | "municipal_district"
+      | "locality"
+      | "neighbourhood"
+      | "place"
+      | "postal_code"
+      | "address"
+    )[];
+  };
+
+export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
   /**
    * Only search for results in the specified area.
    */
@@ -32,10 +66,25 @@ export type GeocodingOptions = {
   proximity?: Position;
 
   /**
-   * Prefer results in specific language. It’s possible to specify multiple values.
+   * Limit search to specific country/countries specified as list of Alpha-2 ISO 3166-1 codes.
    */
-  language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+  country?: string[];
+
+  /**
+   * Set to `false` to disable fuzzy (typo-tolerant) search. Default is `true`.
+   */
+  fuzzyMatch?: boolean;
+
+  /**
+   * Set to `true` to use autocomplete, `false` to disable it.
+   * Default (`undefined`) is to combine autocomplete with non-autocomplete results.
+   */
+  autocomplete?: boolean;
 };
+
+export type ReverseGeocodingOptions = CommonForwardAndReverseGeocodingOptions;
+
+export type ByIdGeocodingOptions = LanguageGeocodingOptions;
 
 export type Coordinates = Position;
 
@@ -102,6 +151,45 @@ export type GeocodingSearchResult = {
   attribution: string;
 };
 
+function addLanguageGeocodingOptions(
+  searchParams: URLSearchParams,
+  options: LanguageGeocodingOptions
+) {
+  if (options.language == undefined) {
+    return;
+  }
+
+  const languages = Array.from(
+    new Set(
+      (Array.isArray(options.language)
+        ? options.language
+        : [options.language]
+      ).map((lang) =>
+        lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+      )
+    )
+  ).join(",");
+
+  searchParams.set("language", languages);
+}
+
+function addCommonForwardAndReverseGeocodingOptions(
+  searchParams: URLSearchParams,
+  options: CommonForwardAndReverseGeocodingOptions
+) {
+  searchParams.set("key", options.apiKey ?? config.apiKey);
+
+  if (options.limit != undefined) {
+    searchParams.set("limit", String(options.limit));
+  }
+
+  if (options.types != undefined) {
+    searchParams.set("types", options.types.join(","));
+  }
+
+  addLanguageGeocodingOptions(searchParams, options);
+}
+
 /**
  * Performs a forward geocoding query to MapTiler API.
  * Providing a human readable place name (of a city, country, street, etc.), the function returns
@@ -123,60 +211,47 @@ async function forward(
     `geocoding/${encodeURIComponent(query)}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
-  if ("bbox" in options) {
-    endpoint.searchParams.set("bbox", options.bbox.join(","));
+  const { searchParams } = endpoint;
+
+  addCommonForwardAndReverseGeocodingOptions(searchParams, options);
+
+  if (options.bbox != undefined) {
+    searchParams.set("bbox", options.bbox.join(","));
   }
 
-  if ("proximity" in options) {
-    endpoint.searchParams.set("proximity", options.proximity.join(","));
+  if (options.proximity != undefined) {
+    searchParams.set("proximity", options.proximity.join(","));
   }
 
-  if ("language" in options) {
-    const languages = Array.from(
-      new Set(
-        (Array.isArray(options.language)
-          ? options.language
-          : [options.language]
-        ).map((lang) =>
-          lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
-        )
-      )
-    ).join(",");
+  if (options.country != undefined) {
+    searchParams.set("country", options.country.join(","));
+  }
 
-    endpoint.searchParams.set("language", languages);
+  if (options.fuzzyMatch != undefined) {
+    searchParams.set("fuzzyMatch", options.fuzzyMatch ? "true" : "false");
+  }
+
+  if (options.autocomplete != undefined) {
+    searchParams.set("autocomplete", options.autocomplete ? "true" : "false");
   }
 
   const urlWithParams = endpoint.toString();
+
   const res = await callFetch(urlWithParams);
 
   if (!res.ok) {
-    throw new ServiceError(
-      res,
-      res.status in customMessages ? customMessages[res.status] : ""
-    );
+    throw new ServiceError(res, customMessages[res.status] ?? "");
   }
 
-  const obj = await res.json();
-  return obj as GeocodingSearchResult;
+  const obj: GeocodingSearchResult = await res.json();
+
+  return obj;
 }
-
-export type ReverseGeocodingOptions = {
-  /**
-   * Custom mapTiler Cloud API key to use instead of the one in global `config`
-   */
-  apiKey?: string;
-
-  /**
-   * Prefer results in specific language. It’s possible to specify multiple values.
-   */
-  language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
-};
 
 /**
  * Perform a reverse geocoding query to MapTiler API.
- * Providing a longitude and latitude, this function returns a set of human readable information abou this place (country, city, street, etc.)
+ * Providing a longitude and latitude, this function returns a set of human readable information about this place (country, city, street, etc.)
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse
  * @param position
  * @param options
@@ -194,35 +269,50 @@ async function reverse(
     `geocoding/${position[0]},${position[1]}.json`,
     defaults.maptilerApiURL
   );
-  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
-  if ("language" in options) {
-    const languages = Array.from(
-      new Set(
-        (Array.isArray(options.language)
-          ? options.language
-          : [options.language]
-        ).map((lang) =>
-          lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
-        )
-      )
-    ).join(",");
-
-    endpoint.searchParams.set("language", languages);
-  }
+  addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
 
   const urlWithParams = endpoint.toString();
+
   const res = await callFetch(urlWithParams);
 
   if (!res.ok) {
-    throw new ServiceError(
-      res,
-      res.status in customMessages ? customMessages[res.status] : ""
-    );
+    throw new ServiceError(res, customMessages[res.status] ?? "");
   }
 
-  const obj = await res.json();
-  return obj as GeocodingSearchResult;
+  const obj: GeocodingSearchResult = await res.json();
+
+  return obj;
+}
+
+/**
+ * Perform a geocoding query to MapTiler API to obtain fature by its ID.
+ * Providing a feature ID, this function returns a feature which includes its full geometry.
+ * Note that the feature ID is not stable and it changes when the database is re-indexed.
+ * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-feature-id
+ * @param id
+ * @param options
+ * @returns
+ */
+async function byId(
+  id: string,
+  options: ByIdGeocodingOptions = {}
+): Promise<GeocodingSearchResult> {
+  const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
+
+  addLanguageGeocodingOptions(endpoint.searchParams, options);
+
+  const urlWithParams = endpoint.toString();
+
+  const res = await callFetch(urlWithParams);
+
+  if (!res.ok) {
+    throw new ServiceError(res, customMessages[res.status] ?? "");
+  }
+
+  const obj: GeocodingSearchResult = await res.json();
+
+  return obj;
 }
 
 /**
@@ -233,6 +323,7 @@ async function reverse(
 const geocoding = {
   forward,
   reverse,
+  byId,
   language: LanguageGeocoding,
 };
 

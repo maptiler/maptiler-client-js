@@ -10,7 +10,7 @@ const customMessages = {
 
 export type CoordinatesSearchOptions = {
   /**
-   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   * Custom MapTiler Cloud API key to use instead of the one in global `config`
    */
   apiKey?: string;
 
@@ -173,7 +173,7 @@ export type CoordinateTransformResult = {
  */
 export type CoordinatesTransformOptions = {
   /**
-   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   * Custom MapTiler Cloud API key to use instead of the one in global `config`
    */
   apiKey?: string;
 

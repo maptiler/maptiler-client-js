@@ -13,7 +13,7 @@ const customMessages = {
  */
 export type GeolocationInfoOptions = {
   /**
-   * Custom mapTiler Cloud API key to use instead of the one in global `config`
+   * Custom MapTiler Cloud API key to use instead of the one in global `config`
    */
   apiKey?: string;
 };

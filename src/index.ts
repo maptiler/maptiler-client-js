@@ -8,6 +8,8 @@ import { geocoding } from "./services/geocoding";
 import type {
   GeocodingOptions,
   ReverseGeocodingOptions,
+  LanguageGeocodingOptions,
+  CommonForwardAndReverseGeocodingOptions,
   GeocodingSearchResult,
   GeocodingFeature,
   FeatureHierarchy,
@@ -60,6 +62,8 @@ export type {
   BBox,
   GeocodingOptions,
   ReverseGeocodingOptions,
+  LanguageGeocodingOptions,
+  CommonForwardAndReverseGeocodingOptions,
   GeocodingSearchResult,
   GeocodingFeature,
   CoordinateExport,
