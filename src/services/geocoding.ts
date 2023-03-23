@@ -190,30 +190,10 @@ function addCommonForwardAndReverseGeocodingOptions(
   addLanguageGeocodingOptions(searchParams, options);
 }
 
-/**
- * Performs a forward geocoding query to MapTiler API.
- * Providing a human readable place name (of a city, country, street, etc.), the function returns
- * a list of candidate locations including longitude and latitude.
- * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-name-forward
- * @param query
- * @param options
- * @returns
- */
-async function forward(
-  query: string,
-  options: GeocodingOptions = {}
-): Promise<GeocodingSearchResult> {
-  if (typeof query !== "string" || query.trim().length === 0) {
-    throw new Error("The query must be a non-empty string");
-  }
-
-  const endpoint = new URL(
-    `geocoding/${encodeURIComponent(query)}.json`,
-    defaults.maptilerApiURL
-  );
-
-  const { searchParams } = endpoint;
-
+function addForwardGeocodingOptions(
+  searchParams: URLSearchParams,
+  options: GeocodingOptions
+) {
   addCommonForwardAndReverseGeocodingOptions(searchParams, options);
 
   if (options.bbox != undefined) {
@@ -235,6 +215,33 @@ async function forward(
   if (options.autocomplete != undefined) {
     searchParams.set("autocomplete", options.autocomplete ? "true" : "false");
   }
+}
+
+/**
+ * Performs a forward geocoding query to MapTiler API.
+ * Providing a human readable place name (of a city, country, street, etc.), the function returns
+ * a list of candidate locations including longitude and latitude.
+ * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-name-forward
+ * @param query
+ * @param options
+ * @returns
+ */
+async function forward(
+  query: string,
+  options: GeocodingOptions = {}
+): Promise<GeocodingSearchResult> {
+  if (!query.trim().length) {
+    throw new Error("The query must be a non-empty string");
+  }
+
+  const endpoint = new URL(
+    `geocoding/${encodeURIComponent(query)}.json`,
+    defaults.maptilerApiURL
+  );
+
+  const { searchParams } = endpoint;
+
+  addForwardGeocodingOptions(searchParams, options);
 
   const urlWithParams = endpoint.toString();
 
@@ -261,7 +268,7 @@ async function reverse(
   position: Position,
   options: ReverseGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
-  if (!Array.isArray(position) || position.length < 2) {
+  if (position.length !== 2) {
     throw new Error("The position must be an array of form [lng, lat].");
   }
 
@@ -316,6 +323,48 @@ async function byId(
 }
 
 /**
+ * Perform a batch geocoding query to MapTiler API.
+ * Provide multiple queries in the array. Each query can be forward, reverse or by feature ID.
+ * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#batch-geocoding
+ * @param queries
+ * @param options
+ * @returns
+ */
+async function batch(
+  queries: string[],
+  options: GeocodingOptions = {}
+): Promise<GeocodingSearchResult[]> {
+  if (!queries.length) {
+    return [];
+  }
+
+  const joinedQuery = queries
+    .map((query) => encodeURIComponent(query))
+    .join(";");
+
+  const endpoint = new URL(
+    `geocoding/${joinedQuery}.json`,
+    defaults.maptilerApiURL
+  );
+
+  const { searchParams } = endpoint;
+
+  addForwardGeocodingOptions(searchParams, options);
+
+  const urlWithParams = endpoint.toString();
+
+  const res = await callFetch(urlWithParams);
+
+  if (!res.ok) {
+    throw new ServiceError(res, customMessages[res.status] ?? "");
+  }
+
+  const obj = await res.json();
+
+  return queries.length === 1 ? [obj] : obj;
+}
+
+/**
  * The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
  * The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)
  * and to get the location details (country, city, street, etc.) from a geographic coordinate (reverse geocoding);
@@ -324,6 +373,7 @@ const geocoding = {
   forward,
   reverse,
   byId,
+  batch,
   language: LanguageGeocoding,
 };
 
