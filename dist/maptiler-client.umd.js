@@ -681,6 +681,13 @@
           imageURL: ""
         },
         {
+          id: "streets-v2-night",
+          name: "Night",
+          variantType: "NIGHT",
+          description: "",
+          imageURL: ""
+        },
+        {
           id: "streets-v2-pastel",
           name: "Pastel",
           variantType: "PASTEL",
@@ -700,6 +707,13 @@
           variantType: "DEFAULT",
           description: "",
           imageURL: ""
+        },
+        {
+          id: "outdoor-v2-dark",
+          name: "Dark",
+          variantType: "DARK",
+          description: "",
+          imageURL: ""
         }
       ]
     },
@@ -710,8 +724,15 @@
       variants: [
         {
           id: "winter-v2",
-          name: "Winter",
+          name: "Default",
           variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "winter-v2-dark",
+          name: "Dark",
+          variantType: "DARK",
           description: "",
           imageURL: ""
         }
@@ -831,6 +852,13 @@
           id: "topo-v2",
           name: "Default",
           variantType: "DEFAULT",
+          description: "",
+          imageURL: ""
+        },
+        {
+          id: "topo-v2-dark",
+          name: "Dark",
+          variantType: "DARK",
           description: "",
           imageURL: ""
         },
