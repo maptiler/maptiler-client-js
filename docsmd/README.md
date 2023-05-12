@@ -1,6 +1,6 @@
-MapTiler Client - v1.3.0
+MapTiler Client - v1.4.0
 
-# MapTiler Client - v1.3.0
+# MapTiler Client - v1.4.0
 
 ## Table of contents
 
@@ -70,7 +70,7 @@ Options that can be provided to automatic static maps
 
 #### Defined in
 
-[services/staticMaps.ts:141](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/staticMaps.ts#L141)
+[services/staticMaps.ts:141](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/staticMaps.ts#L141)
 
 ___
 
@@ -82,7 +82,7 @@ Options that can be provided to bounded static maps
 
 #### Defined in
 
-[services/staticMaps.ts:130](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/staticMaps.ts#L130)
+[services/staticMaps.ts:130](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/staticMaps.ts#L130)
 
 ___
 
@@ -94,7 +94,7 @@ Options that can be provided to centered static maps
 
 #### Defined in
 
-[services/staticMaps.ts:125](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/staticMaps.ts#L125)
+[services/staticMaps.ts:125](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/staticMaps.ts#L125)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:25](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L25)
+[services/geocoding.ts:25](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L25)
 
 ___
 
@@ -121,7 +121,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:38](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L38)
+[services/coordinates.ts:38](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L38)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:43](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L43)
+[services/coordinates.ts:43](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L43)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:33](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L33)
+[services/coordinates.ts:33](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L33)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:61](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L61)
+[services/coordinates.ts:61](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L61)
 
 ___
 
@@ -197,7 +197,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:91](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L91)
+[services/coordinates.ts:91](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L91)
 
 ___
 
@@ -214,7 +214,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:159](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L159)
+[services/coordinates.ts:159](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L159)
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:47](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L47)
+[services/coordinates.ts:47](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L47)
 
 ___
 
@@ -250,7 +250,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:89](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L89)
+[services/geocoding.ts:89](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L89)
 
 ___
 
@@ -269,7 +269,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:11](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L11)
+[services/coordinates.ts:11](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L11)
 
 ___
 
@@ -290,7 +290,7 @@ Options that can be provided when transforming a coordinate from one CRS to anot
 
 #### Defined in
 
-[services/coordinates.ts:174](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L174)
+[services/coordinates.ts:174](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L174)
 
 ___
 
@@ -307,7 +307,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:91](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L91)
+[services/geocoding.ts:91](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L91)
 
 ___
 
@@ -332,7 +332,7 @@ ___
 
 #### Defined in
 
-[config.ts:1](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/config.ts#L1)
+[config.ts:1](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/config.ts#L1)
 
 ___
 
@@ -342,7 +342,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:103](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L103)
+[services/geocoding.ts:103](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L103)
 
 ___
 
@@ -352,7 +352,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:57](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L57)
+[services/geocoding.ts:57](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L57)
 
 ___
 
@@ -371,7 +371,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:135](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L135)
+[services/geocoding.ts:135](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L135)
 
 ___
 
@@ -389,7 +389,7 @@ Options that can be provided to get user data.
 
 #### Defined in
 
-[services/geolocation.ts:14](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geolocation.ts#L14)
+[services/geolocation.ts:14](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geolocation.ts#L14)
 
 ___
 
@@ -418,7 +418,7 @@ ___
 
 #### Defined in
 
-[services/geolocation.ts:21](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geolocation.ts#L21)
+[services/geolocation.ts:21](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geolocation.ts#L21)
 
 ___
 
@@ -436,7 +436,7 @@ Options that can be provided to get user data.
 
 #### Defined in
 
-[services/data.ts:14](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/data.ts#L14)
+[services/data.ts:14](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/data.ts#L14)
 
 ___
 
@@ -452,7 +452,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:18](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L18)
+[services/geocoding.ts:18](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L18)
 
 ___
 
@@ -464,7 +464,7 @@ Built-in languages values as strings
 
 #### Defined in
 
-[language.ts:69](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/language.ts#L69)
+[language.ts:69](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/language.ts#L69)
 
 ___
 
@@ -485,7 +485,7 @@ Type for object containing style details
 
 #### Defined in
 
-[mapstyle.ts:29](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/mapstyle.ts#L29)
+[mapstyle.ts:29](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/mapstyle.ts#L29)
 
 ___
 
@@ -515,7 +515,7 @@ All the styles and variants maintained by MapTiler.
 
 #### Defined in
 
-[mapstyle.ts:258](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/mapstyle.ts#L258)
+[mapstyle.ts:258](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/mapstyle.ts#L258)
 
 ___
 
@@ -525,7 +525,7 @@ ___
 
 #### Defined in
 
-[services/geocoding.ts:85](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L85)
+[services/geocoding.ts:85](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L85)
 
 ___
 
@@ -556,7 +556,7 @@ Base set of options that can be provided to all the types of static maps
 
 #### Defined in
 
-[services/staticMaps.ts:10](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/staticMaps.ts#L10)
+[services/staticMaps.ts:10](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/staticMaps.ts#L10)
 
 ___
 
@@ -568,7 +568,7 @@ Definition of a maker to show on a static map
 
 #### Defined in
 
-[services/staticMaps.ts:146](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/staticMaps.ts#L146)
+[services/staticMaps.ts:146](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/staticMaps.ts#L146)
 
 ___
 
@@ -586,7 +586,7 @@ ___
 
 #### Defined in
 
-[services/coordinates.ts:153](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L153)
+[services/coordinates.ts:153](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L153)
 
 ## Variables
 
@@ -658,7 +658,7 @@ Languages. Note that not all the languages of this list are available but the co
 
 #### Defined in
 
-[language.ts:4](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/language.ts#L4)
+[language.ts:4](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/language.ts#L4)
 
 ___
 
@@ -674,7 +674,7 @@ For example, `MapStyle.STREETS` and the variants:
 
 #### Defined in
 
-[mapstyle.ts:919](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/mapstyle.ts#L919)
+[mapstyle.ts:919](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/mapstyle.ts#L919)
 
 ___
 
@@ -686,7 +686,7 @@ Configuration object
 
 #### Defined in
 
-[config.ts:63](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/config.ts#L63)
+[config.ts:63](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/config.ts#L63)
 
 ___
 
@@ -706,7 +706,7 @@ The goal of the **Coordinate API* is query information about spatial coordinate 
 
 #### Defined in
 
-[services/coordinates.ts:253](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/coordinates.ts#L253)
+[services/coordinates.ts:253](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/coordinates.ts#L253)
 
 ___
 
@@ -725,7 +725,7 @@ The **Data API** provides a way to retrieve user data in GeoJSON format.
 
 #### Defined in
 
-[services/data.ts:59](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/data.ts#L59)
+[services/data.ts:59](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/data.ts#L59)
 
 ___
 
@@ -741,6 +741,7 @@ and to get the location details (country, city, street, etc.) from a geographic 
 
 | Name | Type |
 | :------ | :------ |
+| `batch` | (`queries`: `string`[], `options`: [`GeocodingOptions`](README.md#geocodingoptions)) => `Promise`<[`GeocodingSearchResult`](README.md#geocodingsearchresult)[]\> |
 | `byId` | (`id`: `string`, `options`: [`LanguageGeocodingOptions`](README.md#languagegeocodingoptions)) => `Promise`<[`GeocodingSearchResult`](README.md#geocodingsearchresult)\> |
 | `forward` | (`query`: `string`, `options`: [`GeocodingOptions`](README.md#geocodingoptions)) => `Promise`<[`GeocodingSearchResult`](README.md#geocodingsearchresult)\> |
 | `language` | { `ALBANIAN`: `string` = "sq"; `ARABIC`: `string` = "ar"; `ARMENIAN`: `string` = "hy"; `AUTO`: `string` = "auto"; `AZERBAIJANI`: `string` = "az"; `BELORUSSIAN`: `string` = "be"; `BOSNIAN`: `string` = "bs"; `BRETON`: `string` = "br"; `BULGARIAN`: `string` = "bg"; `CATALAN`: `string` = "ca"; `CHINESE`: `string` = "zh"; `CROATIAN`: `string` = "hr"; `CZECH`: `string` = "cs"; `DANISH`: `string` = "da"; `DUTCH`: `string` = "nl"; `ENGLISH`: `string` = "en"; `ESPERANTO`: `string` = "eo"; `ESTONIAN`: `string` = "et"; `FINNISH`: `string` = "fi"; `FRENCH`: `string` = "fr"; `FRISIAN`: `string` = "fy"; `GEORGIAN`: `string` = "ka"; `GERMAN`: `string` = "de"; `GREEK`: `string` = "el"; `HEBREW`: `string` = "he"; `HUNGARIAN`: `string` = "hu"; `ICELANDIC`: `string` = "is"; `IRISH`: `string` = "ga"; `ITALIAN`: `string` = "it"; `JAPANESE`: `string` = "ja"; `KANNADA`: `string` = "kn"; `KAZAKH`: `string` = "kk"; `KOREAN`: `string` = "ko"; `LATVIAN`: `string` = "lv"; `LITHUANIAN`: `string` = "lt"; `LUXEMBOURGISH`: `string` = "lb"; `MACEDONIAN`: `string` = "mk"; `MALTESE`: `string` = "mt"; `NORWEGIAN`: `string` = "no"; `POLISH`: `string` = "pl"; `PORTUGUESE`: `string` = "pt"; `ROMANIAN`: `string` = "ro"; `ROMANSH`: `string` = "rm"; `ROMAN_LATIN`: `string` = "la"; `RUSSIAN`: `string` = "ru"; `SCOTTISH_GAELIC`: `string` = "gd"; `SERBIAN_CYRILLIC`: `string` = "sr"; `SLOVAK`: `string` = "sk"; `SLOVENE`: `string` = "sl"; `SPANISH`: `string` = "es"; `SWEDISH`: `string` = "sv"; `THAI`: `string` = "th"; `TURKISH`: `string` = "tr"; `UKRAINIAN`: `string` = "uk"; `WELSH`: `string` = "cy" } |
@@ -803,7 +804,7 @@ and to get the location details (country, city, street, etc.) from a geographic 
 
 #### Defined in
 
-[services/geocoding.ts:323](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geocoding.ts#L323)
+[services/geocoding.ts:372](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geocoding.ts#L372)
 
 ___
 
@@ -822,7 +823,7 @@ The **Geolocation API** provides a way to retrieve the IP address as well as geo
 
 #### Defined in
 
-[services/geolocation.ts:135](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/geolocation.ts#L135)
+[services/geolocation.ts:135](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/geolocation.ts#L135)
 
 ___
 
@@ -832,7 +833,7 @@ ___
 
 #### Defined in
 
-[mapstyle.ts:483](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/mapstyle.ts#L483)
+[mapstyle.ts:483](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/mapstyle.ts#L483)
 
 ___
 
@@ -853,7 +854,7 @@ The URL of static maps can then be used within a `<img />` markup element, as th
 
 #### Defined in
 
-[services/staticMaps.ts:457](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/services/staticMaps.ts#L457)
+[services/staticMaps.ts:457](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/services/staticMaps.ts#L457)
 
 ## Functions
 
@@ -875,4 +876,4 @@ Expand the map style provided as argument of the Map constructor
 
 #### Defined in
 
-[mapstyle.ts:6](https://github.com/maptiler/maptiler-client-js/blob/5fa2a6c/src/mapstyle.ts#L6)
+[mapstyle.ts:6](https://github.com/maptiler/maptiler-client-js/blob/9ad7364/src/mapstyle.ts#L6)
