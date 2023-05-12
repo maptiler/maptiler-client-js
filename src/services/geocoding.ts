@@ -230,7 +230,7 @@ async function forward(
   query: string,
   options: GeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
-  if (!query.trim().length) {
+  if (typeof query !== "string" || query.trim().length === 0) {
     throw new Error("The query must be a non-empty string");
   }
 
@@ -268,7 +268,7 @@ async function reverse(
   position: Position,
   options: ReverseGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
-  if (position.length !== 2) {
+  if (!Array.isArray(position) || position.length < 2) {
     throw new Error("The position must be an array of form [lng, lat].");
   }
 
