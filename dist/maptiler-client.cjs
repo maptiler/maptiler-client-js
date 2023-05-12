@@ -217,6 +217,24 @@ function addCommonForwardAndReverseGeocodingOptions(searchParams, options) {
   }
   addLanguageGeocodingOptions(searchParams, options);
 }
+function addForwardGeocodingOptions(searchParams, options) {
+  addCommonForwardAndReverseGeocodingOptions(searchParams, options);
+  if (options.bbox != void 0) {
+    searchParams.set("bbox", options.bbox.join(","));
+  }
+  if (options.proximity != void 0) {
+    searchParams.set("proximity", options.proximity.join(","));
+  }
+  if (options.country != void 0) {
+    searchParams.set("country", options.country.join(","));
+  }
+  if (options.fuzzyMatch != void 0) {
+    searchParams.set("fuzzyMatch", options.fuzzyMatch ? "true" : "false");
+  }
+  if (options.autocomplete != void 0) {
+    searchParams.set("autocomplete", options.autocomplete ? "true" : "false");
+  }
+}
 function forward(_0) {
   return __async$3(this, arguments, function* (query, options = {}) {
     var _a;
@@ -228,22 +246,7 @@ function forward(_0) {
       defaults.maptilerApiURL
     );
     const { searchParams } = endpoint;
-    addCommonForwardAndReverseGeocodingOptions(searchParams, options);
-    if (options.bbox != void 0) {
-      searchParams.set("bbox", options.bbox.join(","));
-    }
-    if (options.proximity != void 0) {
-      searchParams.set("proximity", options.proximity.join(","));
-    }
-    if (options.country != void 0) {
-      searchParams.set("country", options.country.join(","));
-    }
-    if (options.fuzzyMatch != void 0) {
-      searchParams.set("fuzzyMatch", options.fuzzyMatch ? "true" : "false");
-    }
-    if (options.autocomplete != void 0) {
-      searchParams.set("autocomplete", options.autocomplete ? "true" : "false");
-    }
+    addForwardGeocodingOptions(searchParams, options);
     const urlWithParams = endpoint.toString();
     const res = yield callFetch(urlWithParams);
     if (!res.ok) {
@@ -287,10 +290,33 @@ function byId(_0) {
     return obj;
   });
 }
+function batch(_0) {
+  return __async$3(this, arguments, function* (queries, options = {}) {
+    var _a;
+    if (!queries.length) {
+      return [];
+    }
+    const joinedQuery = queries.map((query) => encodeURIComponent(query)).join(";");
+    const endpoint = new URL(
+      `geocoding/${joinedQuery}.json`,
+      defaults.maptilerApiURL
+    );
+    const { searchParams } = endpoint;
+    addForwardGeocodingOptions(searchParams, options);
+    const urlWithParams = endpoint.toString();
+    const res = yield callFetch(urlWithParams);
+    if (!res.ok) {
+      throw new ServiceError(res, (_a = customMessages$3[res.status]) != null ? _a : "");
+    }
+    const obj = yield res.json();
+    return queries.length === 1 ? [obj] : obj;
+  });
+}
 const geocoding = {
   forward,
   reverse,
   byId,
+  batch,
   language: LanguageGeocoding
 };
 

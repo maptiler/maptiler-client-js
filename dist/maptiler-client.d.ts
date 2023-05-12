@@ -230,6 +230,15 @@ declare function reverse(position: Position, options?: ReverseGeocodingOptions):
  */
 declare function byId(id: string, options?: ByIdGeocodingOptions): Promise<GeocodingSearchResult>;
 /**
+ * Perform a batch geocoding query to MapTiler API.
+ * Provide multiple queries in the array. Each query can be forward, reverse or by feature ID.
+ * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#batch-geocoding
+ * @param queries
+ * @param options
+ * @returns
+ */
+declare function batch(queries: string[], options?: GeocodingOptions): Promise<GeocodingSearchResult[]>;
+/**
  * The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
  * The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)
  * and to get the location details (country, city, street, etc.) from a geographic coordinate (reverse geocoding);
@@ -238,6 +247,7 @@ declare const geocoding: {
     forward: typeof forward;
     reverse: typeof reverse;
     byId: typeof byId;
+    batch: typeof batch;
     language: {
         AUTO: string;
         ALBANIAN: string;
