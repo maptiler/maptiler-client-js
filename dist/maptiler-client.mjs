@@ -675,6 +675,13 @@ const mapStylePresetList = [
         imageURL: ""
       },
       {
+        id: "streets-v2-night",
+        name: "Night",
+        variantType: "NIGHT",
+        description: "",
+        imageURL: ""
+      },
+      {
         id: "streets-v2-pastel",
         name: "Pastel",
         variantType: "PASTEL",
@@ -694,6 +701,13 @@ const mapStylePresetList = [
         variantType: "DEFAULT",
         description: "",
         imageURL: ""
+      },
+      {
+        id: "outdoor-v2-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: ""
       }
     ]
   },
@@ -704,8 +718,15 @@ const mapStylePresetList = [
     variants: [
       {
         id: "winter-v2",
-        name: "Winter",
+        name: "Default",
         variantType: "DEFAULT",
+        description: "",
+        imageURL: ""
+      },
+      {
+        id: "winter-v2-dark",
+        name: "Dark",
+        variantType: "DARK",
         description: "",
         imageURL: ""
       }
@@ -825,6 +846,13 @@ const mapStylePresetList = [
         id: "topo-v2",
         name: "Default",
         variantType: "DEFAULT",
+        description: "",
+        imageURL: ""
+      },
+      {
+        id: "topo-v2-dark",
+        name: "Dark",
+        variantType: "DARK",
         description: "",
         imageURL: ""
       },

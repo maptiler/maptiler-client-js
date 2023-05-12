@@ -767,6 +767,10 @@ type MapStyleType = {
          */
         LIGHT: MapStyleVariant;
         /**
+         * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in blue night mode.
+         */
+        NIGHT: MapStyleVariant;
+        /**
          * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, with a pastel color palette.
          */
         PASTEL: MapStyleVariant;
@@ -779,6 +783,10 @@ type MapStyleType = {
          * Suitable for outdoor activities. With elevation isolines and hillshading.
          */
         DEFAULT: MapStyleVariant;
+        /**
+         * Suitable for outdoor activities. With elevation isolines and hillshading, in dark mode.
+         */
+        DARK: MapStyleVariant;
     };
     /**
      * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading.
@@ -788,6 +796,10 @@ type MapStyleType = {
          * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading.
          */
         DEFAULT: MapStyleVariant;
+        /**
+         * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading, in dark mode.
+         */
+        DARK: MapStyleVariant;
     };
     /**
      * High resolution imagery only, without any label.
@@ -859,6 +871,10 @@ type MapStyleType = {
          * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
          */
         DEFAULT: MapStyleVariant;
+        /**
+         * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details, in dark mode
+         */
+        DARK: MapStyleVariant;
         /**
          * A nice high-contrast, and high saturation alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
          */
