@@ -966,6 +966,23 @@ type MapStyleType = {
          */
         DEFAULT: MapStyleVariant;
     };
+    /**
+     * Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
+     */
+    BACKDROP: ReferenceMapStyle & {
+        /**
+         *  Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
+         */
+        DEFAULT: MapStyleVariant;
+        /**
+         *  Dark greyscale style with hillshading suitable for colorful terrain-aware visualization
+         */
+        DARK: MapStyleVariant;
+        /**
+         *  Light greyscale style with hillshading suitable for colorful terrain-aware visualization
+         */
+        LIGHT: MapStyleVariant;
+    };
 };
 declare const mapStylePresetList: Array<MapStylePreset>;
 /**

@@ -478,6 +478,26 @@ export type MapStyleType = {
      */
     DEFAULT: MapStyleVariant;
   };
+
+  /**
+   * Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
+   */
+  BACKDROP: ReferenceMapStyle & {
+    /**
+     *  Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
+     */
+    DEFAULT: MapStyleVariant;
+
+    /**
+     *  Dark greyscale style with hillshading suitable for colorful terrain-aware visualization
+     */
+    DARK: MapStyleVariant;
+
+    /**
+     *  Light greyscale style with hillshading suitable for colorful terrain-aware visualization
+     */
+    LIGHT: MapStyleVariant;
+  };
 };
 
 export const mapStylePresetList: Array<MapStylePreset> = [
@@ -814,6 +834,35 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       },
       {
         id: "dataviz-light",
+        name: "Light",
+        variantType: "LIGHT",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+
+  {
+    referenceStyleID: "BACKDROP",
+    name: "Backdrop",
+    description: "",
+    variants: [
+      {
+        id: "backdrop",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "backdrop-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "backdrop-light",
         name: "Light",
         variantType: "LIGHT",
         description: "",

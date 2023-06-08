@@ -1004,6 +1004,34 @@ const mapStylePresetList = [
     ]
   },
   {
+    referenceStyleID: "BACKDROP",
+    name: "Backdrop",
+    description: "",
+    variants: [
+      {
+        id: "backdrop",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: ""
+      },
+      {
+        id: "backdrop-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: ""
+      },
+      {
+        id: "backdrop-light",
+        name: "Light",
+        variantType: "LIGHT",
+        description: "",
+        imageURL: ""
+      }
+    ]
+  },
+  {
     referenceStyleID: "OCEAN",
     name: "Ocean",
     description: "",
