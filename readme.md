@@ -80,7 +80,7 @@ You can provide some options such as:
 - one of more languages to get the results into
 - a bounding geo box, to restrict the search to a given window
 
-Read more about forward geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#forward).
+Read more about forward geocoding as well as feature ID query and batch forward geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#forward).
 
 ### Reverse
 You wan to tknow the name of a place, given a longitude-latitude? Use the reverse geocoding:
@@ -182,6 +182,12 @@ In the following static map functions, the `option` object features a `style` pr
   - `MapStyle.STREETS.LIGHT` (variant)
   - `MapStyle.STREETS.PASTEL` (variant)
 - `MapStyle.OUTDOOR` reference style for adventure
+- `MapStyle.DATAVIZ`, the perfect style for data visualization, with very little noise
+  - `MapStyle.DATAVIZ.DARK` (variant)
+  - `MapStyle.DATAVIZ.LIGHT` (variant)
+- `MapStyle.BACKDROP`, the perfect style for data visualization, with very little noise
+  - `MapStyle.BACKDROP.DARK` (variant)
+  - `MapStyle.BACKDROP.LIGHT` (variant)
 - `MapStyle.WINTER` reference style for winter adventure
 - `MapStyle.SATELLITE` reference style satellite and airborne imagery (no variants)
 - `MapStyle.HYBRID` reference style satellite and airborne imagery with labels (no variants)
@@ -205,9 +211,7 @@ In the following static map functions, the `option` object features a `style` pr
   - `MapStyle.TONER.LITE` (variant)
   - `MapStyle.TONER.LINES` (variant)
 - `MapStyle.OPENSTREETMAP` (reference style, this one does not have any variants)
-- `MapStyle.DATAVIZ`, the perfect style for data visualization, with very little noise
-  - `MapStyle.DATAVIZ.DARK` (variant)
-  - `MapStyle.DATAVIZ.LIGHT` (variant)
+- `MapStyle.OCEAN` (reference style, this one does not have any variants)
 
 ### Centered static maps
 This type of map is centered on a longitude-latitude coordinate and the zoom level must also be provided (from `0`: very zoomed out, to `22`: very zoomed in).  
