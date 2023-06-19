@@ -51,6 +51,7 @@ export type CommonForwardAndReverseGeocodingOptions =
       | "place"
       | "postal_code"
       | "address"
+      | "poi"
     )[];
   };
 
@@ -114,6 +115,16 @@ type FeatureProperties = {
    * (experimental) Value of place=* tag from OpenStreetMap feature if kind=place
    */
   "osm:place_type"?: string;
+
+  /**
+   * (experimental) Feature tags from OpenStreetMap. Only available for `poi` type.
+   */
+  "osm:tags"?: Record<string, string>;
+
+  /**
+   * Array of POI categories. Only available for `poi` type.
+   */
+  categories?: string[];
 };
 
 type FeatureBase = {
