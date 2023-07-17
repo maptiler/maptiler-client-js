@@ -1,4 +1,4 @@
-import { BBox, Position, Feature, FeatureCollection } from 'geojson';
+import { BBox, Position, Feature, Geometry, FeatureCollection } from 'geojson';
 export { BBox, Position } from 'geojson';
 
 type FetchFunction = (url: string, options: object) => Promise<any>;
@@ -121,7 +121,7 @@ type CommonForwardAndReverseGeocodingOptions = LanguageGeocodingOptions & {
     /**
      * Filter of feature types to return. If not specified, all available feature types are returned.
      */
-    types?: ("country" | "region" | "subregion" | "county" | "joint_municipality" | "joint_submunicipality" | "municipality" | "municipal_district" | "locality" | "neighbourhood" | "place" | "postal_code" | "address")[];
+    types?: ("country" | "region" | "subregion" | "county" | "joint_municipality" | "joint_submunicipality" | "municipality" | "municipal_district" | "locality" | "neighbourhood" | "place" | "postal_code" | "address" | "poi")[];
 };
 type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
     /**
@@ -149,7 +149,33 @@ type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
 type ReverseGeocodingOptions = CommonForwardAndReverseGeocodingOptions;
 type ByIdGeocodingOptions = LanguageGeocodingOptions;
 type Coordinates = Position;
-type FeatureHierarchy = {
+type FeatureProperties = {
+    /**
+     * External reference of the feature used for debugging purposes
+     */
+    ref: string;
+    /**
+     * ISO 3166-1 alpha-2 country code of the feature
+     */
+    country_code: string;
+    /**
+     * (experimental) Kind of the feature
+     */
+    kind?: "road" | "road_relation" | "admin_area" | "place" | "street" | "virtual_street";
+    /**
+     * (experimental) Value of place=* tag from OpenStreetMap feature if kind=place
+     */
+    "osm:place_type"?: string;
+    /**
+     * (experimental) Feature tags from OpenStreetMap. Only available for `poi` type.
+     */
+    "osm:tags"?: Record<string, string>;
+    /**
+     * Array of POI categories. Only available for `poi` type.
+     */
+    categories?: string[];
+};
+type FeatureBase = {
     /**
      * Unique feature ID
      */
@@ -158,8 +184,23 @@ type FeatureHierarchy = {
      * Localized feature name
      */
     text: string;
+    /**
+     * Query's primary ISO 639-1 language code
+     */
+    language?: string;
+    /**
+     * A string analogous to the `text` field that matches the query in the requested language.
+     * This field is only returned when multiple languages are requested using the `language` parameter, and will be present for each requested language.
+     */
+    [text: `text_${string}`]: string;
+    /**
+     * A ISO 639-1 query's fallback language code.
+     * This field is only returned when multiple languages are requested using the `language` parameter, and will be present for each requested language.
+     */
+    [language: `language_${string}`]: string;
 };
-type GeocodingFeature = Feature & {
+type FeatureHierarchy = FeatureProperties & FeatureBase;
+type GeocodingFeature = Feature<Geometry, FeatureProperties> & FeatureBase & {
     /**
      * Bounding box of the original feature as [w, s, e, n] array
      */
@@ -173,9 +214,19 @@ type GeocodingFeature = Feature & {
      */
     place_name: string;
     /**
-     * Localized feature name
+     * A string analogous to the `place_name` field that matches the query in the requested language.
+     * This field is only returned when multiple languages are requested using the `language` parameter, and will be present for each requested language.
      */
-    text: string;
+    [key: `place_name_${string}`]: string;
+    /**
+     * An array of feature types describing the feature.
+     * Currently each feature has only single type but this may change in the future.
+     */
+    place_type: string[];
+    /**
+     * Localized type of the place name, matches `place_type` property
+     */
+    place_type_name: string[];
     /**
      * Feature hierarchy
      */
@@ -184,6 +235,12 @@ type GeocodingFeature = Feature & {
      * Address number, if applicable
      */
     address?: string;
+    /**
+     * Indicates how well the returned feature matches the user's query on a scale from 0 to 1.
+     * 0 means the result does not match the query text at all, while 1 means the result fully matches the query text.
+     * You can use the relevance property to remove results that don't fully match the query.
+     */
+    relevance: number;
 };
 type GeocodingSearchResult = {
     type: "FeatureCollection";
@@ -288,9 +345,7 @@ declare const geocoding: {
         LUXEMBOURGISH: string;
         MACEDONIAN: string;
         MALTESE: string;
-        NORWEGIAN: string; /**
-         * Maximum number of results to show. Must be between 1 and 10. Default is 5 for forward and 1 for reverse geocoding.
-         */
+        NORWEGIAN: string;
         POLISH: string;
         PORTUGUESE: string;
         ROMANIAN: string;

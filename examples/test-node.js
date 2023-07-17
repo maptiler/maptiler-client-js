@@ -9,16 +9,16 @@ import {
 
 // For this examople to work, you must bring your own node-compatible fetch,
 // unles you are using a version of Nodejs that already contains fetch (>=18)
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 
-config.fetch = fetch;
-config.apiKey = 'YOUR_API_KEY';
+// config.fetch = fetch;
+config.apiKey = 'YOUR_MAPTILER_CLOUD_API_KEY';
 
 async function testGeocoding() {
-  const result1 = await geocoding.forward('bordeaux', {language: [LanguageGeocoding.AUTO, LanguageGeocoding.ENGLISH]});
-  console.log(result1);
+  // const result1 = await geocoding.forward('bordeaux', {language: [LanguageGeocoding.AUTO, LanguageGeocoding.ENGLISH]});
+  // console.log(result1);
 
-  const result2 = await geocoding.reverse({lng: 6.249638, lat: 46.402056}, {language: ['es', 'en']});
+  const result2 = await geocoding.reverse([6.249638, 46.402056], {language: ['es', 'en']});
   console.log(result2);
 }
 
@@ -46,7 +46,7 @@ async function testData() {
 
 (async () => {
   await testGeocoding();
-  await testGeolocation();
-  await testCoordinates();
-  await testData();
+  // await testGeolocation();
+  // await testCoordinates();
+  // await testData();
 })()

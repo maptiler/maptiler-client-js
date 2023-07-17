@@ -1,4 +1,4 @@
-import { BBox, Feature, Position } from "geojson";
+import { BBox, Feature, Geometry, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
@@ -51,6 +51,7 @@ export type CommonForwardAndReverseGeocodingOptions =
       | "place"
       | "postal_code"
       | "address"
+      | "poi"
     )[];
   };
 
@@ -88,7 +89,45 @@ export type ByIdGeocodingOptions = LanguageGeocodingOptions;
 
 export type Coordinates = Position;
 
-export type FeatureHierarchy = {
+type FeatureProperties = {
+  /**
+   * External reference of the feature used for debugging purposes
+   */
+  ref: string;
+
+  /**
+   * ISO 3166-1 alpha-2 country code of the feature
+   */
+  country_code: string;
+
+  /**
+   * (experimental) Kind of the feature
+   */
+  kind?:
+    | "road"
+    | "road_relation"
+    | "admin_area"
+    | "place"
+    | "street"
+    | "virtual_street";
+
+  /**
+   * (experimental) Value of place=* tag from OpenStreetMap feature if kind=place
+   */
+  "osm:place_type"?: string;
+
+  /**
+   * (experimental) Feature tags from OpenStreetMap. Only available for `poi` type.
+   */
+  "osm:tags"?: Record<string, string>;
+
+  /**
+   * Array of POI categories. Only available for `poi` type.
+   */
+  categories?: string[];
+};
+
+type FeatureBase = {
   /**
    * Unique feature ID
    */
@@ -98,39 +137,78 @@ export type FeatureHierarchy = {
    * Localized feature name
    */
   text: string;
+
+  /**
+   * Query's primary ISO 639-1 language code
+   */
+  language?: string;
+
+  /**
+   * A string analogous to the `text` field that matches the query in the requested language.
+   * This field is only returned when multiple languages are requested using the `language` parameter, and will be present for each requested language.
+   */
+  [text: `text_${string}`]: string;
+
+  /**
+   * A ISO 639-1 query's fallback language code.
+   * This field is only returned when multiple languages are requested using the `language` parameter, and will be present for each requested language.
+   */
+  [language: `language_${string}`]: string;
 };
 
-export type GeocodingFeature = Feature & {
-  /**
-   * Bounding box of the original feature as [w, s, e, n] array
-   */
-  bbox: BBox;
+export type FeatureHierarchy = FeatureProperties & FeatureBase;
 
-  /**
-   * A [lon, lat] array of the original feature centeroid
-   */
-  center: Coordinates;
+export type GeocodingFeature = Feature<Geometry, FeatureProperties> &
+  FeatureBase & {
+    /**
+     * Bounding box of the original feature as [w, s, e, n] array
+     */
+    bbox: BBox;
 
-  /**
-   * Formatted (including the hierarchy) and localized feature full name
-   */
-  place_name: string;
+    /**
+     * A [lon, lat] array of the original feature centeroid
+     */
+    center: Coordinates;
 
-  /**
-   * Localized feature name
-   */
-  text: string;
+    /**
+     * Formatted (including the hierarchy) and localized feature full name
+     */
+    place_name: string;
 
-  /**
-   * Feature hierarchy
-   */
-  context?: Array<FeatureHierarchy>;
+    /**
+     * A string analogous to the `place_name` field that matches the query in the requested language.
+     * This field is only returned when multiple languages are requested using the `language` parameter, and will be present for each requested language.
+     */
+    [key: `place_name_${string}`]: string;
 
-  /**
-   * Address number, if applicable
-   */
-  address?: string;
-};
+    /**
+     * An array of feature types describing the feature.
+     * Currently each feature has only single type but this may change in the future.
+     */
+    place_type: string[];
+
+    /**
+     * Localized type of the place name, matches `place_type` property
+     */
+    place_type_name: string[];
+
+    /**
+     * Feature hierarchy
+     */
+    context?: Array<FeatureHierarchy>;
+
+    /**
+     * Address number, if applicable
+     */
+    address?: string;
+
+    /**
+     * Indicates how well the returned feature matches the user's query on a scale from 0 to 1.
+     * 0 means the result does not match the query text at all, while 1 means the result fully matches the query text.
+     * You can use the relevance property to remove results that don't fully match the query.
+     */
+    relevance: number;
+  };
 
 export type GeocodingSearchResult = {
   type: "FeatureCollection";
