@@ -56,6 +56,8 @@ import {
   expandMapStyle,
 } from "./mapstyle";
 
+export * from "./demProfiler";
+
 // Exporting types
 export type {
   Position,

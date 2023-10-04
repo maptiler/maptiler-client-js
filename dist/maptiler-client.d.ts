@@ -1,5 +1,6 @@
-import { BBox, Position, Feature, Geometry, FeatureCollection } from 'geojson';
+import { BBox, Position, Feature, Geometry, FeatureCollection, LineString } from 'geojson';
 export { BBox, Position } from 'geojson';
+import { Point } from 'web-merc-projection';
 
 type FetchFunction = (url: string, options: object) => Promise<any>;
 /**
@@ -1225,4 +1226,74 @@ declare class ServiceError extends Error {
     constructor(res: Response, customMessage?: string);
 }
 
-export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CommonForwardAndReverseGeocodingOptions, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingOptions, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, XYZ, config, coordinates, data, expandMapStyle, geocoding, geolocation, mapStylePresetList, staticMaps };
+interface TileID {
+    id: number;
+    x: number;
+    y: number;
+    z: number;
+}
+interface TileCoverCoordinates {
+    /** Store the coordinates as an ll-pair */
+    coordinate: Point;
+    /** Track the tile relative to the point */
+    tile: TileID;
+}
+interface TileCoverOutput {
+    coords: TileCoverCoordinates[];
+    tiles: TileID[];
+}
+
+type ElevationParser = (r: number, g: number, b: number, a: number) => number;
+/** Default elevation parser used by Mapbox and Maplibre. Result is in meters */
+declare function defaultElevationParser(r: number, g: number, b: number): number;
+
+interface TileImage {
+    channels: 1 | 2 | 3 | 4;
+    image: Uint8ClampedArray;
+}
+type TileRequest = (x: number, y: number, zoom: number) => Promise<TileImage>;
+interface Options {
+    /** type of metric to use. Meters or feet. Default: meters */
+    metric?: "m" | "ft";
+    /** Zoom that is queried from the server. Default: 13 */
+    zoom?: number;
+    /** Tile size of the images returned. Default 512 */
+    tileSize?: number;
+    /** Tile Request method */
+    tileRequest: TileRequest;
+    /** Elevation parser. Default: elevation = -10000 + ((R * 256 * 256 + G * 256 + B) * 0.1) */
+    elevationParser?: ElevationParser;
+}
+interface ElevPoint {
+    /** Distance along path from the starting point in the metric defind by options */
+    distance: number;
+    /** Elevation of the point */
+    elevation: number;
+    /** Coordinates of the point in lat-lon */
+    coordinate: [lon: number, lat: number];
+    /** Tile that the point is in */
+    tile: TileID;
+}
+interface Output {
+    /** Total length of the path in the metric defined by options */
+    distance: number;
+    /** Minimum elevation of the path */
+    minElevation: number;
+    /** Maximum elevation of the path */
+    maxElevation: number;
+    /** Average elevation of the path */
+    avgElevation: number;
+    /** Elevation at the start of the path */
+    startElevation: number;
+    /** Elevation at the end of the path */
+    endElevation: number;
+    /** Array of points along the path */
+    points: ElevPoint[];
+}
+/**
+ * Given a GeoJSON LineString or Feature<Linestring>, return the elevation data for the path.
+ * This algorithm will automatically break the path into denser segments relative to the zoom level if necessary.
+ */
+declare function profileLineString(path: Feature<LineString> | LineString, options: Options): Promise<Output>;
+
+export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CommonForwardAndReverseGeocodingOptions, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, ElevPoint, ElevationParser, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingOptions, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, Options, Output, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, TileCoverCoordinates, TileCoverOutput, TileID, TileImage, TileRequest, XYZ, config, coordinates, data, defaultElevationParser, expandMapStyle, geocoding, geolocation, mapStylePresetList, profileLineString, staticMaps };
