@@ -43,7 +43,7 @@ An instance of MapStyleVariant contains information about a style to use that be
 
 #### Defined in
 
-[src/mapstyle.ts:46](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L46)
+[src/mapstyle.ts:46](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L46)
 
 ## Methods
 
@@ -59,7 +59,7 @@ Get the human-friendly description
 
 #### Defined in
 
-[src/mapstyle.ts:109](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L109)
+[src/mapstyle.ts:109](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L109)
 
 ___
 
@@ -75,7 +75,7 @@ Get the style as usable by MapLibre, a string (URL) or a plain style description
 
 #### Defined in
 
-[src/mapstyle.ts:161](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L161)
+[src/mapstyle.ts:161](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L161)
 
 ___
 
@@ -89,7 +89,7 @@ ___
 
 #### Defined in
 
-[src/mapstyle.ts:86](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L86)
+[src/mapstyle.ts:86](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L86)
 
 ___
 
@@ -105,7 +105,7 @@ Get the MapTiler Cloud id
 
 #### Defined in
 
-[src/mapstyle.ts:102](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L102)
+[src/mapstyle.ts:102](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L102)
 
 ___
 
@@ -121,7 +121,7 @@ Get the image URL that represent _this_ variant
 
 #### Defined in
 
-[src/mapstyle.ts:153](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L153)
+[src/mapstyle.ts:153](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L153)
 
 ___
 
@@ -137,7 +137,7 @@ Get the human-friendly name
 
 #### Defined in
 
-[src/mapstyle.ts:82](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L82)
+[src/mapstyle.ts:82](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L82)
 
 ___
 
@@ -153,7 +153,7 @@ Get the reference style this variant belongs to
 
 #### Defined in
 
-[src/mapstyle.ts:117](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L117)
+[src/mapstyle.ts:117](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L117)
 
 ___
 
@@ -169,7 +169,7 @@ Get the variant type (eg. "DEFAULT", "DARK", "PASTEL", etc.)
 
 #### Defined in
 
-[src/mapstyle.ts:94](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L94)
+[src/mapstyle.ts:94](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L94)
 
 ___
 
@@ -192,7 +192,7 @@ Retrieve the variant of a given type. If not found, will return the "DEFAULT" va
 
 #### Defined in
 
-[src/mapstyle.ts:137](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L137)
+[src/mapstyle.ts:137](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L137)
 
 ___
 
@@ -208,7 +208,7 @@ Get all the variants for _this_ variants, except _this_ current one
 
 #### Defined in
 
-[src/mapstyle.ts:145](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L145)
+[src/mapstyle.ts:145](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L145)
 
 ___
 
@@ -231,4 +231,4 @@ Check if a variant of a given type exists for _this_ variants
 
 #### Defined in
 
-[src/mapstyle.ts:127](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L127)
+[src/mapstyle.ts:127](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L127)

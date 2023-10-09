@@ -35,7 +35,7 @@ An instance of reference style contains a list of StyleVariants ordered by relev
 
 #### Defined in
 
-[src/mapstyle.ts:180](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L180)
+[src/mapstyle.ts:180](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L180)
 
 ## Methods
 
@@ -57,7 +57,7 @@ Add a variant to _this_ reference style
 
 #### Defined in
 
-[src/mapstyle.ts:212](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L212)
+[src/mapstyle.ts:212](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L212)
 
 ___
 
@@ -73,7 +73,7 @@ Get the defualt variant for this reference style
 
 #### Defined in
 
-[src/mapstyle.ts:250](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L250)
+[src/mapstyle.ts:250](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L250)
 
 ___
 
@@ -89,7 +89,7 @@ Get the id of _this_ reference style
 
 #### Defined in
 
-[src/mapstyle.ts:204](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L204)
+[src/mapstyle.ts:204](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L204)
 
 ___
 
@@ -105,7 +105,7 @@ Get the human-friendly name of this reference style
 
 #### Defined in
 
-[src/mapstyle.ts:196](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L196)
+[src/mapstyle.ts:196](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L196)
 
 ___
 
@@ -128,7 +128,7 @@ then the most relevant default variant is returned instead
 
 #### Defined in
 
-[src/mapstyle.ts:232](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L232)
+[src/mapstyle.ts:232](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L232)
 
 ___
 
@@ -144,7 +144,7 @@ Get the list of variants for this reference style
 
 #### Defined in
 
-[src/mapstyle.ts:242](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L242)
+[src/mapstyle.ts:242](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L242)
 
 ___
 
@@ -166,4 +166,4 @@ Check if a given variant type exists for this reference style
 
 #### Defined in
 
-[src/mapstyle.ts:222](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L222)
+[src/mapstyle.ts:222](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/mapstyle.ts#L222)

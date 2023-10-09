@@ -39,7 +39,7 @@ Error.constructor
 
 #### Defined in
 
-[src/services/ServiceError.ts:5](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/ServiceError.ts#L5)
+[src/services/ServiceError.ts:5](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/services/ServiceError.ts#L5)
 
 ## Properties
 
@@ -49,4 +49,4 @@ Error.constructor
 
 #### Defined in
 
-[src/services/ServiceError.ts:5](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/ServiceError.ts#L5)
+[src/services/ServiceError.ts:5](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/services/ServiceError.ts#L5)

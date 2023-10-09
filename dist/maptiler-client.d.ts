@@ -1298,4 +1298,34 @@ interface Output {
  */
 declare function profileLineString(path: Feature<LineString> | LineString, options: Options): Promise<Output>;
 
-export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CommonForwardAndReverseGeocodingOptions, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, ElevPoint, ElevationParser, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingOptions, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, Options, Output, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, TileCoverCoordinates, TileCoverOutput, TileID, TileImage, TileRequest, XYZ, config, coordinates, data, defaultElevationParser, expandMapStyle, geocoding, geolocation, mapStylePresetList, profileLineString, staticMaps };
+/**
+ * Finds the area of a Polygon or MultiPolygon in square meters.
+ */
+declare function area(area: GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon> | GeoJSON.Polygon | GeoJSON.MultiPolygon): number;
+/**
+ * Finds the area of a MultiPolygon in square meters.
+ */
+declare function multiPolygonArea(multiPoly: GeoJSON.MultiPolygon | GeoJSON.Position[][][]): number;
+/**
+ * Finds the area of a Polygon in square meters.
+ */
+declare function polygonArea(poly: GeoJSON.Polygon | GeoJSON.Position[][]): number;
+
+/** Get the distance of a LineString in meters */
+declare function lineDistance(line: GeoJSON.Feature<GeoJSON.LineString> | GeoJSON.LineString | GeoJSON.Position[]): number;
+/** Get the distance between two lon-lat pairs in meters */
+declare function pointDistance(from: GeoJSON.Position, to: GeoJSON.Position): number;
+
+declare const earthRadius = 6371008.8;
+/** Convert meters to feet */
+declare function mToFt(m: number): number;
+/** Convert degrees to Radians */
+declare function degToRad(degrees: number): number;
+/** Convert radians to degrees */
+declare function radToDeg(radians: number): number;
+/** Given a latitude and zoom level, determine the max distance each segment can be in meters */
+declare function getZoomLevelResolution(latitude: number, zoom: number): number;
+/** Convert a tile's zoom-x-y to a number hash */
+declare function xyzToTileID(x: number, y: number, zoom: number): number;
+
+export { AutomaticStaticMapOptions, BoundedStaticMapOptions, CenteredStaticMapOptions, ClientConfig, CommonForwardAndReverseGeocodingOptions, CoordinateExport, CoordinateGrid, CoordinateId, CoordinateSearch, CoordinateSearchResult, CoordinateTransformResult, CoordinateTransformation, Coordinates, CoordinatesSearchOptions, CoordinatesTransformOptions, ElevPoint, ElevationParser, FeatureHierarchy, FetchFunction, GeocodingFeature, GeocodingOptions, GeocodingSearchResult, GeolocationInfoOptions, GeolocationResult, GetDataOptions, LanguageGeocoding, LanguageGeocodingOptions, LanguageGeocodingString, MapStyle, MapStylePreset, MapStyleType, MapStyleVariant, Options, Output, ReferenceMapStyle, ReverseGeocodingOptions, ServiceError, StaticMapBaseOptions, StaticMapMarker, TileCoverCoordinates, TileCoverOutput, TileID, TileImage, TileRequest, XYZ, area, config, coordinates, data, defaultElevationParser, degToRad, earthRadius, expandMapStyle, geocoding, geolocation, getZoomLevelResolution, lineDistance, mToFt, mapStylePresetList, multiPolygonArea, pointDistance, polygonArea, profileLineString, radToDeg, staticMaps, xyzToTileID };

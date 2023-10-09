@@ -1367,6 +1367,9 @@ function mToFt(m) {
 function degToRad(degrees) {
   return degrees % 360 * Math.PI / 180;
 }
+function radToDeg(radians) {
+  return radians * 180 / Math.PI;
+}
 function getZoomLevelResolution(latitude, zoom) {
   return Math.cos(latitude * Math.PI / 180) * 2 * Math.PI * 6378137 / (512 * __pow(2, zoom)) * 3;
 }
@@ -1374,6 +1377,77 @@ function xyzToTileID(x, y, zoom) {
   return ((1 << zoom) * y + x) * 32 + zoom;
 }
 
+function area(area2) {
+  const geometry = "geometry" in area2 ? area2.geometry : area2;
+  const type = geometry.type;
+  if (type === "MultiPolygon") {
+    return multiPolygonArea(geometry.coordinates);
+  }
+  return polygonArea(geometry.coordinates);
+}
+function multiPolygonArea(multiPoly) {
+  const coords = "coordinates" in multiPoly ? multiPoly.coordinates : multiPoly;
+  let total = 0;
+  for (const polygon of coords) {
+    total += polygonArea(polygon);
+  }
+  return total;
+}
+function polygonArea(poly) {
+  const coords = "coordinates" in poly ? poly.coordinates : poly;
+  let total = 0;
+  for (const ring of coords) {
+    total += ringArea(ring);
+  }
+  return total;
+}
+function ringArea(coords) {
+  let p1;
+  let p2;
+  let p3;
+  let lowerIndex;
+  let middleIndex;
+  let upperIndex;
+  let i;
+  let total = 0;
+  const coordsLength = coords.length;
+  if (coordsLength > 2) {
+    for (i = 0; i < coordsLength; i++) {
+      if (i === coordsLength - 2) {
+        lowerIndex = coordsLength - 2;
+        middleIndex = coordsLength - 1;
+        upperIndex = 0;
+      } else if (i === coordsLength - 1) {
+        lowerIndex = coordsLength - 1;
+        middleIndex = 0;
+        upperIndex = 1;
+      } else {
+        lowerIndex = i;
+        middleIndex = i + 1;
+        upperIndex = i + 2;
+      }
+      p1 = coords[lowerIndex];
+      p2 = coords[middleIndex];
+      p3 = coords[upperIndex];
+      total += (degToRad(p3[0]) - degToRad(p1[0])) * Math.sin(degToRad(p2[1]));
+    }
+    total = total * earthRadius * earthRadius / 2;
+  }
+  return Math.abs(total);
+}
+
+function lineDistance(line) {
+  const coordinates = "geometry" in line ? line.geometry.coordinates : "coordinates" in line ? line.coordinates : line;
+  let distance = 0;
+  let prevCoord;
+  for (const coordinate of coordinates) {
+    if (prevCoord !== void 0) {
+      distance += pointDistance(prevCoord, coordinate);
+    }
+    prevCoord = coordinate;
+  }
+  return distance;
+}
 function pointDistance(from, to) {
   const { pow, sin, cos, sqrt, atan2 } = Math;
   const dLat = degToRad(to[1] - from[1]);
@@ -1604,14 +1678,25 @@ exports.MapStyle = MapStyle;
 exports.MapStyleVariant = MapStyleVariant;
 exports.ReferenceMapStyle = ReferenceMapStyle;
 exports.ServiceError = ServiceError;
+exports.area = area;
 exports.config = config;
 exports.coordinates = coordinates;
 exports.data = data;
 exports.defaultElevationParser = defaultElevationParser;
+exports.degToRad = degToRad;
+exports.earthRadius = earthRadius;
 exports.expandMapStyle = expandMapStyle;
 exports.geocoding = geocoding;
 exports.geolocation = geolocation;
+exports.getZoomLevelResolution = getZoomLevelResolution;
+exports.lineDistance = lineDistance;
+exports.mToFt = mToFt;
 exports.mapStylePresetList = mapStylePresetList;
+exports.multiPolygonArea = multiPolygonArea;
+exports.pointDistance = pointDistance;
+exports.polygonArea = polygonArea;
 exports.profileLineString = profileLineString;
+exports.radToDeg = radToDeg;
 exports.staticMaps = staticMaps;
+exports.xyzToTileID = xyzToTileID;
 //# sourceMappingURL=maptiler-client.cjs.map
