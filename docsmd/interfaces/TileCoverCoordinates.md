@@ -19,7 +19,7 @@ Store the coordinates as an ll-pair
 
 #### Defined in
 
-src/demProfiler/tileCover.ts:19
+[src/demProfiler/tileCover.ts:19](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/tileCover.ts#L19)
 
 ___
 
@@ -31,4 +31,4 @@ Track the tile relative to the point
 
 #### Defined in
 
-src/demProfiler/tileCover.ts:21
+[src/demProfiler/tileCover.ts:21](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/tileCover.ts#L21)

@@ -8,6 +8,7 @@
 
 - [elevationParser](Options.md#elevationparser)
 - [metric](Options.md#metric)
+- [smooth](Options.md#smooth)
 - [tileRequest](Options.md#tilerequest)
 - [tileSize](Options.md#tilesize)
 - [zoom](Options.md#zoom)
@@ -22,7 +23,7 @@ Elevation parser. Default: elevation = -10000 + ((R * 256 * 256 + G * 256 + B) *
 
 #### Defined in
 
-src/demProfiler/index.ts:33
+[src/demProfiler/index.ts:33](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L33)
 
 ___
 
@@ -34,7 +35,19 @@ type of metric to use. Meters or feet. Default: meters
 
 #### Defined in
 
-src/demProfiler/index.ts:25
+[src/demProfiler/index.ts:25](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L25)
+
+___
+
+### smooth
+
+• `Optional` **smooth**: `boolean`
+
+smooth out the elevation to make the visual aesthetic nicer
+
+#### Defined in
+
+[src/demProfiler/index.ts:35](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L35)
 
 ___
 
@@ -46,7 +59,7 @@ Tile Request method
 
 #### Defined in
 
-src/demProfiler/index.ts:31
+[src/demProfiler/index.ts:31](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L31)
 
 ___
 
@@ -58,7 +71,7 @@ Tile size of the images returned. Default 512
 
 #### Defined in
 
-src/demProfiler/index.ts:29
+[src/demProfiler/index.ts:29](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L29)
 
 ___
 
@@ -70,4 +83,4 @@ Zoom that is queried from the server. Default: 13
 
 #### Defined in
 
-src/demProfiler/index.ts:27
+[src/demProfiler/index.ts:27](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L27)

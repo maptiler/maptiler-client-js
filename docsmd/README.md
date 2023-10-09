@@ -84,7 +84,7 @@ Options that can be provided to automatic static maps
 
 #### Defined in
 
-[src/services/staticMaps.ts:141](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/staticMaps.ts#L141)
+[src/services/staticMaps.ts:141](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/staticMaps.ts#L141)
 
 ___
 
@@ -96,7 +96,7 @@ Options that can be provided to bounded static maps
 
 #### Defined in
 
-[src/services/staticMaps.ts:130](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/staticMaps.ts#L130)
+[src/services/staticMaps.ts:130](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/staticMaps.ts#L130)
 
 ___
 
@@ -108,7 +108,7 @@ Options that can be provided to centered static maps
 
 #### Defined in
 
-[src/services/staticMaps.ts:125](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/staticMaps.ts#L125)
+[src/services/staticMaps.ts:125](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/staticMaps.ts#L125)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[src/services/geocoding.ts:25](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L25)
+[src/services/geocoding.ts:25](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L25)
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:38](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L38)
+[src/services/coordinates.ts:38](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L38)
 
 ___
 
@@ -151,7 +151,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:43](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L43)
+[src/services/coordinates.ts:43](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L43)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:33](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L33)
+[src/services/coordinates.ts:33](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L33)
 
 ___
 
@@ -194,7 +194,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:61](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L61)
+[src/services/coordinates.ts:61](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L61)
 
 ___
 
@@ -211,7 +211,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:91](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L91)
+[src/services/coordinates.ts:91](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L91)
 
 ___
 
@@ -228,7 +228,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:159](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L159)
+[src/services/coordinates.ts:159](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L159)
 
 ___
 
@@ -254,7 +254,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:47](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L47)
+[src/services/coordinates.ts:47](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L47)
 
 ___
 
@@ -264,7 +264,7 @@ ___
 
 #### Defined in
 
-[src/services/geocoding.ts:90](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L90)
+[src/services/geocoding.ts:90](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L90)
 
 ___
 
@@ -283,7 +283,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:11](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L11)
+[src/services/coordinates.ts:11](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L11)
 
 ___
 
@@ -304,7 +304,7 @@ Options that can be provided when transforming a coordinate from one CRS to anot
 
 #### Defined in
 
-[src/services/coordinates.ts:174](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L174)
+[src/services/coordinates.ts:174](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L174)
 
 ___
 
@@ -331,7 +331,7 @@ ___
 
 #### Defined in
 
-src/demProfiler/getElevation.ts:5
+[src/demProfiler/getElevation.ts:5](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/getElevation.ts#L5)
 
 ___
 
@@ -341,7 +341,7 @@ ___
 
 #### Defined in
 
-[src/services/geocoding.ts:159](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L159)
+[src/services/geocoding.ts:159](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L159)
 
 ___
 
@@ -366,7 +366,7 @@ ___
 
 #### Defined in
 
-[src/config.ts:1](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/config.ts#L1)
+[src/config.ts:1](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/config.ts#L1)
 
 ___
 
@@ -376,7 +376,7 @@ ___
 
 #### Defined in
 
-[src/services/geocoding.ts:161](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L161)
+[src/services/geocoding.ts:161](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L161)
 
 ___
 
@@ -386,7 +386,7 @@ ___
 
 #### Defined in
 
-[src/services/geocoding.ts:58](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L58)
+[src/services/geocoding.ts:58](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L58)
 
 ___
 
@@ -405,7 +405,7 @@ ___
 
 #### Defined in
 
-[src/services/geocoding.ts:213](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L213)
+[src/services/geocoding.ts:213](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L213)
 
 ___
 
@@ -423,7 +423,7 @@ Options that can be provided to get user data.
 
 #### Defined in
 
-[src/services/geolocation.ts:14](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geolocation.ts#L14)
+[src/services/geolocation.ts:14](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geolocation.ts#L14)
 
 ___
 
@@ -452,7 +452,7 @@ ___
 
 #### Defined in
 
-[src/services/geolocation.ts:21](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geolocation.ts#L21)
+[src/services/geolocation.ts:21](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geolocation.ts#L21)
 
 ___
 
@@ -470,7 +470,7 @@ Options that can be provided to get user data.
 
 #### Defined in
 
-[src/services/data.ts:14](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/data.ts#L14)
+[src/services/data.ts:14](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/data.ts#L14)
 
 ___
 
@@ -486,7 +486,7 @@ ___
 
 #### Defined in
 
-[src/services/geocoding.ts:18](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L18)
+[src/services/geocoding.ts:18](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L18)
 
 ___
 
@@ -498,7 +498,7 @@ Built-in languages values as strings
 
 #### Defined in
 
-[src/language.ts:69](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/language.ts#L69)
+[src/language.ts:69](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/language.ts#L69)
 
 ___
 
@@ -519,7 +519,7 @@ Type for object containing style details
 
 #### Defined in
 
-[src/mapstyle.ts:29](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/mapstyle.ts#L29)
+[src/mapstyle.ts:29](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L29)
 
 ___
 
@@ -550,7 +550,7 @@ All the styles and variants maintained by MapTiler.
 
 #### Defined in
 
-[src/mapstyle.ts:258](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/mapstyle.ts#L258)
+[src/mapstyle.ts:258](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L258)
 
 ___
 
@@ -560,7 +560,7 @@ ___
 
 #### Defined in
 
-[src/services/geocoding.ts:86](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L86)
+[src/services/geocoding.ts:86](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L86)
 
 ___
 
@@ -591,7 +591,7 @@ Base set of options that can be provided to all the types of static maps
 
 #### Defined in
 
-[src/services/staticMaps.ts:10](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/staticMaps.ts#L10)
+[src/services/staticMaps.ts:10](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/staticMaps.ts#L10)
 
 ___
 
@@ -603,7 +603,7 @@ Definition of a maker to show on a static map
 
 #### Defined in
 
-[src/services/staticMaps.ts:146](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/staticMaps.ts#L146)
+[src/services/staticMaps.ts:146](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/staticMaps.ts#L146)
 
 ___
 
@@ -629,7 +629,7 @@ ___
 
 #### Defined in
 
-src/demProfiler/index.ts:17
+[src/demProfiler/index.ts:17](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L17)
 
 ___
 
@@ -647,7 +647,7 @@ ___
 
 #### Defined in
 
-[src/services/coordinates.ts:153](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L153)
+[src/services/coordinates.ts:153](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L153)
 
 ## Variables
 
@@ -719,7 +719,7 @@ Languages. Note that not all the languages of this list are available but the co
 
 #### Defined in
 
-[src/language.ts:4](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/language.ts#L4)
+[src/language.ts:4](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/language.ts#L4)
 
 ___
 
@@ -735,7 +735,7 @@ For example, `MapStyle.STREETS` and the variants:
 
 #### Defined in
 
-[src/mapstyle.ts:968](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/mapstyle.ts#L968)
+[src/mapstyle.ts:968](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L968)
 
 ___
 
@@ -747,7 +747,7 @@ Configuration object
 
 #### Defined in
 
-[src/config.ts:63](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/config.ts#L63)
+[src/config.ts:63](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/config.ts#L63)
 
 ___
 
@@ -767,7 +767,7 @@ The goal of the **Coordinate API* is query information about spatial coordinate 
 
 #### Defined in
 
-[src/services/coordinates.ts:253](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/coordinates.ts#L253)
+[src/services/coordinates.ts:253](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/coordinates.ts#L253)
 
 ___
 
@@ -786,7 +786,7 @@ The **Data API** provides a way to retrieve user data in GeoJSON format.
 
 #### Defined in
 
-[src/services/data.ts:59](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/data.ts#L59)
+[src/services/data.ts:59](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/data.ts#L59)
 
 ___
 
@@ -865,7 +865,7 @@ and to get the location details (country, city, street, etc.) from a geographic 
 
 #### Defined in
 
-[src/services/geocoding.ts:450](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geocoding.ts#L450)
+[src/services/geocoding.ts:450](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geocoding.ts#L450)
 
 ___
 
@@ -884,7 +884,7 @@ The **Geolocation API** provides a way to retrieve the IP address as well as geo
 
 #### Defined in
 
-[src/services/geolocation.ts:135](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/geolocation.ts#L135)
+[src/services/geolocation.ts:135](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/geolocation.ts#L135)
 
 ___
 
@@ -894,7 +894,7 @@ ___
 
 #### Defined in
 
-[src/mapstyle.ts:503](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/mapstyle.ts#L503)
+[src/mapstyle.ts:503](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L503)
 
 ___
 
@@ -915,7 +915,7 @@ The URL of static maps can then be used within a `<img />` markup element, as th
 
 #### Defined in
 
-[src/services/staticMaps.ts:457](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/services/staticMaps.ts#L457)
+[src/services/staticMaps.ts:457](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/services/staticMaps.ts#L457)
 
 ## Functions
 
@@ -939,7 +939,7 @@ Default elevation parser used by Mapbox and Maplibre. Result is in meters
 
 #### Defined in
 
-src/demProfiler/getElevation.ts:40
+[src/demProfiler/getElevation.ts:40](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/getElevation.ts#L40)
 
 ___
 
@@ -961,7 +961,7 @@ Expand the map style provided as argument of the Map constructor
 
 #### Defined in
 
-[src/mapstyle.ts:6](https://github.com/maptiler/maptiler-client-js/blob/7487334/src/mapstyle.ts#L6)
+[src/mapstyle.ts:6](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/mapstyle.ts#L6)
 
 ___
 
@@ -985,4 +985,4 @@ This algorithm will automatically break the path into denser segments relative t
 
 #### Defined in
 
-src/demProfiler/index.ts:68
+[src/demProfiler/index.ts:70](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L70)

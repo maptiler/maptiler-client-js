@@ -1263,6 +1263,8 @@ interface Options {
     tileRequest: TileRequest;
     /** Elevation parser. Default: elevation = -10000 + ((R * 256 * 256 + G * 256 + B) * 0.1) */
     elevationParser?: ElevationParser;
+    /** smooth out the elevation to make the visual aesthetic nicer */
+    smooth?: boolean;
 }
 interface ElevPoint {
     /** Distance along path from the starting point in the metric defind by options */

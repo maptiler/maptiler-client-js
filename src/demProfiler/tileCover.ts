@@ -78,7 +78,7 @@ function sampleProfileLine(
       );
       const numSamples = Math.ceil(dist / resolution);
 
-      for (let i = 0; i <= numSamples; i++) {
+      for (let i = 0; i <= numSamples - 1; i++) {
         const sample = [
           prevCoord[0] + (coord[0] - prevCoord[0]) * (i / numSamples),
           prevCoord[1] + (coord[1] - prevCoord[1]) * (i / numSamples),

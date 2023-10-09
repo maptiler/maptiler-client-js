@@ -19,7 +19,7 @@
 
 #### Defined in
 
-src/demProfiler/tileCover.ts:11
+[src/demProfiler/tileCover.ts:11](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/tileCover.ts#L11)
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 #### Defined in
 
-src/demProfiler/tileCover.ts:12
+[src/demProfiler/tileCover.ts:12](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/tileCover.ts#L12)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 #### Defined in
 
-src/demProfiler/tileCover.ts:13
+[src/demProfiler/tileCover.ts:13](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/tileCover.ts#L13)
 
 ___
 
@@ -49,4 +49,4 @@ ___
 
 #### Defined in
 
-src/demProfiler/tileCover.ts:14
+[src/demProfiler/tileCover.ts:14](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/tileCover.ts#L14)

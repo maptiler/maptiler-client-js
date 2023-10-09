@@ -17,7 +17,7 @@
 
 #### Defined in
 
-src/demProfiler/index.ts:13
+[src/demProfiler/index.ts:13](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L13)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-src/demProfiler/index.ts:14
+[src/demProfiler/index.ts:14](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/index.ts#L14)

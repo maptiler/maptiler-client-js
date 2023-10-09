@@ -31,6 +31,8 @@ export interface Options {
   tileRequest: TileRequest;
   /** Elevation parser. Default: elevation = -10000 + ((R * 256 * 256 + G * 256 + B) * 0.1) */
   elevationParser?: ElevationParser;
+  /** smooth out the elevation to make the visual aesthetic nicer */
+  smooth?: boolean;
 }
 
 export interface ElevPoint {
@@ -80,12 +82,14 @@ export async function profileLineString(
   // get tiles
   const tileCache = await getTiles(tiles, options.tileRequest);
   // get the elevation data
-  const points = getElevations(
+  let points = getElevations(
     coords,
     tileCache,
     options.tileSize ?? 512,
     options.elevationParser
   );
+  // smooth the elevation data if needed
+  if (options.smooth === true) points = smoothElevation(points);
   // calculate the output
   let output = buildOutput(points);
   // convert to miles if needed
@@ -185,6 +189,31 @@ function buildOutput(points: ElevPoint[]): Output {
     endElevation: points[points.length - 1].elevation,
     points,
   };
+}
+
+/**
+ * Smooth function to make the elevation appear more aesthetically
+ * pleaseing without changing the values greatly
+ */
+function smoothElevation(points: ElevPoint[]): ElevPoint[] {
+  const newPoints: ElevPoint[] = [];
+  let prevPoint: ElevPoint | undefined;
+  for (const point of points) {
+    if (prevPoint === undefined) {
+      newPoints.push(point);
+    } else {
+      const newPoint: ElevPoint = {
+        distance: point.distance,
+        elevation: (prevPoint.elevation + point.elevation) / 2,
+        coordinate: point.coordinate,
+        tile: point.tile,
+      };
+      newPoints.push(newPoint);
+    }
+    prevPoint = point;
+  }
+
+  return newPoints;
 }
 
 /** Convert all output properties from km to miles */

@@ -18,8 +18,9 @@ export function radToDeg(radians: number): number {
 /** Given a latitude and zoom level, determine the max distance each segment can be in meters */
 export function getZoomLevelResolution(latitude: number, zoom: number): number {
   return (
-    (Math.cos((latitude * Math.PI) / 180.0) * 2 * Math.PI * 6378137) /
-    (512 * 2 ** zoom)
+    ((Math.cos((latitude * Math.PI) / 180.0) * 2 * Math.PI * 6378137) /
+      (512 * 2 ** zoom)) *
+    3
   );
 }
 

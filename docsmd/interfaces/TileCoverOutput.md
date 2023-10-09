@@ -17,7 +17,7 @@
 
 #### Defined in
 
-src/demProfiler/tileCover.ts:25
+[src/demProfiler/tileCover.ts:25](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/tileCover.ts#L25)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-src/demProfiler/tileCover.ts:26
+[src/demProfiler/tileCover.ts:26](https://github.com/CraigglesO/maptiler-client-js/blob/487b199/src/demProfiler/tileCover.ts#L26)

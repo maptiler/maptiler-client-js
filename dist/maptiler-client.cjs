@@ -1368,7 +1368,7 @@ function degToRad(degrees) {
   return degrees % 360 * Math.PI / 180;
 }
 function getZoomLevelResolution(latitude, zoom) {
-  return Math.cos(latitude * Math.PI / 180) * 2 * Math.PI * 6378137 / (512 * __pow(2, zoom));
+  return Math.cos(latitude * Math.PI / 180) * 2 * Math.PI * 6378137 / (512 * __pow(2, zoom)) * 3;
 }
 function xyzToTileID(x, y, zoom) {
   return ((1 << zoom) * y + x) * 32 + zoom;
@@ -1412,7 +1412,7 @@ function sampleProfileLine(coordinates, resolution) {
         coord
       );
       const numSamples = Math.ceil(dist / resolution);
-      for (let i = 0; i <= numSamples; i++) {
+      for (let i = 0; i <= numSamples - 1; i++) {
         const sample = [
           prevCoord[0] + (coord[0] - prevCoord[0]) * (i / numSamples),
           prevCoord[1] + (coord[1] - prevCoord[1]) * (i / numSamples)
@@ -1477,12 +1477,14 @@ function profileLineString(path, options) {
       (_b = options.tileSize) != null ? _b : 512
     );
     const tileCache = yield getTiles(tiles, options.tileRequest);
-    const points = getElevations(
+    let points = getElevations(
       coords,
       tileCache,
       (_c = options.tileSize) != null ? _c : 512,
       options.elevationParser
     );
+    if (options.smooth === true)
+      points = smoothElevation(points);
     let output = buildOutput(points);
     if (options.metric === "ft")
       output = toFeet(output);
@@ -1558,6 +1560,25 @@ function buildOutput(points) {
     endElevation: points[points.length - 1].elevation,
     points
   };
+}
+function smoothElevation(points) {
+  const newPoints = [];
+  let prevPoint;
+  for (const point of points) {
+    if (prevPoint === void 0) {
+      newPoints.push(point);
+    } else {
+      const newPoint = {
+        distance: point.distance,
+        elevation: (prevPoint.elevation + point.elevation) / 2,
+        coordinate: point.coordinate,
+        tile: point.tile
+      };
+      newPoints.push(newPoint);
+    }
+    prevPoint = point;
+  }
+  return newPoints;
 }
 function toFeet(input) {
   const output = {
