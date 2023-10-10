@@ -24,7 +24,7 @@ Average elevation of the path
 
 #### Defined in
 
-[src/demProfiler/index.ts:57](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L57)
+[src/demProfiler/index.ts:57](https://github.com/CraigglesO/maptiler-client-js/blob/89a85f8/src/demProfiler/index.ts#L57)
 
 ___
 
@@ -36,7 +36,7 @@ Total length of the path in the metric defined by options
 
 #### Defined in
 
-[src/demProfiler/index.ts:51](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L51)
+[src/demProfiler/index.ts:51](https://github.com/CraigglesO/maptiler-client-js/blob/89a85f8/src/demProfiler/index.ts#L51)
 
 ___
 
@@ -48,7 +48,7 @@ Elevation at the end of the path
 
 #### Defined in
 
-[src/demProfiler/index.ts:61](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L61)
+[src/demProfiler/index.ts:61](https://github.com/CraigglesO/maptiler-client-js/blob/89a85f8/src/demProfiler/index.ts#L61)
 
 ___
 
@@ -60,7 +60,7 @@ Maximum elevation of the path
 
 #### Defined in
 
-[src/demProfiler/index.ts:55](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L55)
+[src/demProfiler/index.ts:55](https://github.com/CraigglesO/maptiler-client-js/blob/89a85f8/src/demProfiler/index.ts#L55)
 
 ___
 
@@ -72,7 +72,7 @@ Minimum elevation of the path
 
 #### Defined in
 
-[src/demProfiler/index.ts:53](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L53)
+[src/demProfiler/index.ts:53](https://github.com/CraigglesO/maptiler-client-js/blob/89a85f8/src/demProfiler/index.ts#L53)
 
 ___
 
@@ -84,7 +84,7 @@ Array of points along the path
 
 #### Defined in
 
-[src/demProfiler/index.ts:63](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L63)
+[src/demProfiler/index.ts:63](https://github.com/CraigglesO/maptiler-client-js/blob/89a85f8/src/demProfiler/index.ts#L63)
 
 ___
 
@@ -96,4 +96,4 @@ Elevation at the start of the path
 
 #### Defined in
 
-[src/demProfiler/index.ts:59](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L59)
+[src/demProfiler/index.ts:59](https://github.com/CraigglesO/maptiler-client-js/blob/89a85f8/src/demProfiler/index.ts#L59)

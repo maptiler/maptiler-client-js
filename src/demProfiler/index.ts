@@ -198,13 +198,16 @@ function buildOutput(points: ElevPoint[]): Output {
 function smoothElevation(points: ElevPoint[]): ElevPoint[] {
   const newPoints: ElevPoint[] = [];
   let prevPoint: ElevPoint | undefined;
-  for (const point of points) {
+  for (let i = 0; i < points.length; i++) {
+    const point = points[i];
+    const nextPoint = points[i + 1] ?? points[i];
     if (prevPoint === undefined) {
       newPoints.push(point);
     } else {
       const newPoint: ElevPoint = {
         distance: point.distance,
-        elevation: (prevPoint.elevation + point.elevation) / 2,
+        elevation:
+          (prevPoint.elevation + point.elevation + nextPoint.elevation) / 3,
         coordinate: point.coordinate,
         tile: point.tile,
       };

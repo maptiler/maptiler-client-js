@@ -1632,15 +1632,18 @@ function buildOutput(points) {
   };
 }
 function smoothElevation(points) {
+  var _a;
   const newPoints = [];
   let prevPoint;
-  for (const point of points) {
+  for (let i = 0; i < points.length; i++) {
+    const point = points[i];
+    const nextPoint = (_a = points[i + 1]) != null ? _a : points[i];
     if (prevPoint === void 0) {
       newPoints.push(point);
     } else {
       const newPoint = {
         distance: point.distance,
-        elevation: (prevPoint.elevation + point.elevation) / 2,
+        elevation: (prevPoint.elevation + point.elevation + nextPoint.elevation) / 3,
         coordinate: point.coordinate,
         tile: point.tile
       };
