@@ -35,7 +35,7 @@ Get the MapTiler Cloud API key
 
 #### Defined in
 
-[src/config.ts:41](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/config.ts#L41)
+[src/config.ts:41](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/config.ts#L41)
 
 • `set` **apiKey**(`k`): `void`
 
@@ -53,7 +53,7 @@ Set the MapTiler Cloud API key
 
 #### Defined in
 
-[src/config.ts:34](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/config.ts#L34)
+[src/config.ts:34](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/config.ts#L34)
 
 ___
 
@@ -69,7 +69,7 @@ Get the fetch fucntion
 
 #### Defined in
 
-[src/config.ts:55](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/config.ts#L55)
+[src/config.ts:55](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/config.ts#L55)
 
 • `set` **fetch**(`f`): `void`
 
@@ -87,4 +87,4 @@ Set a the custom fetch function to replace the default one
 
 #### Defined in
 
-[src/config.ts:48](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/config.ts#L48)
+[src/config.ts:48](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/config.ts#L48)

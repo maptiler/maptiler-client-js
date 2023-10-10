@@ -5,7 +5,6 @@ import { profileLineString } from "../../src/demProfiler";
 import sharp from "sharp";
 
 const readFileAsync = promisify(fs.readFile);
-const writeFileAsync = promisify(fs.writeFile);
 
 describe("profile", () => {
   it("simple line at zoom 13", async () => {

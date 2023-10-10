@@ -40,7 +40,7 @@ export default function tileCover(
   const coords: TileCoverCoordinates[] = [];
 
   // get the resolution of the zoom level
-  const resolution = getZoomLevelResolution(coordinates[0][1], zoom);
+  const resolution = getZoomLevelResolution(coordinates[0][1], zoom, tileSize);
 
   // migrate from coordinates to "samples" that are relative to the zoom
   const samples = sampleProfileLine(coordinates, resolution);

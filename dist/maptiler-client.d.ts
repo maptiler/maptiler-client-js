@@ -1324,7 +1324,7 @@ declare function degToRad(degrees: number): number;
 /** Convert radians to degrees */
 declare function radToDeg(radians: number): number;
 /** Given a latitude and zoom level, determine the max distance each segment can be in meters */
-declare function getZoomLevelResolution(latitude: number, zoom: number): number;
+declare function getZoomLevelResolution(latitude: number, zoom: number, tileSize?: number): number;
 /** Convert a tile's zoom-x-y to a number hash */
 declare function xyzToTileID(x: number, y: number, zoom: number): number;
 

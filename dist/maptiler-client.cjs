@@ -1370,8 +1370,8 @@ function degToRad(degrees) {
 function radToDeg(radians) {
   return radians * 180 / Math.PI;
 }
-function getZoomLevelResolution(latitude, zoom) {
-  return Math.cos(latitude * Math.PI / 180) * 2 * Math.PI * 6378137 / (512 * __pow(2, zoom)) * 3;
+function getZoomLevelResolution(latitude, zoom, tileSize = 512) {
+  return Math.cos(latitude * Math.PI / 180) * 2 * Math.PI * 6378137 / (tileSize * __pow(2, zoom)) * 3;
 }
 function xyzToTileID(x, y, zoom) {
   return ((1 << zoom) * y + x) * 32 + zoom;
@@ -1462,7 +1462,7 @@ function tileCover(coordinates, zoom, tileSize) {
   const tileHash = /* @__PURE__ */ new Map();
   const tiles = [];
   const coords = [];
-  const resolution = getZoomLevelResolution(coordinates[0][1], zoom);
+  const resolution = getZoomLevelResolution(coordinates[0][1], zoom, tileSize);
   const samples = sampleProfileLine(coordinates, resolution);
   for (const sample of samples) {
     const coordinate = sample;

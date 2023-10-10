@@ -21,7 +21,7 @@ Coordinates of the point in lat-lon
 
 #### Defined in
 
-[src/demProfiler/index.ts:44](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/demProfiler/index.ts#L44)
+[src/demProfiler/index.ts:44](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L44)
 
 ___
 
@@ -33,7 +33,7 @@ Distance along path from the starting point in the metric defind by options
 
 #### Defined in
 
-[src/demProfiler/index.ts:40](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/demProfiler/index.ts#L40)
+[src/demProfiler/index.ts:40](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L40)
 
 ___
 
@@ -45,7 +45,7 @@ Elevation of the point
 
 #### Defined in
 
-[src/demProfiler/index.ts:42](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/demProfiler/index.ts#L42)
+[src/demProfiler/index.ts:42](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L42)
 
 ___
 
@@ -57,4 +57,4 @@ Tile that the point is in
 
 #### Defined in
 
-[src/demProfiler/index.ts:46](https://github.com/CraigglesO/maptiler-client-js/blob/ea75989/src/demProfiler/index.ts#L46)
+[src/demProfiler/index.ts:46](https://github.com/CraigglesO/maptiler-client-js/blob/e564d16/src/demProfiler/index.ts#L46)
