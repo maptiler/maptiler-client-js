@@ -1,3 +1,11 @@
+import { llToTile, llToTilePx } from 'web-merc-projection';
+
+var __defProp$1 = Object.defineProperty;
+var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$1 = (obj, key, value) => {
+  __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
 function tryGettingFetch() {
   if (typeof self !== "undefined") {
     return fetch.bind(self);
@@ -12,12 +20,12 @@ class ClientConfig {
     /**
      * MapTiler Cloud API key
      */
-    this._apiKey = "";
+    __publicField$1(this, "_apiKey", "");
     /**
      * The fetch function. To be set if in Node < 18, otherwise
      * will be automatically resolved.
      */
-    this._fetch = tryGettingFetch();
+    __publicField$1(this, "_fetch", tryGettingFetch());
   }
   /**
    * Set the MapTiler Cloud API key
@@ -114,7 +122,7 @@ function getAutoLanguageGeocoding() {
   return canditatelangs.length ? canditatelangs[0] : LanguageGeocoding.ENGLISH;
 }
 
-var __async$4 = (__this, __arguments, generator) => {
+var __async$5 = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
       try {
@@ -135,7 +143,7 @@ var __async$4 = (__this, __arguments, generator) => {
   });
 };
 function callFetch(_0) {
-  return __async$4(this, arguments, function* (resource, options = {}) {
+  return __async$5(this, arguments, function* (resource, options = {}) {
     if (config.fetch === null) {
       throw new Error(
         "The fetch function was not found. If on NodeJS < 18 please specify the fetch function with config.fetch"
@@ -165,7 +173,7 @@ class ServiceError extends Error {
   }
 }
 
-var __async$3 = (__this, __arguments, generator) => {
+var __async$4 = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
       try {
@@ -232,7 +240,7 @@ function addForwardGeocodingOptions(searchParams, options) {
   }
 }
 function forward(_0) {
-  return __async$3(this, arguments, function* (query, options = {}) {
+  return __async$4(this, arguments, function* (query, options = {}) {
     var _a;
     if (typeof query !== "string" || query.trim().length === 0) {
       throw new Error("The query must be a non-empty string");
@@ -253,7 +261,7 @@ function forward(_0) {
   });
 }
 function reverse(_0) {
-  return __async$3(this, arguments, function* (position, options = {}) {
+  return __async$4(this, arguments, function* (position, options = {}) {
     var _a;
     if (!Array.isArray(position) || position.length < 2) {
       throw new Error("The position must be an array of form [lng, lat].");
@@ -273,7 +281,7 @@ function reverse(_0) {
   });
 }
 function byId(_0) {
-  return __async$3(this, arguments, function* (id, options = {}) {
+  return __async$4(this, arguments, function* (id, options = {}) {
     var _a;
     const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
     addLanguageGeocodingOptions(endpoint.searchParams, options);
@@ -287,7 +295,7 @@ function byId(_0) {
   });
 }
 function batch(_0) {
-  return __async$3(this, arguments, function* (queries, options = {}) {
+  return __async$4(this, arguments, function* (queries, options = {}) {
     var _a;
     if (!queries.length) {
       return [];
@@ -316,7 +324,7 @@ const geocoding = {
   language: LanguageGeocoding
 };
 
-var __async$2 = (__this, __arguments, generator) => {
+var __async$3 = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
       try {
@@ -340,7 +348,7 @@ const customMessages$2 = {
   403: "Key is missing, invalid or restricted"
 };
 function info() {
-  return __async$2(this, arguments, function* (options = {}) {
+  return __async$3(this, arguments, function* (options = {}) {
     var _a;
     const endpoint = new URL(`geolocation/ip.json`, defaults.maptilerApiURL);
     endpoint.searchParams.set("key", (_a = options.apiKey) != null ? _a : config.apiKey);
@@ -360,7 +368,7 @@ const geolocation = {
   info
 };
 
-var __async$1 = (__this, __arguments, generator) => {
+var __async$2 = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
       try {
@@ -384,7 +392,7 @@ const customMessages$1 = {
   403: "Key is missing, invalid or restricted"
 };
 function search(_0) {
-  return __async$1(this, arguments, function* (query, options = {}) {
+  return __async$2(this, arguments, function* (query, options = {}) {
     var _a;
     if (typeof query !== "string" || query.trim().length === 0) {
       throw new Error("The query must be a non-empty string");
@@ -419,7 +427,7 @@ function search(_0) {
   });
 }
 function transform(_0) {
-  return __async$1(this, arguments, function* (positions, options = {}) {
+  return __async$2(this, arguments, function* (positions, options = {}) {
     var _a;
     const coordinatesStr = (Array.isArray(positions[0]) ? positions : [positions]).map((coord) => `${coord[0]},${coord[1]}`).join(";");
     const endpoint = new URL(
@@ -456,7 +464,7 @@ const coordinates = {
   transform
 };
 
-var __async = (__this, __arguments, generator) => {
+var __async$1 = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
       try {
@@ -480,7 +488,7 @@ const customMessages = {
   403: "Key is missing, invalid or restricted"
 };
 function get(_0) {
-  return __async(this, arguments, function* (dataId, options = {}) {
+  return __async$1(this, arguments, function* (dataId, options = {}) {
     var _a;
     if (typeof dataId !== "string" || dataId.trim().length === 0) {
       throw new Error("The data ID must be a non-empty string");
@@ -506,6 +514,12 @@ const data = {
   get
 };
 
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
 function expandMapStyle(style) {
   const maptilerDomainRegex = /^maptiler:\/\/(.*)/;
   let match;
@@ -613,11 +627,11 @@ class ReferenceMapStyle {
     /**
      * Variants that belong to this reference style, key being the reference type
      */
-    this.variants = {};
+    __publicField(this, "variants", {});
     /**
      * Variants that belong to this reference style, ordered by relevance
      */
-    this.orderedVariants = [];
+    __publicField(this, "orderedVariants", []);
   }
   /**
    * Get the human-friendly name of this reference style
@@ -1341,5 +1355,321 @@ const staticMaps = {
   automatic
 };
 
-export { ClientConfig, LanguageGeocoding, MapStyle, MapStyleVariant, ReferenceMapStyle, ServiceError, config, coordinates, data, expandMapStyle, geocoding, geolocation, mapStylePresetList, staticMaps };
+var __pow = Math.pow;
+const earthRadius = 63710088e-1;
+function mToFt(m) {
+  return m * 3.28084;
+}
+function degToRad(degrees) {
+  return degrees % 360 * Math.PI / 180;
+}
+function radToDeg(radians) {
+  return radians * 180 / Math.PI;
+}
+function getZoomLevelResolution(latitude, zoom, tileSize = 512) {
+  return Math.cos(latitude * Math.PI / 180) * 2 * Math.PI * 6378137 / (tileSize * __pow(2, zoom)) * 3;
+}
+function xyzToTileID(x, y, zoom) {
+  return ((1 << zoom) * y + x) * 32 + zoom;
+}
+
+function area(area2) {
+  const geometry = "geometry" in area2 ? area2.geometry : area2;
+  const type = geometry.type;
+  if (type === "MultiPolygon") {
+    return multiPolygonArea(geometry.coordinates);
+  }
+  return polygonArea(geometry.coordinates);
+}
+function multiPolygonArea(multiPoly) {
+  const coords = "coordinates" in multiPoly ? multiPoly.coordinates : multiPoly;
+  let total = 0;
+  for (const polygon of coords) {
+    total += polygonArea(polygon);
+  }
+  return total;
+}
+function polygonArea(poly) {
+  const coords = "coordinates" in poly ? poly.coordinates : poly;
+  let total = 0;
+  for (const ring of coords) {
+    total += ringArea(ring);
+  }
+  return total;
+}
+function ringArea(coords) {
+  let p1;
+  let p2;
+  let p3;
+  let lowerIndex;
+  let middleIndex;
+  let upperIndex;
+  let i;
+  let total = 0;
+  const coordsLength = coords.length;
+  if (coordsLength > 2) {
+    for (i = 0; i < coordsLength; i++) {
+      if (i === coordsLength - 2) {
+        lowerIndex = coordsLength - 2;
+        middleIndex = coordsLength - 1;
+        upperIndex = 0;
+      } else if (i === coordsLength - 1) {
+        lowerIndex = coordsLength - 1;
+        middleIndex = 0;
+        upperIndex = 1;
+      } else {
+        lowerIndex = i;
+        middleIndex = i + 1;
+        upperIndex = i + 2;
+      }
+      p1 = coords[lowerIndex];
+      p2 = coords[middleIndex];
+      p3 = coords[upperIndex];
+      total += (degToRad(p3[0]) - degToRad(p1[0])) * Math.sin(degToRad(p2[1]));
+    }
+    total = total * earthRadius * earthRadius / 2;
+  }
+  return Math.abs(total);
+}
+
+function lineDistance(line) {
+  const coordinates = "geometry" in line ? line.geometry.coordinates : "coordinates" in line ? line.coordinates : line;
+  let distance = 0;
+  let prevCoord;
+  for (const coordinate of coordinates) {
+    if (prevCoord !== void 0) {
+      distance += pointDistance(prevCoord, coordinate);
+    }
+    prevCoord = coordinate;
+  }
+  return distance;
+}
+function pointDistance(from, to) {
+  const { pow, sin, cos, sqrt, atan2 } = Math;
+  const dLat = degToRad(to[1] - from[1]);
+  const dLon = degToRad(to[0] - from[0]);
+  const lat1 = degToRad(from[1]);
+  const lat2 = degToRad(to[1]);
+  const a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2);
+  return 2 * atan2(sqrt(a), sqrt(1 - a)) * earthRadius;
+}
+
+function tileCover(coordinates, zoom, tileSize) {
+  const tileHash = /* @__PURE__ */ new Map();
+  const tiles = [];
+  const coords = [];
+  const resolution = getZoomLevelResolution(coordinates[0][1], zoom, tileSize);
+  const samples = sampleProfileLine(coordinates, resolution);
+  for (const sample of samples) {
+    const coordinate = sample;
+    const [tileX, tileY] = llToTile(coordinate, zoom, tileSize);
+    const id = xyzToTileID(tileX, tileY, zoom);
+    const tile = { id, x: tileX, y: tileY, z: zoom };
+    tileHash.set(id, tile);
+    coords.push({ coordinate, tile });
+  }
+  for (const tile of tileHash.values())
+    tiles.push(tile);
+  return { coords, tiles };
+}
+function sampleProfileLine(coordinates, resolution) {
+  const samples = [];
+  let prevCoord;
+  for (const coord of coordinates) {
+    if (prevCoord !== void 0) {
+      const dist = pointDistance(
+        prevCoord,
+        coord
+      );
+      const numSamples = Math.ceil(dist / resolution);
+      for (let i = 0; i <= numSamples - 1; i++) {
+        const sample = [
+          prevCoord[0] + (coord[0] - prevCoord[0]) * (i / numSamples),
+          prevCoord[1] + (coord[1] - prevCoord[1]) * (i / numSamples)
+        ];
+        samples.push(sample);
+      }
+    } else {
+      samples.push(coord);
+    }
+    prevCoord = coord;
+  }
+  return samples;
+}
+
+function getElevation(coord, tile, tileSize, tileImage, elevationParser = defaultElevationParser) {
+  const { channels, image } = tileImage;
+  let [x, y] = llToTilePx(coord, tile, tileSize);
+  x = clampPixel(x, tileSize);
+  y = clampPixel(y, tileSize);
+  const index = (y * tileSize + x) * channels;
+  return elevationParser(
+    image[index],
+    image[index + 1],
+    image[index + 2],
+    channels === 4 ? image[index + 3] : 0
+  );
+}
+function clampPixel(n, tileSize) {
+  return Math.max(0, Math.min(tileSize, Math.floor(n * tileSize)));
+}
+function defaultElevationParser(r, g, b) {
+  return -1e4 + (r * 256 * 256 + g * 256 + b) * 0.1;
+}
+
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+function profileLineString(path, options) {
+  return __async(this, null, function* () {
+    var _a, _b, _c;
+    const coordinates = "geometry" in path ? path.geometry.coordinates : path.coordinates;
+    const { coords, tiles } = tileCover(
+      coordinates,
+      (_a = options.zoom) != null ? _a : 13,
+      (_b = options.tileSize) != null ? _b : 512
+    );
+    const tileCache = yield getTiles(tiles, options.tileRequest);
+    let points = getElevations(
+      coords,
+      tileCache,
+      (_c = options.tileSize) != null ? _c : 512,
+      options.elevationParser
+    );
+    if (options.smooth === true)
+      points = smoothElevation(points);
+    let output = buildOutput(points);
+    if (options.metric === "ft")
+      output = toFeet(output);
+    return output;
+  });
+}
+function getTiles(tiles, tileRequest) {
+  return __async(this, null, function* () {
+    const tileCache = /* @__PURE__ */ new Map();
+    const requests = [];
+    for (const tile of tiles) {
+      requests.push(
+        tileRequest(tile.x, tile.y, tile.z).then((res) => {
+          tileCache.set(tile.id, res);
+          return res;
+        }).catch((err) => {
+          console.error(err);
+          return void 0;
+        })
+      );
+    }
+    yield Promise.allSettled(requests);
+    return tileCache;
+  });
+}
+function getElevations(coords, tileCache, tileSize, elevationParser) {
+  const points = [];
+  let curDistance = 0;
+  let prevCoord;
+  for (const { tile, coordinate } of coords) {
+    const cTile = tileCache.get(tile.id);
+    if (cTile === void 0)
+      throw new Error(
+        `Missing tile ${tile.id} (${tile.x}-${tile.y}-${tile.z})`
+      );
+    const elevation = getElevation(
+      coordinate,
+      [tile.z, tile.x, tile.y],
+      tileSize,
+      cTile,
+      elevationParser
+    );
+    points.push({
+      distance: curDistance,
+      elevation,
+      coordinate,
+      tile
+    });
+    if (prevCoord !== void 0) {
+      curDistance += pointDistance(prevCoord, coordinate);
+    }
+    prevCoord = coordinate;
+  }
+  return points;
+}
+function buildOutput(points) {
+  let minElevation = Infinity;
+  let maxElevation = -Infinity;
+  let totalElevation = 0;
+  for (const point of points) {
+    if (point.elevation < minElevation)
+      minElevation = point.elevation;
+    if (point.elevation > maxElevation)
+      maxElevation = point.elevation;
+    totalElevation += point.elevation;
+  }
+  return {
+    distance: points[points.length - 1].distance,
+    minElevation,
+    maxElevation,
+    avgElevation: totalElevation / points.length,
+    startElevation: points[0].elevation,
+    endElevation: points[points.length - 1].elevation,
+    points
+  };
+}
+function smoothElevation(points) {
+  var _a;
+  const newPoints = [];
+  let prevPoint;
+  for (let i = 0; i < points.length; i++) {
+    const point = points[i];
+    const nextPoint = (_a = points[i + 1]) != null ? _a : points[i];
+    if (prevPoint === void 0) {
+      newPoints.push(point);
+    } else {
+      const newPoint = {
+        distance: point.distance,
+        elevation: (prevPoint.elevation + point.elevation + nextPoint.elevation) / 3,
+        coordinate: point.coordinate,
+        tile: point.tile
+      };
+      newPoints.push(newPoint);
+    }
+    prevPoint = point;
+  }
+  return newPoints;
+}
+function toFeet(input) {
+  const output = {
+    distance: mToFt(input.distance),
+    minElevation: mToFt(input.minElevation),
+    maxElevation: mToFt(input.maxElevation),
+    avgElevation: mToFt(input.avgElevation),
+    startElevation: mToFt(input.startElevation),
+    endElevation: mToFt(input.endElevation),
+    points: input.points.map(({ distance, elevation, coordinate, tile }) => ({
+      distance: mToFt(distance),
+      elevation: mToFt(elevation),
+      coordinate,
+      tile
+    }))
+  };
+  return output;
+}
+
+export { ClientConfig, LanguageGeocoding, MapStyle, MapStyleVariant, ReferenceMapStyle, ServiceError, area, config, coordinates, data, defaultElevationParser, degToRad, earthRadius, expandMapStyle, geocoding, geolocation, getZoomLevelResolution, lineDistance, mToFt, mapStylePresetList, multiPolygonArea, pointDistance, polygonArea, profileLineString, radToDeg, staticMaps, xyzToTileID };
 //# sourceMappingURL=maptiler-client.mjs.map
