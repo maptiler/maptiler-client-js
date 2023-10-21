@@ -9,7 +9,8 @@
   "homepage": "https://github.com/maptiler/maptiler-client-js",
   "exports": {
     "import": "./dist/maptiler-client.mjs",
-    "require": "./dist/maptiler-client.cjs"
+    "require": "./dist/maptiler-client.cjs",
+    "types": "./dist/maptiler-client.d.ts"
   },
   "publishConfig": {
     "access": "public",
