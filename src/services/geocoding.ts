@@ -85,7 +85,9 @@ export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
 
 export type ReverseGeocodingOptions = CommonForwardAndReverseGeocodingOptions;
 
-export type ByIdGeocodingOptions = LanguageGeocodingOptions & { apiKey?: string };
+export type ByIdGeocodingOptions = LanguageGeocodingOptions & {
+  apiKey?: string;
+};
 
 export type Coordinates = Position;
 
