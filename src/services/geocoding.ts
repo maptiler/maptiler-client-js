@@ -85,7 +85,7 @@ export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
 
 export type ReverseGeocodingOptions = CommonForwardAndReverseGeocodingOptions;
 
-export type ByIdGeocodingOptions = LanguageGeocodingOptions;
+export type ByIdGeocodingOptions = LanguageGeocodingOptions & { apiKey?: string };
 
 export type Coordinates = Position;
 
@@ -384,6 +384,7 @@ async function byId(
   options: ByIdGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   addLanguageGeocodingOptions(endpoint.searchParams, options);
 
