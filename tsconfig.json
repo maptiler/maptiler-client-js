@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "target": "es6",
     "declaration": true,
     "allowSyntheticDefaultImports": true,
