@@ -17,7 +17,7 @@ export interface TileImage {
 export type TileRequest = (
   x: number,
   y: number,
-  zoom: number
+  zoom: number,
 ) => Promise<TileImage>;
 
 export interface Options {
@@ -69,7 +69,7 @@ export interface Output {
  */
 export async function profileLineString(
   path: Feature<LineString> | LineString,
-  options: Options
+  options: Options,
 ): Promise<Output> {
   // get the tile cover
   const coordinates =
@@ -77,7 +77,7 @@ export async function profileLineString(
   const { coords, tiles } = tileCover(
     coordinates,
     options.zoom ?? 13,
-    options.tileSize ?? 512
+    options.tileSize ?? 512,
   );
   // get tiles
   const tileCache = await getTiles(tiles, options.tileRequest);
@@ -86,7 +86,7 @@ export async function profileLineString(
     coords,
     tileCache,
     options.tileSize ?? 512,
-    options.elevationParser
+    options.elevationParser,
   );
   // smooth the elevation data if needed
   if (options.smooth === true) points = smoothElevation(points);
@@ -101,7 +101,7 @@ export async function profileLineString(
 /** Request all the tiles we need */
 async function getTiles(
   tiles: TileID[],
-  tileRequest: TileRequest
+  tileRequest: TileRequest,
 ): Promise<Map<number, TileImage>> {
   const tileCache = new Map<number, TileImage>();
 
@@ -117,7 +117,7 @@ async function getTiles(
         .catch((err: unknown) => {
           console.error(err);
           return undefined;
-        })
+        }),
     );
   }
   // wait for all the requests to finish
@@ -131,7 +131,7 @@ function getElevations(
   coords: TileCoverCoordinates[],
   tileCache: Map<number, TileImage>,
   tileSize: number,
-  elevationParser?: ElevationParser
+  elevationParser?: ElevationParser,
 ): ElevPoint[] {
   const points: ElevPoint[] = [];
 
@@ -142,14 +142,14 @@ function getElevations(
     const cTile = tileCache.get(tile.id);
     if (cTile === undefined)
       throw new Error(
-        `Missing tile ${tile.id} (${tile.x}-${tile.y}-${tile.z})`
+        `Missing tile ${tile.id} (${tile.x}-${tile.y}-${tile.z})`,
       );
     const elevation = getElevation(
       coordinate,
       [tile.z, tile.x, tile.y],
       tileSize,
       cTile,
-      elevationParser
+      elevationParser,
     );
     points.push({
       distance: curDistance,

@@ -34,7 +34,7 @@ function simplifyDPStep(
   first: number,
   last: number,
   sqTolerance: number,
-  simplified: Array<Position>
+  simplified: Array<Position>,
 ) {
   let maxSqDist = sqTolerance,
     index;
@@ -63,7 +63,7 @@ function simplifyDPStep(
 // simplification using Ramer-Douglas-Peucker algorithm
 function simplifyDouglasPeucker(
   points: Array<Position>,
-  sqTolerance: number
+  sqTolerance: number,
 ): Array<Position> {
   const last = points.length - 1;
   const simplified = [points[0]];
@@ -75,7 +75,7 @@ function simplifyDouglasPeucker(
 // both algorithms combined for awesome performance
 export default function simplify(
   points: Array<Position>,
-  tolerance: number
+  tolerance: number,
 ): Array<Position> {
   if (points.length <= 2) {
     return points;

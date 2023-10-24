@@ -155,12 +155,12 @@ export type StaticMapMarker = [
   /**
    * Color of the marker with CSS syntax. Applies only if a custom `markerIcon` is not provided.
    */
-  string
+  string,
 ];
 
 function staticMapMarkerToString(
   marker: StaticMapMarker,
-  includeColor = true
+  includeColor = true,
 ): string {
   let str = `${marker[0]},${marker[1]}`;
 
@@ -199,7 +199,7 @@ function simplifyAndStringify(path: Array<Position>, maxNbChar = 3000): string {
 function centered(
   center: Position,
   zoom: number,
-  options: CenteredStaticMapOptions = {}
+  options: CenteredStaticMapOptions = {},
 ): string {
   const style = styleToStyle(options.style);
   const scale = options.hiDPI ? "@2x" : "";
@@ -216,7 +216,7 @@ function centered(
     `maps/${encodeURIComponent(style)}/static/${center[0]},${
       center[1]
     },${zoom}/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
 
   if ("attribution" in options) {
@@ -283,7 +283,7 @@ function centered(
  */
 function bounded(
   boundingBox: BBox,
-  options: BoundedStaticMapOptions = {}
+  options: BoundedStaticMapOptions = {},
 ): string {
   const style = styleToStyle(options.style);
   const scale = options.hiDPI ? "@2x" : "";
@@ -300,7 +300,7 @@ function bounded(
     `maps/${encodeURIComponent(style)}/static/${boundingBox[0]},${
       boundingBox[1]
     },${boundingBox[2]},${boundingBox[3]}/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
 
   if ("attribution" in options) {
@@ -371,7 +371,7 @@ function bounded(
 function automatic(options: AutomaticStaticMapOptions = {}): string {
   if (!("markers" in options) && !("path" in options)) {
     throw new Error(
-      "Automatic static maps require markers and/or path to be created."
+      "Automatic static maps require markers and/or path to be created.",
     );
   }
 
@@ -388,9 +388,9 @@ function automatic(options: AutomaticStaticMapOptions = {}): string {
 
   const endpoint = new URL(
     `maps/${encodeURIComponent(
-      style
+      style,
     )}/static/auto/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
 
   if ("attribution" in options) {

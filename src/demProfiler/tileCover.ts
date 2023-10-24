@@ -33,7 +33,7 @@ export interface TileCoverOutput {
 export default function tileCover(
   coordinates: GeoJSON.Position[],
   zoom: number,
-  tileSize: number
+  tileSize: number,
 ): TileCoverOutput {
   const tileHash = new Map<number, TileID>(); // tileHash => { id, x, y, z }
   const tiles: TileID[] = [];
@@ -65,7 +65,7 @@ export default function tileCover(
 /** convert coordinates to samples that have a max distance of the zoom level resolution */
 function sampleProfileLine(
   coordinates: GeoJSON.Position[],
-  resolution: number
+  resolution: number,
 ): GeoJSON.Position[] {
   const samples: GeoJSON.Position[] = [];
 
@@ -74,7 +74,7 @@ function sampleProfileLine(
     if (prevCoord !== undefined) {
       const dist = pointDistance(
         prevCoord as unknown as [lon: number, lat: number],
-        coord as unknown as [lon: number, lat: number]
+        coord as unknown as [lon: number, lat: number],
       );
       const numSamples = Math.ceil(dist / resolution);
 

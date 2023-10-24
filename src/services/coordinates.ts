@@ -83,9 +83,14 @@ export type CoordinateSearch = {
   /**
    * Most suitable transformation for this CRS.
    */
-  default_transformation?: any;
+  default_transformation?: DefaultTransformation;
 
   exports: CoordinateExport;
+};
+
+export type DefaultTransformation = {
+  authority: string;
+  code: number;
 };
 
 export type CoordinateSearchResult = {
@@ -109,7 +114,7 @@ export type CoordinateSearchResult = {
  */
 async function search(
   query: string,
-  options: CoordinatesSearchOptions = {}
+  options: CoordinatesSearchOptions = {},
 ): Promise<CoordinateSearchResult> {
   if (typeof query !== "string" || query.trim().length === 0) {
     throw new Error("The query must be a non-empty string");
@@ -117,7 +122,7 @@ async function search(
 
   const endpoint = new URL(
     `coordinates/search/${query}.json`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
@@ -128,7 +133,7 @@ async function search(
   if ("transformations" in options) {
     endpoint.searchParams.set(
       "transformations",
-      options.transformations.toString()
+      options.transformations.toString(),
     );
   }
 
@@ -142,7 +147,7 @@ async function search(
   if (!res.ok) {
     throw new ServiceError(
       res,
-      res.status in customMessages ? customMessages[res.status] : ""
+      res.status in customMessages ? customMessages[res.status] : "",
     );
   }
 
@@ -202,7 +207,7 @@ export type CoordinatesTransformOptions = {
  */
 async function transform(
   positions: Position | Array<Position>,
-  options: CoordinatesTransformOptions = {}
+  options: CoordinatesTransformOptions = {},
 ): Promise<CoordinateTransformResult> {
   const coordinatesStr = (Array.isArray(positions[0]) ? positions : [positions])
     .map((coord) => `${coord[0]},${coord[1]}`)
@@ -210,7 +215,7 @@ async function transform(
 
   const endpoint = new URL(
     `coordinates/transform/${coordinatesStr}.json`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
@@ -228,7 +233,7 @@ async function transform(
       (Array.isArray(options.operations)
         ? options.operations
         : [options.operations]
-      ).join("|")
+      ).join("|"),
     );
   }
 
@@ -238,7 +243,7 @@ async function transform(
   if (!res.ok) {
     throw new ServiceError(
       res,
-      res.status in customMessages ? customMessages[res.status] : ""
+      res.status in customMessages ? customMessages[res.status] : "",
     );
   }
 

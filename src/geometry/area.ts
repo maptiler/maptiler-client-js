@@ -8,7 +8,7 @@ export function area(
   area:
     | GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>
     | GeoJSON.Polygon
-    | GeoJSON.MultiPolygon
+    | GeoJSON.MultiPolygon,
 ) {
   const geometry = "geometry" in area ? area.geometry : area;
   const type = geometry.type;
@@ -22,7 +22,7 @@ export function area(
  * Finds the area of a MultiPolygon in square meters.
  */
 export function multiPolygonArea(
-  multiPoly: GeoJSON.MultiPolygon | GeoJSON.Position[][][]
+  multiPoly: GeoJSON.MultiPolygon | GeoJSON.Position[][][],
 ): number {
   const coords = "coordinates" in multiPoly ? multiPoly.coordinates : multiPoly;
   let total = 0;
@@ -36,7 +36,7 @@ export function multiPolygonArea(
  * Finds the area of a Polygon in square meters.
  */
 export function polygonArea(
-  poly: GeoJSON.Polygon | GeoJSON.Position[][]
+  poly: GeoJSON.Polygon | GeoJSON.Position[][],
 ): number {
   const coords = "coordinates" in poly ? poly.coordinates : poly;
   let total = 0;

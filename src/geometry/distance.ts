@@ -5,7 +5,7 @@ export function lineDistance(
   line:
     | GeoJSON.Feature<GeoJSON.LineString>
     | GeoJSON.LineString
-    | GeoJSON.Position[]
+    | GeoJSON.Position[],
 ) {
   // grab the coordinates
   const coordinates =
@@ -30,7 +30,7 @@ export function lineDistance(
 /** Get the distance between two lon-lat pairs in meters */
 export function pointDistance(
   from: GeoJSON.Position,
-  to: GeoJSON.Position
+  to: GeoJSON.Position,
 ): number {
   const { pow, sin, cos, sqrt, atan2 } = Math;
   const dLat = degToRad(to[1] - from[1]);

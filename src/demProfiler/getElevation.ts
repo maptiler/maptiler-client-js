@@ -6,7 +6,7 @@ export type ElevationParser = (
   r: number,
   g: number,
   b: number,
-  a: number
+  a: number,
 ) => number;
 
 /** Given an RGB or RBGA image and lon-lat coordinate, determine the elevation */
@@ -15,7 +15,7 @@ export default function getElevation(
   tile: [zoom: number, x: number, y: number],
   tileSize: number,
   tileImage: TileImage,
-  elevationParser: ElevationParser = defaultElevationParser
+  elevationParser: ElevationParser = defaultElevationParser,
 ): number {
   const { channels, image } = tileImage;
   let [x, y] = llToTilePx(coord, tile, tileSize);
@@ -27,7 +27,7 @@ export default function getElevation(
     image[index],
     image[index + 1],
     image[index + 2],
-    channels === 4 ? image[index + 3] : 0
+    channels === 4 ? image[index + 3] : 0,
   );
 }
 
@@ -40,7 +40,7 @@ function clampPixel(n: number, tileSize: number): number {
 export function defaultElevationParser(
   r: number,
   g: number,
-  b: number
+  b: number,
 ): number {
   return -10000 + (r * 256 * 256 + g * 256 + b) * 0.1;
 }

@@ -72,7 +72,7 @@ export class MapStyleVariant {
     /**
      * URL to an image describing the style variant
      */
-    private imageURL: string
+    private imageURL: string,
   ) {}
 
   /**
@@ -186,7 +186,7 @@ export class ReferenceMapStyle {
     /**
      * ID of this reference style
      */
-    private id: string
+    private id: string,
   ) {}
 
   /**
@@ -913,7 +913,7 @@ function buildMapStyles(): MapStyleType {
     const refStyleInfo = mapStylePresetList[i];
 
     const refStyle = makeReferenceStyleProxy(
-      new ReferenceMapStyle(refStyleInfo.name, refStyleInfo.referenceStyleID)
+      new ReferenceMapStyle(refStyleInfo.name, refStyleInfo.referenceStyleID),
     );
 
     for (let j = 0; j < refStyleInfo.variants.length; j += 1) {
@@ -924,7 +924,7 @@ function buildMapStyles(): MapStyleType {
         variantInfo.id, // id
         refStyle, // referenceStyle
         variantInfo.description,
-        variantInfo.imageURL // imageURL
+        variantInfo.imageURL, // imageURL
       );
 
       refStyle.addVariant(variant);
@@ -935,7 +935,7 @@ function buildMapStyles(): MapStyleType {
 }
 
 export function styleToStyle(
-  style: string | ReferenceMapStyle | MapStyleVariant | null | undefined
+  style: string | ReferenceMapStyle | MapStyleVariant | null | undefined,
 ): string {
   if (!style) {
     return MapStyle[mapStylePresetList[0].referenceStyleID]
