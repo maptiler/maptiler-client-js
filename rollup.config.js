@@ -25,7 +25,7 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: []
+    external: ["web-merc-projection"]
   },
 
   // CJS module, not minified + sourcemap
@@ -48,7 +48,7 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: []
+    external: ["web-merc-projection"]
   },
 
   // UMD module, not minified
@@ -106,7 +106,7 @@ if (process.env.NODE_ENV === "production") {
       }
     ],
     input: "src/index.ts",
-    external: [],
+    external: ["web-merc-projection"],
   },
   {
     plugins: [

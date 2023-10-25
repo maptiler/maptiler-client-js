@@ -26,7 +26,7 @@ export type GetDataOptions = {
  */
 async function get(
   dataId: string,
-  options: GetDataOptions = {}
+  options: GetDataOptions = {},
 ): Promise<FeatureCollection> {
   if (typeof dataId !== "string" || dataId.trim().length === 0) {
     throw new Error("The data ID must be a non-empty string");
@@ -34,7 +34,7 @@ async function get(
 
   const endpoint = new URL(
     `data/${encodeURIComponent(dataId)}/features.json`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
   const urlWithParams = endpoint.toString();
@@ -44,7 +44,7 @@ async function get(
   if (!res.ok) {
     throw new ServiceError(
       res,
-      res.status in customMessages ? customMessages[res.status] : ""
+      res.status in customMessages ? customMessages[res.status] : "",
     );
   }
 

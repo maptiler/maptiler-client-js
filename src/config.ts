@@ -1,4 +1,7 @@
-export type FetchFunction = (url: string, options: object) => Promise<any>;
+export type FetchFunction = (
+  input: RequestInfo | URL,
+  init?: RequestInit,
+) => Promise<Response>;
 
 function tryGettingFetch() {
   // this is browser, fetch exists

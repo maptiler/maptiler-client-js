@@ -76,7 +76,7 @@ function getAutoLanguageGeocoding(): LanguageGeocodingString {
   }
 
   const canditatelangs = Array.from(
-    new Set(navigator.languages.map((l) => l.split("-")[0]))
+    new Set(navigator.languages.map((l) => l.split("-")[0])),
   ).filter((l) => languageCodeSet.has(l as LanguageGeocodingString));
 
   return canditatelangs.length

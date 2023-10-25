@@ -109,7 +109,7 @@ export type GeolocationResult = {
  * @returns
  */
 async function info(
-  options: GeolocationInfoOptions = {}
+  options: GeolocationInfoOptions = {},
 ): Promise<GeolocationResult> {
   const endpoint = new URL(`geolocation/ip.json`, defaults.maptilerApiURL);
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
@@ -120,7 +120,7 @@ async function info(
   if (!res.ok) {
     throw new ServiceError(
       res,
-      res.status in customMessages ? customMessages[res.status] : ""
+      res.status in customMessages ? customMessages[res.status] : "",
     );
   }
 
