@@ -41,8 +41,9 @@
     "dochtml": "rm -rf docs/*; typedoc; cp -r images docs/",
     "doc": "npm run docmd; npm run dochtml",
     "prepare": "npm run format; npm run lint; npm run test; npm run build",
-    "test": "vitest test --run",
-    "test:dev": "vitest test --watch"
+    "test:prod": "vitest test --run",
+    "test:dev": "vitest test --watch",
+    "test": ""
   },
   "repository": {
     "type": "git",
