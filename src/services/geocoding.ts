@@ -35,7 +35,7 @@ export type CommonForwardAndReverseGeocodingOptions =
     limit?: number;
 
     /**
-     * Filter of feature types to return. If not specified, all available feature types are returned.
+     * Filter of feature types to return. If not specified, feature of all available types except `poi` are returned.
      */
     types?: (
       | "country"
@@ -64,7 +64,7 @@ export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
   /**
    * Prefer results close to a specific location.
    */
-  proximity?: Position;
+  proximity?: Position | "ip";
 
   /**
    * Limit search to specific country/countries specified as list of Alpha-2 ISO 3166-1 codes.
@@ -77,8 +77,7 @@ export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
   fuzzyMatch?: boolean;
 
   /**
-   * Set to `true` to use autocomplete, `false` to disable it.
-   * Default (`undefined`) is to combine autocomplete with non-autocomplete results.
+   * Set to `true` to use autocomplete, `false` to disable it. Default is `true`.
    */
   autocomplete?: boolean;
 };
@@ -127,6 +126,11 @@ type FeatureProperties = {
    * Array of POI categories. Only available for `poi` type.
    */
   categories?: string[];
+
+  /**
+   * Wikidata identifier.
+   */
+  wikidata?: string;
 };
 
 type FeatureBase = {
