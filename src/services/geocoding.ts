@@ -35,7 +35,7 @@ export type CommonForwardAndReverseGeocodingOptions =
     limit?: number;
 
     /**
-     * Filter of feature types to return. If not specified, all available feature types are returned.
+     * Filter of feature types to return. If not specified, feature of all available types except `poi` are returned.
      */
     types?: (
       | "country"
@@ -64,7 +64,7 @@ export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
   /**
    * Prefer results close to a specific location.
    */
-  proximity?: Position;
+  proximity?: Position | "ip";
 
   /**
    * Limit search to specific country/countries specified as list of Alpha-2 ISO 3166-1 codes.
@@ -77,8 +77,7 @@ export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
   fuzzyMatch?: boolean;
 
   /**
-   * Set to `true` to use autocomplete, `false` to disable it.
-   * Default (`undefined`) is to combine autocomplete with non-autocomplete results.
+   * Set to `true` to use autocomplete, `false` to disable it. Default is `true`.
    */
   autocomplete?: boolean;
 };
@@ -127,6 +126,11 @@ type FeatureProperties = {
    * Array of POI categories. Only available for `poi` type.
    */
   categories?: string[];
+
+  /**
+   * Wikidata identifier.
+   */
+  wikidata?: string;
 };
 
 type FeatureBase = {
@@ -233,21 +237,20 @@ export type GeocodingSearchResult = {
 
 function addLanguageGeocodingOptions(
   searchParams: URLSearchParams,
-  options: LanguageGeocodingOptions,
+  options: LanguageGeocodingOptions
 ) {
-  if (options.language == undefined) {
+  const { language } = options;
+
+  if (language == undefined) {
     return;
   }
 
   const languages = Array.from(
     new Set(
-      (Array.isArray(options.language)
-        ? options.language
-        : [options.language]
-      ).map((lang) =>
-        lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang,
-      ),
-    ),
+      (Array.isArray(language) ? language : [language]).map((lang) =>
+        lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
+      )
+    )
   ).join(",");
 
   searchParams.set("language", languages);
@@ -255,16 +258,18 @@ function addLanguageGeocodingOptions(
 
 function addCommonForwardAndReverseGeocodingOptions(
   searchParams: URLSearchParams,
-  options: CommonForwardAndReverseGeocodingOptions,
+  options: CommonForwardAndReverseGeocodingOptions
 ) {
-  searchParams.set("key", options.apiKey ?? config.apiKey);
+  const { apiKey, limit, types } = options;
 
-  if (options.limit != undefined) {
-    searchParams.set("limit", String(options.limit));
+  searchParams.set("key", apiKey ?? config.apiKey);
+
+  if (limit != undefined) {
+    searchParams.set("limit", String(limit));
   }
 
-  if (options.types != undefined) {
-    searchParams.set("types", options.types.join(","));
+  if (types != undefined) {
+    searchParams.set("types", types.join(","));
   }
 
   addLanguageGeocodingOptions(searchParams, options);
@@ -272,28 +277,33 @@ function addCommonForwardAndReverseGeocodingOptions(
 
 function addForwardGeocodingOptions(
   searchParams: URLSearchParams,
-  options: GeocodingOptions,
+  options: GeocodingOptions
 ) {
   addCommonForwardAndReverseGeocodingOptions(searchParams, options);
 
-  if (options.bbox != undefined) {
-    searchParams.set("bbox", options.bbox.join(","));
+  const { bbox, proximity, country, fuzzyMatch, autocomplete } = options;
+
+  if (bbox != undefined) {
+    searchParams.set("bbox", bbox.join(","));
   }
 
-  if (options.proximity != undefined) {
-    searchParams.set("proximity", options.proximity.join(","));
+  if (proximity != undefined) {
+    searchParams.set(
+      "proximity",
+      proximity === "ip" ? proximity : proximity.join(",")
+    );
   }
 
-  if (options.country != undefined) {
-    searchParams.set("country", options.country.join(","));
+  if (country != undefined) {
+    searchParams.set("country", country.join(","));
   }
 
-  if (options.fuzzyMatch != undefined) {
-    searchParams.set("fuzzyMatch", options.fuzzyMatch ? "true" : "false");
+  if (fuzzyMatch != undefined) {
+    searchParams.set("fuzzyMatch", fuzzyMatch ? "true" : "false");
   }
 
-  if (options.autocomplete != undefined) {
-    searchParams.set("autocomplete", options.autocomplete ? "true" : "false");
+  if (autocomplete != undefined) {
+    searchParams.set("autocomplete", autocomplete ? "true" : "false");
   }
 }
 
@@ -308,7 +318,7 @@ function addForwardGeocodingOptions(
  */
 async function forward(
   query: string,
-  options: GeocodingOptions = {},
+  options: GeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   if (typeof query !== "string" || query.trim().length === 0) {
     throw new Error("The query must be a non-empty string");
@@ -316,7 +326,7 @@ async function forward(
 
   const endpoint = new URL(
     `geocoding/${encodeURIComponent(query)}.json`,
-    defaults.maptilerApiURL,
+    defaults.maptilerApiURL
   );
 
   const { searchParams } = endpoint;
@@ -346,7 +356,7 @@ async function forward(
  */
 async function reverse(
   position: Position,
-  options: ReverseGeocodingOptions = {},
+  options: ReverseGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   if (!Array.isArray(position) || position.length < 2) {
     throw new Error("The position must be an array of form [lng, lat].");
@@ -354,7 +364,7 @@ async function reverse(
 
   const endpoint = new URL(
     `geocoding/${position[0]},${position[1]}.json`,
-    defaults.maptilerApiURL,
+    defaults.maptilerApiURL
   );
 
   addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
@@ -383,7 +393,7 @@ async function reverse(
  */
 async function byId(
   id: string,
-  options: ByIdGeocodingOptions = {},
+  options: ByIdGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
@@ -413,7 +423,7 @@ async function byId(
  */
 async function batch(
   queries: string[],
-  options: GeocodingOptions = {},
+  options: GeocodingOptions = {}
 ): Promise<GeocodingSearchResult[]> {
   if (!queries.length) {
     return [];
@@ -425,7 +435,7 @@ async function batch(
 
   const endpoint = new URL(
     `geocoding/${joinedQuery}.json`,
-    defaults.maptilerApiURL,
+    defaults.maptilerApiURL
   );
 
   const { searchParams } = endpoint;
