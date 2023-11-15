@@ -58,3 +58,30 @@ export function mercatorToWgs84(merc: Position): Position {
     mercatorYToLatitude(merc[1])
   ]
 }
+
+/**
+ * Gives the distance in meters between two positions using the Haversine Formula.
+ */
+export function distance(from: Position, to: Position): number {
+  const rad = Math.PI / 180;
+  const lat1 = from[1] * rad;
+  const lat2 = to[1] * rad;
+  const a = Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos((to[0] - from[0]) * rad);
+
+  const maxMeters = EARTH_RADIUS * Math.acos(Math.min(a, 1));
+  return maxMeters;
+}
+
+/**
+ * Returns a position that has longitude in [-180, 180]
+ */
+export function wrap(position: Position): Position {
+  const lng = position[0];
+  const lat = position[1];
+
+  const d = 360;
+  const w = ((lng + 180) % d + d) % d - 180;
+  const wrapLong = (w === -180) ? 180 : w;
+
+  return [wrapLong, lat];
+}
