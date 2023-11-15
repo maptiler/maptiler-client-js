@@ -237,7 +237,7 @@ export type GeocodingSearchResult = {
 
 function addLanguageGeocodingOptions(
   searchParams: URLSearchParams,
-  options: LanguageGeocodingOptions
+  options: LanguageGeocodingOptions,
 ) {
   const { language } = options;
 
@@ -248,9 +248,9 @@ function addLanguageGeocodingOptions(
   const languages = Array.from(
     new Set(
       (Array.isArray(language) ? language : [language]).map((lang) =>
-        lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang
-      )
-    )
+        lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang,
+      ),
+    ),
   ).join(",");
 
   searchParams.set("language", languages);
@@ -258,7 +258,7 @@ function addLanguageGeocodingOptions(
 
 function addCommonForwardAndReverseGeocodingOptions(
   searchParams: URLSearchParams,
-  options: CommonForwardAndReverseGeocodingOptions
+  options: CommonForwardAndReverseGeocodingOptions,
 ) {
   const { apiKey, limit, types } = options;
 
@@ -277,7 +277,7 @@ function addCommonForwardAndReverseGeocodingOptions(
 
 function addForwardGeocodingOptions(
   searchParams: URLSearchParams,
-  options: GeocodingOptions
+  options: GeocodingOptions,
 ) {
   addCommonForwardAndReverseGeocodingOptions(searchParams, options);
 
@@ -290,7 +290,7 @@ function addForwardGeocodingOptions(
   if (proximity != undefined) {
     searchParams.set(
       "proximity",
-      proximity === "ip" ? proximity : proximity.join(",")
+      proximity === "ip" ? proximity : proximity.join(","),
     );
   }
 
@@ -318,7 +318,7 @@ function addForwardGeocodingOptions(
  */
 async function forward(
   query: string,
-  options: GeocodingOptions = {}
+  options: GeocodingOptions = {},
 ): Promise<GeocodingSearchResult> {
   if (typeof query !== "string" || query.trim().length === 0) {
     throw new Error("The query must be a non-empty string");
@@ -326,7 +326,7 @@ async function forward(
 
   const endpoint = new URL(
     `geocoding/${encodeURIComponent(query)}.json`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
 
   const { searchParams } = endpoint;
@@ -356,7 +356,7 @@ async function forward(
  */
 async function reverse(
   position: Position,
-  options: ReverseGeocodingOptions = {}
+  options: ReverseGeocodingOptions = {},
 ): Promise<GeocodingSearchResult> {
   if (!Array.isArray(position) || position.length < 2) {
     throw new Error("The position must be an array of form [lng, lat].");
@@ -364,7 +364,7 @@ async function reverse(
 
   const endpoint = new URL(
     `geocoding/${position[0]},${position[1]}.json`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
 
   addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
@@ -393,7 +393,7 @@ async function reverse(
  */
 async function byId(
   id: string,
-  options: ByIdGeocodingOptions = {}
+  options: ByIdGeocodingOptions = {},
 ): Promise<GeocodingSearchResult> {
   const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
@@ -423,7 +423,7 @@ async function byId(
  */
 async function batch(
   queries: string[],
-  options: GeocodingOptions = {}
+  options: GeocodingOptions = {},
 ): Promise<GeocodingSearchResult[]> {
   if (!queries.length) {
     return [];
@@ -435,7 +435,7 @@ async function batch(
 
   const endpoint = new URL(
     `geocoding/${joinedQuery}.json`,
-    defaults.maptilerApiURL
+    defaults.maptilerApiURL,
   );
 
   const { searchParams } = endpoint;
