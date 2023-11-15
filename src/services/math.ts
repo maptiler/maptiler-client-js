@@ -27,10 +27,11 @@ export function latitudeToMercatorY(lat: number): number {
 /**
  * Convert a wgs84 position into a web Mercator position where north-west is [0, 0] and south-east is [1, 1]
  */
-export function wgs84ToMercator(wgs84: Position): Position {
+export function wgs84ToMercator(position: Position): Position {
+  const wrappedPos = wrapWgs84(position);
   return [
-    longitudeToMercatorX(wgs84[0]),
-    latitudeToMercatorY(wgs84[1])
+    longitudeToMercatorX(wrappedPos[0]),
+    latitudeToMercatorY(wrappedPos[1])
   ];
 }
 
@@ -52,17 +53,17 @@ export function mercatorYToLatitude(y: number): number {
 /**
  * Converts a web Mercator position where north-west is [0, 0] and south-east is [1, 1] into a wgs84
  */
-export function mercatorToWgs84(merc: Position): Position {
+export function mercatorToWgs84(position: Position): Position {
   return [
-    mercatorXToLongitude(merc[0]),
-    mercatorYToLatitude(merc[1])
+    mercatorXToLongitude(position[0]),
+    mercatorYToLatitude(position[1])
   ]
 }
 
 /**
  * Gives the distance in meters between two positions using the Haversine Formula.
  */
-export function distance(from: Position, to: Position): number {
+export function distanceWgs84(from: Position, to: Position): number {
   const rad = Math.PI / 180;
   const lat1 = from[1] * rad;
   const lat2 = to[1] * rad;
@@ -75,7 +76,7 @@ export function distance(from: Position, to: Position): number {
 /**
  * Returns a position that has longitude in [-180, 180]
  */
-export function wrap(position: Position): Position {
+export function wrapWgs84(position: Position): Position {
   const lng = position[0];
   const lat = position[1];
 
@@ -84,4 +85,54 @@ export function wrap(position: Position): Position {
   const wrapLong = (w === -180) ? 180 : w;
 
   return [wrapLong, lat];
+}
+
+
+/**
+ * From a given mercator coordinate and a zoom level, computes the tile index
+ */
+export function mercatorToTileIndex(
+  /**
+   * Mercator coordinates (north-west is [0, 0], sourth-east is [1, 1])
+   */
+  position: Position,
+  /**
+   * Zoom level
+   */
+  zoom: number,
+  /**
+   * Returns integer tile indices if `true` or floating-point values if `false`
+   */
+  strict: boolean = true
+  ): Position {
+  const numberOfTilePerAxis = 2 ** zoom;
+
+  const fIndex: Position = [
+    position[0] * numberOfTilePerAxis,
+    position[1] * numberOfTilePerAxis,
+  ];
+
+  return strict ? [~~fIndex[0], ~~fIndex[1]] : fIndex;
+}
+
+
+/**
+ * From a given wgs84 coordinate and a zoom level, computes the tile index
+ */
+export function wgs84ToTileIndex(
+  /**
+   * Wgs84 coordinates
+   */
+  position: Position,
+  /**
+   * Zoom level
+   */
+  zoom: number, 
+  /**
+   * Returns integer tile indices if `true` or floating-point values if `false`
+   */
+  strict: boolean = true
+  ): Position {
+  const merc = wgs84ToMercator(position);
+  return mercatorToTileIndex(merc, zoom, strict);
 }
