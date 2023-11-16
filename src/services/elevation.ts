@@ -7,7 +7,6 @@ import { ServiceError } from "./ServiceError";
 import { math } from "./math";
 import {
   TileJSON,
-  bufferToPixelDataBrowser,
   getBufferToPixelDataParser,
   getTileCache,
 } from "../tiledecoding";

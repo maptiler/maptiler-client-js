@@ -90,15 +90,16 @@ export async function bufferToPixelDataBrowser(
   };
 }
 
-
 export function getBufferToPixelDataParser(): BufferToPixelDataFunction {
   if (config.bufferToPixelData) {
     return config.bufferToPixelData;
   }
-  
-  if (typeof window !== 'undefined') {
+
+  if (typeof window !== "undefined") {
     return bufferToPixelDataBrowser;
   }
 
-  throw new Error("An image file buffer to pixel data parser is necessary. Specify it in `config.bufferToPixelData`")
+  throw new Error(
+    "An image file buffer to pixel data parser is necessary. Specify it in `config.bufferToPixelData`",
+  );
 }
