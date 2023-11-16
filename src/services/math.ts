@@ -21,7 +21,12 @@ function longitudeToMercatorX(lng: number): number {
  * Convert a wgs84 latitude to web Mercator Y (north-south axis), where northmost Y is 0 and southmost Y is 1.
  */
 function latitudeToMercatorY(lat: number): number {
-  return (180 - (180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)))) / 360;
+  return (
+    (180 -
+      (180 / Math.PI) *
+        Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360))) /
+    360
+  );
 }
 
 /**
@@ -31,7 +36,7 @@ function wgs84ToMercator(position: Position): Position {
   const wrappedPos = wrapWgs84(position);
   return [
     longitudeToMercatorX(wrappedPos[0]),
-    latitudeToMercatorY(wrappedPos[1])
+    latitudeToMercatorY(wrappedPos[1]),
   ];
 }
 
@@ -39,7 +44,7 @@ function wgs84ToMercator(position: Position): Position {
  * Converts a mercator X (west-east axis in [0, 1]) to wgs84 longitude
  */
 function mercatorXToLongitude(x: number): number {
-  return x * 360 - 180
+  return x * 360 - 180;
 }
 
 /**
@@ -47,17 +52,14 @@ function mercatorXToLongitude(x: number): number {
  */
 function mercatorYToLatitude(y: number): number {
   const y2 = 180 - y * 360;
-  return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
+  return (360 / Math.PI) * Math.atan(Math.exp((y2 * Math.PI) / 180)) - 90;
 }
 
 /**
  * Converts a web Mercator position where north-west is [0, 0] and south-east is [1, 1] into a wgs84
  */
 function mercatorToWgs84(position: Position): Position {
-  return [
-    mercatorXToLongitude(position[0]),
-    mercatorYToLatitude(position[1])
-  ]
+  return [mercatorXToLongitude(position[0]), mercatorYToLatitude(position[1])];
 }
 
 /**
@@ -67,7 +69,9 @@ function distanceWgs84(from: Position, to: Position): number {
   const rad = Math.PI / 180;
   const lat1 = from[1] * rad;
   const lat2 = to[1] * rad;
-  const a = Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos((to[0] - from[0]) * rad);
+  const a =
+    Math.sin(lat1) * Math.sin(lat2) +
+    Math.cos(lat1) * Math.cos(lat2) * Math.cos((to[0] - from[0]) * rad);
 
   const maxMeters = EARTH_RADIUS * Math.acos(Math.min(a, 1));
   return maxMeters;
@@ -81,12 +85,11 @@ function wrapWgs84(position: Position): Position {
   const lat = position[1];
 
   const d = 360;
-  const w = ((lng + 180) % d + d) % d - 180;
-  const wrapLong = (w === -180) ? 180 : w;
+  const w = ((((lng + 180) % d) + d) % d) - 180;
+  const wrapLong = w === -180 ? 180 : w;
 
   return [wrapLong, lat];
 }
-
 
 /**
  * From a given mercator coordinate and a zoom level, computes the tile index
@@ -103,8 +106,8 @@ function mercatorToTileIndex(
   /**
    * Returns integer tile indices if `true` or floating-point values if `false`
    */
-  strict: boolean = true
-  ): Position {
+  strict: boolean = true,
+): Position {
   const numberOfTilePerAxis = 2 ** zoom;
 
   const fIndex: Position = [
@@ -114,7 +117,6 @@ function mercatorToTileIndex(
 
   return strict ? [~~fIndex[0], ~~fIndex[1]] : fIndex;
 }
-
 
 /**
  * From a given wgs84 coordinate and a zoom level, computes the tile index
@@ -127,12 +129,12 @@ function wgs84ToTileIndex(
   /**
    * Zoom level
    */
-  zoom: number, 
+  zoom: number,
   /**
    * Returns integer tile indices if `true` or floating-point values if `false`
    */
-  strict: boolean = true
-  ): Position {
+  strict: boolean = true,
+): Position {
   const merc = wgs84ToMercator(position);
   return mercatorToTileIndex(merc, zoom, strict);
 }
@@ -150,4 +152,4 @@ export const math = {
   wrapWgs84,
   mercatorToTileIndex,
   wgs84ToTileIndex,
-}
+};

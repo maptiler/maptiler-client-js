@@ -32,5 +32,3 @@ export function getZoomLevelResolution(
 export function xyzToTileID(x: number, y: number, zoom: number): number {
   return ((1 << zoom) * y + x) * 32 + zoom;
 }
-
-

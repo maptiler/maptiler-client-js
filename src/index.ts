@@ -98,7 +98,6 @@ export type {
   MapStyleType,
 };
 
-
 // Exporting classes, objects, functions, etc.
 export {
   config,

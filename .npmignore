@@ -2,3 +2,6 @@ docs
 docsmd
 images
 test
+src
+examples
+dist/*.umd.*
