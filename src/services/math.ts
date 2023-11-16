@@ -3,31 +3,31 @@ import { Position } from "geojson";
 /**
  * Average radius of Earth in meters
  */
-export const EARTH_RADIUS = 6371008.8;
+const EARTH_RADIUS = 6371008.8;
 
 /**
  * Average circumfrence of Earth in meters
  */
-export const EARTH_CIRCUMFRENCE = 2 * Math.PI * EARTH_RADIUS;
+const EARTH_CIRCUMFRENCE = 2 * Math.PI * EARTH_RADIUS;
 
 /**
  * Convert a wgs84 longitude to web Mercator X (west-east axis), where westmost X is 0 and eastmost X is 1.
  */
-export function longitudeToMercatorX(lng: number): number {
+function longitudeToMercatorX(lng: number): number {
   return (180 + lng) / 360;
 }
 
 /**
  * Convert a wgs84 latitude to web Mercator Y (north-south axis), where northmost Y is 0 and southmost Y is 1.
  */
-export function latitudeToMercatorY(lat: number): number {
+function latitudeToMercatorY(lat: number): number {
   return (180 - (180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)))) / 360;
 }
 
 /**
  * Convert a wgs84 position into a web Mercator position where north-west is [0, 0] and south-east is [1, 1]
  */
-export function wgs84ToMercator(position: Position): Position {
+function wgs84ToMercator(position: Position): Position {
   const wrappedPos = wrapWgs84(position);
   return [
     longitudeToMercatorX(wrappedPos[0]),
@@ -38,14 +38,14 @@ export function wgs84ToMercator(position: Position): Position {
 /**
  * Converts a mercator X (west-east axis in [0, 1]) to wgs84 longitude
  */
-export function mercatorXToLongitude(x: number): number {
+function mercatorXToLongitude(x: number): number {
   return x * 360 - 180
 }
 
 /**
  * Converts a mercator Y (north-south axis in [0, 1]) to wgs84 latitude
  */
-export function mercatorYToLatitude(y: number): number {
+function mercatorYToLatitude(y: number): number {
   const y2 = 180 - y * 360;
   return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
 }
@@ -53,7 +53,7 @@ export function mercatorYToLatitude(y: number): number {
 /**
  * Converts a web Mercator position where north-west is [0, 0] and south-east is [1, 1] into a wgs84
  */
-export function mercatorToWgs84(position: Position): Position {
+function mercatorToWgs84(position: Position): Position {
   return [
     mercatorXToLongitude(position[0]),
     mercatorYToLatitude(position[1])
@@ -63,7 +63,7 @@ export function mercatorToWgs84(position: Position): Position {
 /**
  * Gives the distance in meters between two positions using the Haversine Formula.
  */
-export function distanceWgs84(from: Position, to: Position): number {
+function distanceWgs84(from: Position, to: Position): number {
   const rad = Math.PI / 180;
   const lat1 = from[1] * rad;
   const lat2 = to[1] * rad;
@@ -76,7 +76,7 @@ export function distanceWgs84(from: Position, to: Position): number {
 /**
  * Returns a position that has longitude in [-180, 180]
  */
-export function wrapWgs84(position: Position): Position {
+function wrapWgs84(position: Position): Position {
   const lng = position[0];
   const lat = position[1];
 
@@ -91,7 +91,7 @@ export function wrapWgs84(position: Position): Position {
 /**
  * From a given mercator coordinate and a zoom level, computes the tile index
  */
-export function mercatorToTileIndex(
+function mercatorToTileIndex(
   /**
    * Mercator coordinates (north-west is [0, 0], sourth-east is [1, 1])
    */
@@ -119,7 +119,7 @@ export function mercatorToTileIndex(
 /**
  * From a given wgs84 coordinate and a zoom level, computes the tile index
  */
-export function wgs84ToTileIndex(
+function wgs84ToTileIndex(
   /**
    * Wgs84 coordinates
    */
@@ -135,4 +135,19 @@ export function wgs84ToTileIndex(
   ): Position {
   const merc = wgs84ToMercator(position);
   return mercatorToTileIndex(merc, zoom, strict);
+}
+
+export const math = {
+  EARTH_RADIUS,
+  EARTH_CIRCUMFRENCE,
+  longitudeToMercatorX,
+  latitudeToMercatorY,
+  wgs84ToMercator,
+  mercatorXToLongitude,
+  mercatorYToLatitude,
+  mercatorToWgs84,
+  distanceWgs84,
+  wrapWgs84,
+  mercatorToTileIndex,
+  wgs84ToTileIndex,
 }

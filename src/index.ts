@@ -59,6 +59,9 @@ import {
 export * from "./demProfiler";
 export * from "./geometry";
 
+import { math } from "./services/math";
+import { elevation } from "./services/elevation";
+
 // Exporting types
 export type {
   Position,
@@ -95,6 +98,7 @@ export type {
   MapStyleType,
 };
 
+
 // Exporting classes, objects, functions, etc.
 export {
   config,
@@ -111,4 +115,6 @@ export {
   mapStylePresetList,
   MapStyle,
   expandMapStyle,
+  math,
+  elevation,
 };

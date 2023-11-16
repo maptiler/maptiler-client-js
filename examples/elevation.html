@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>tslib</title>
+  </head>
+
+  <body>
+    <p>
+      This demo is using the UMD bundle. Add <code>?key=YOUR_API_KEY</code> to the URL.
+    </p>
+    <p>
+      Open JS console.
+    </p>
+    <div id="images"></div>
+
+    <script src ="../dist/maptiler-client.umd.js"></script>
+    
+    <script>
+      // The API key must be in the URL param as `?key=ABCD1234`
+      maptilerClient.config.apiKey = (new URLSearchParams(location.search)).get("key");
+
+      (async () => {
+        // Prangins, CH
+        // await maptilerClient.elevation.at([6.2466, 46.3965])
+
+        // Mont Blanc
+        console.time("01")
+        const montBlanc = await maptilerClient.elevation.at([ 6.864884998108724, 45.83274399126696])
+        console.timeEnd("01")
+
+        console.log(montBlanc);
+
+        console.time("02")
+        const montBlanc2 = await maptilerClient.elevation.at([ 6.864884998108724, 45.83274399126696])
+        console.timeEnd("02")
+
+        console.log(montBlanc2);
+        
+      })()
+    </script>
+  </body>
+</html>

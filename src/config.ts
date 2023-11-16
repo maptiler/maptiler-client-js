@@ -32,6 +32,11 @@ class ClientConfig {
   private _fetch: FetchFunction | null = tryGettingFetch();
 
   /**
+   * Number of tiles to keep in cache
+   */
+  public cacheSize = 200;
+
+  /**
    * Set the MapTiler Cloud API key
    */
   set apiKey(k: string) {
