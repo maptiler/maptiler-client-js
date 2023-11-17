@@ -23,17 +23,57 @@
         // await maptilerClient.elevation.at([6.2466, 46.3965])
 
         // Mont Blanc
-        console.time("01")
-        const montBlanc = await maptilerClient.elevation.at([ 6.864884998108724, 45.83274399126696])
-        console.timeEnd("01")
+        // console.time("01")
+        // const montBlanc = await maptilerClient.elevation.at([ 6.864884998108724, 45.83274399126696])
+        // console.timeEnd("01")
 
-        console.log(montBlanc);
+        // console.log(montBlanc);
 
-        console.time("02")
-        const montBlanc2 = await maptilerClient.elevation.at([ 6.864884998108724, 45.83274399126696])
-        console.timeEnd("02")
+        // console.time("02")
+        // const montBlanc2 = await maptilerClient.elevation.at([6.864884, 45.832743])
+        // console.timeEnd("02")
 
-        console.log(montBlanc2);
+        // console.log(montBlanc2);
+
+
+        console.time("first")
+        const all = await maptilerClient.elevation.batch(
+          [
+            [6.864884, 45.832743],   // Mont Blanc, Alps, 4808m
+            [86.9250, 27.9881],      // Mount Everest, Himalayas, 8848m
+            [-70.0109, -32.6532],    // Aconcagua, Andes, 6960m
+            [-151.0064, 63.0695],    // Denali, Alaska, 6190m
+            [37.3556, -3.0674],      // Mount Kilimanjaro, 5895m
+            [42.4453, 43.3499],      // Mount Elbrus, Caucasus, 5642m
+            // [-85.6168, -78.5258],    // Mount Vinson, Ellsworth Mountains, 4892m
+            [137.1595, -4.0784],     // Puncak Jaya, Sudirman Range, 4884m
+            [-140.4055, 60.5672],    // Mount Logan, Saint Elias Mountains, 5956m
+            [138.73111, 35.358055],  // Mount Fuji, 3776m
+          ]
+        );
+        console.timeEnd("first")
+
+        console.log(all);
+
+
+        console.time("second")
+        const all2 = await maptilerClient.elevation.batch(
+          [
+            [6.864884, 45.832743],   // Mont Blanc, Alps, 4808m
+            [86.9250, 27.9881],      // Mount Everest, Himalayas, 8848m
+            [-70.0109, -32.6532],    // Aconcagua, Andes, 6960m
+            [-151.0064, 63.0695],    // Denali, Alaska, 6190m
+            [37.3556, -3.0674],      // Mount Kilimanjaro, 5895m
+            [42.4453, 43.3499],      // Mount Elbrus, Caucasus, 5642m
+            // [-85.6168, -78.5258],    // Mount Vinson, Ellsworth Mountains, 4892m
+            [137.1595, -4.0784],     // Puncak Jaya, Sudirman Range, 4884m
+            [-140.4055, 60.5672],    // Mount Logan, Saint Elias Mountains, 5956m
+            [138.73111, 35.358055],  // Mount Fuji, 3776m
+          ]
+        );
+        console.timeEnd("second")
+
+        console.log(all2);
         
       })()
     </script>
