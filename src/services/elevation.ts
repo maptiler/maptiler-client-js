@@ -1,4 +1,4 @@
-import { Position } from "geojson";
+import { LineString, MultiLineString, Position } from "geojson";
 
 import { callFetch } from "../callFetch";
 import { config } from "../config";
@@ -195,7 +195,76 @@ async function batch(
 }
 
 
+/**
+ * Creates a clone of a GeoJSON LineString (deep copy with structuredClone) that contains the computed elevation
+ * as the third element of each position array ([lng, lat, alt])
+ */
+async function fromLineString(
+  /**
+   * A GeoJSON LineStriung feature
+   */
+  ls: LineString,
+  /**
+   * Options
+   */
+  options: ElevationAtOptions = {}
+): Promise<LineString> {
+
+  if (ls.type !== "LineString") {
+    throw new Error("The provided object is not a GeoJSON LineString");
+  }
+
+  const clone = structuredClone(ls) as LineString;
+  const elevatedPositions = await batch(clone.coordinates, options);
+  clone.coordinates = elevatedPositions;
+
+  return clone;
+}
+
+/**
+ * Creates a clone of a MultiLineString (deep copy with structuredClone) that contains the computed elevation
+ * as the third element of each position array ([lng, lat, alt])
+ */
+async function fromMultiLineString(
+  /**
+   * A GeoJSON LineStriung feature
+   */
+  ls: MultiLineString,
+  /**
+   * Options
+   */
+  options: ElevationAtOptions = {}
+): Promise<MultiLineString> {
+
+  if (ls.type !== "MultiLineString") {
+    throw new Error("The provided object is not a GeoJSON MultiLineString");
+  }
+
+  const clone = structuredClone(ls) as MultiLineString;
+  const multiLengths = clone.coordinates.map((poss) => poss.length);
+
+  // This is equivalent to a batch of batch, so we makes the multilinestring a unique
+  // line string to prevent batch to fetch multiple times the same tile
+  const flattenPositions = clone.coordinates.flat();
+  const flattenPositionsElevated = await batch(flattenPositions, options);
+  
+  // And then chopping back into a multi line string
+  const result: Position[][] = [];
+  let index = 0;
+  for (let length of multiLengths) {
+    result.push(flattenPositionsElevated.slice(index, index + length));
+    index += length;
+  }
+
+  clone.coordinates = result;
+  return clone;
+}
+
+
+
 export const elevation = {
   at,
   batch,
+  fromLineString,
+  fromMultiLineString,
 };

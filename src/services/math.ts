@@ -91,6 +91,13 @@ function wrapWgs84(position: Position): Position {
   return [wrapLong, lat];
 }
 
+/*
+ * The circumference at a line of latitude in meters.
+ */
+export function circumferenceAtLatitude(latitude: number) {
+  return EARTH_CIRCUMFRENCE * Math.cos(latitude * Math.PI / 180);
+}
+
 /**
  * From a given mercator coordinate and a zoom level, computes the tile index
  */
@@ -150,6 +157,7 @@ export const math = {
   mercatorToWgs84,
   distanceWgs84,
   wrapWgs84,
+  circumferenceAtLatitude,
   mercatorToTileIndex,
   wgs84ToTileIndex,
 };

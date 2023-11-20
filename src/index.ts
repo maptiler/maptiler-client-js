@@ -12,3 +12,4 @@ export * from "./mapstyle";
 export * from "./services/math";
 export * from "./services/elevation";
 export * from "./tiledecoding";
+export * from "./geojsontools";
