@@ -19,6 +19,12 @@ export type ElevationAtOptions = {
    * Custom MapTiler Cloud API key to use instead of the one in global `config`
    */
   apiKey?: string;
+
+  /**
+   * Zoom level to use for the terrain RGB tileset.
+   * If not provided, the highest zoom level will be used
+   */
+  zoom?: number;
 };
 
 const customMessages = {
@@ -62,7 +68,11 @@ async function at(
   }
 
   const maxZoom = terrainTileJson.maxzoom;
-  const tileIndex = math.wgs84ToTileIndex(position, maxZoom, false);
+  let zoom = ~~(options.zoom ?? maxZoom);
+  if (zoom > maxZoom || zoom < 0) {
+    zoom = maxZoom;
+  }
+  const tileIndex = math.wgs84ToTileIndex(position, zoom, false);
 
   const tileX = ~~tileIndex[0];
   const tileY = ~~tileIndex[1];
@@ -71,7 +81,7 @@ async function at(
     throw new Error("Terrain tileJSON tile list is empty.");
   }
 
-  const tileID = `terrain_${maxZoom.toString()}_${tileX.toString()}_${tileY.toString()}`;
+  const tileID = `terrain_${zoom.toString()}_${tileX.toString()}_${tileY.toString()}`;
   let tilePixelData;
 
   const cache = getTileCache();
@@ -82,7 +92,7 @@ async function at(
     const tileURL = terrainTileJson.tiles[0]
       .replace("{x}", tileX.toString())
       .replace("{y}", tileY.toString())
-      .replace("{z}", maxZoom.toString());
+      .replace("{z}", zoom.toString());
 
     const tileRes = await callFetch(tileURL);
 
@@ -107,7 +117,6 @@ async function at(
 
   return [position[0], position[1], elevation];
 }
-
 
 /**
  * Perform a batch elevation request
@@ -134,16 +143,39 @@ async function batch(
   const cache = getTileCache();
 
   const maxZoom = terrainTileJson.maxzoom;
-  const tileIndicesFloats = positions.map((position) => math.wgs84ToTileIndex(position, maxZoom, false));
-  const tileIndicesInteger = tileIndicesFloats.map((index) => [~~index[0], ~~index[1]]);
-  const tileIDs = tileIndicesInteger.map((index) => `terrain_${maxZoom.toString()}_${index[0].toString()}_${index[1].toString()}`);
+  let zoom = ~~(options.zoom ?? maxZoom);
+  if (zoom > maxZoom || zoom < 0) {
+    zoom = maxZoom;
+  }
+  const tileIndicesFloats = positions.map((position) =>
+    math.wgs84ToTileIndex(position, zoom, false),
+  );
+  const tileIndicesInteger = tileIndicesFloats.map((index) => [
+    ~~index[0],
+    ~~index[1],
+  ]);
+  const tileIDs = tileIndicesInteger.map(
+    (index) =>
+      `terrain_${zoom.toString()}_${index[0].toString()}_${index[1].toString()}`,
+  );
 
   // unique tiles to fetch (excluding those already in cache and the doublons)
-  const uniqueTilesToFetch = Array.from(new Set(tileIDs.filter((tileID) => !cache.has(tileID)))).map((tileID) => tileID.split("_").slice(1));
-  const tileURLs = uniqueTilesToFetch.map((zxy) => tileURLSchema.replace("{x}", zxy[1].toString()).replace("{y}", zxy[2].toString()).replace("{z}", zxy[0].toString()))
+  const uniqueTilesToFetch = Array.from(
+    new Set(tileIDs.filter((tileID) => !cache.has(tileID))),
+  ).map((tileID) => tileID.split("_").slice(1));
+  const tileURLs = uniqueTilesToFetch.map((zxy) =>
+    tileURLSchema
+      .replace("{x}", zxy[1].toString())
+      .replace("{y}", zxy[2].toString())
+      .replace("{z}", zxy[0].toString()),
+  );
   const promisesFetchTiles = tileURLs.map((url) => callFetch(url));
   const resTiles = await Promise.allSettled(promisesFetchTiles);
-  const fulfilledRes = resTiles.map((el: PromiseSettledResult<Response>) => el.status === "fulfilled" ? el.value : null ).filter((res) => res);
+  const fulfilledRes = resTiles
+    .map((el: PromiseSettledResult<Response>) =>
+      el.status === "fulfilled" ? el.value : null,
+    )
+    .filter((res) => res);
   const fulfilledRButNotOkRes = fulfilledRes.filter((res) => !res.ok);
 
   if (fulfilledRes.length !== promisesFetchTiles.length) {
@@ -151,17 +183,24 @@ async function batch(
   }
 
   if (fulfilledRButNotOkRes.length) {
-    throw new ServiceError(fulfilledRButNotOkRes[0], customMessages[fulfilledRButNotOkRes[0].status] ?? "");
+    throw new ServiceError(
+      fulfilledRButNotOkRes[0],
+      customMessages[fulfilledRButNotOkRes[0].status] ?? "",
+    );
   }
 
-  const tileArrayBuffers = await Promise.all(fulfilledRes.map((res) => res.arrayBuffer()));
+  const tileArrayBuffers = await Promise.all(
+    fulfilledRes.map((res) => res.arrayBuffer()),
+  );
 
-  // It is possible that the tile is missing 
+  // It is possible that the tile is missing
   if (!tileArrayBuffers.every((buff) => buff.byteLength > 0)) {
     throw new Error("Some tiles are not available.");
   }
 
-  const tilePixelDatas = await Promise.all(tileArrayBuffers.map((buff) => tileParser(buff)));
+  const tilePixelDatas = await Promise.all(
+    tileArrayBuffers.map((buff) => tileParser(buff)),
+  );
 
   // Adding to cache
   tilePixelDatas.forEach((tilePixelData, i) => {
@@ -184,16 +223,11 @@ async function batch(
     const B = tilePixelData.pixels[pixelDataIndex + 2];
     const elevation = -10000 + (R * 256 * 256 + G * 256 + B) * 0.1;
 
-    return [
-      position[0],
-      position[1],
-      (~~(elevation * 1000) / 1000),
-    ]
-  })
-  
+    return [position[0], position[1], ~~(elevation * 1000) / 1000];
+  });
+
   return elevations;
 }
-
 
 /**
  * Creates a clone of a GeoJSON LineString (deep copy with structuredClone) that contains the computed elevation
@@ -207,9 +241,8 @@ async function fromLineString(
   /**
    * Options
    */
-  options: ElevationAtOptions = {}
+  options: ElevationAtOptions = {},
 ): Promise<LineString> {
-
   if (ls.type !== "LineString") {
     throw new Error("The provided object is not a GeoJSON LineString");
   }
@@ -233,9 +266,8 @@ async function fromMultiLineString(
   /**
    * Options
    */
-  options: ElevationAtOptions = {}
+  options: ElevationAtOptions = {},
 ): Promise<MultiLineString> {
-
   if (ls.type !== "MultiLineString") {
     throw new Error("The provided object is not a GeoJSON MultiLineString");
   }
@@ -247,11 +279,11 @@ async function fromMultiLineString(
   // line string to prevent batch to fetch multiple times the same tile
   const flattenPositions = clone.coordinates.flat();
   const flattenPositionsElevated = await batch(flattenPositions, options);
-  
+
   // And then chopping back into a multi line string
   const result: Position[][] = [];
   let index = 0;
-  for (let length of multiLengths) {
+  for (const length of multiLengths) {
     result.push(flattenPositionsElevated.slice(index, index + length));
     index += length;
   }
@@ -259,8 +291,6 @@ async function fromMultiLineString(
   clone.coordinates = result;
   return clone;
 }
-
-
 
 export const elevation = {
   at,

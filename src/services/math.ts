@@ -65,7 +65,7 @@ function mercatorToWgs84(position: Position): Position {
 /**
  * Gives the distance in meters between two positions using the Haversine Formula.
  */
-function distanceWgs84(from: Position, to: Position): number {
+function haversineDistanceWgs84(from: Position, to: Position): number {
   const rad = Math.PI / 180;
   const lat1 = from[1] * rad;
   const lat2 = to[1] * rad;
@@ -75,6 +75,22 @@ function distanceWgs84(from: Position, to: Position): number {
 
   const maxMeters = EARTH_RADIUS * Math.acos(Math.min(a, 1));
   return maxMeters;
+}
+
+/**
+ * Compute the cumulated distance for each position of an array of positions
+ */
+function haversineCumulatedDistanceWgs84(positions: Position[]): number[] {
+  const cumulatedDistance = Array(positions.length);
+  cumulatedDistance[0] = 0;
+  const l = cumulatedDistance.length;
+
+  for (let i = 1; i < l; i++) {
+    cumulatedDistance[i] =
+      haversineDistanceWgs84(positions[i - 1], positions[i]) +
+      cumulatedDistance[i - 1];
+  }
+  return cumulatedDistance;
 }
 
 /**
@@ -95,7 +111,7 @@ function wrapWgs84(position: Position): Position {
  * The circumference at a line of latitude in meters.
  */
 export function circumferenceAtLatitude(latitude: number) {
-  return EARTH_CIRCUMFRENCE * Math.cos(latitude * Math.PI / 180);
+  return EARTH_CIRCUMFRENCE * Math.cos((latitude * Math.PI) / 180);
 }
 
 /**
@@ -146,6 +162,50 @@ function wgs84ToTileIndex(
   return mercatorToTileIndex(merc, zoom, strict);
 }
 
+/**
+ * Converts a degree angle into a radian angle
+ */
+function toRadians(degrees: number): number {
+  return (degrees * Math.PI) / 180;
+}
+
+/**
+ * Converts a radian angle to a degree angle
+ */
+function toDegrees(radians: number): number {
+  return (radians * 180) / Math.PI;
+}
+
+/**
+ * Compute an intermediate point between two reference points using the Haversine formula.
+ * If ratio is `0`, the returned position is pos1.
+ * If ratio is `1`, the returned position is pos2.
+ * If ratio is `0.5`, the returned position is halfway pos1 pos2 in distance.
+ */
+function haversineIntermediateWgs84(
+  pos1: Position,
+  pos2: Position,
+  ratio: number,
+): Position {
+  const d = haversineDistanceWgs84(pos1, pos2);
+  const λ1 = toRadians(pos1[0]);
+  const φ1 = toRadians(pos1[1]);
+  const λ2 = toRadians(pos2[0]);
+  const φ2 = toRadians(pos2[1]);
+
+  const δ = d / EARTH_RADIUS; // Angular distance in radians
+  const a = Math.sin((1 - ratio) * δ) / Math.sin(δ);
+  const b = Math.sin(ratio * δ) / Math.sin(δ);
+  const x = a * Math.cos(φ1) * Math.cos(λ1) + b * Math.cos(φ2) * Math.cos(λ2);
+  const y = a * Math.cos(φ1) * Math.sin(λ1) + b * Math.cos(φ2) * Math.sin(λ2);
+  const z = a * Math.sin(φ1) + b * Math.sin(φ2);
+
+  const φ3 = Math.atan2(z, Math.sqrt(x * x + y * y));
+  const λ3 = Math.atan2(y, x);
+
+  return [toDegrees(λ3), toDegrees(φ3)];
+}
+
 export const math = {
   EARTH_RADIUS,
   EARTH_CIRCUMFRENCE,
@@ -155,9 +215,13 @@ export const math = {
   mercatorXToLongitude,
   mercatorYToLatitude,
   mercatorToWgs84,
-  distanceWgs84,
+  haversineDistanceWgs84,
   wrapWgs84,
   circumferenceAtLatitude,
   mercatorToTileIndex,
   wgs84ToTileIndex,
+  toRadians,
+  toDegrees,
+  haversineIntermediateWgs84,
+  haversineCumulatedDistanceWgs84,
 };
