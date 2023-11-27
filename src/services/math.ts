@@ -78,7 +78,9 @@ function haversineDistanceWgs84(from: Position, to: Position): number {
 }
 
 /**
- * Compute the cumulated distance for each position of an array of positions
+ * Compute the cumulated distance for each position of an array of positions.
+ * For I positions, there are I-1 distance, hence the distance at i corresponds
+ * to the distance from the (i-1)th position to ith
  */
 function haversineCumulatedDistanceWgs84(positions: Position[]): number[] {
   const cumulatedDistance = Array(positions.length);

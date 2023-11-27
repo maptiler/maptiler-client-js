@@ -27,6 +27,17 @@ export type ElevationAtOptions = {
   zoom?: number;
 };
 
+/**
+ * Options for batch elevation lookup
+ */
+export type ElevationBatchOptions = ElevationAtOptions & {
+  /**
+   * If provided, a median kernel of the given size will smooth the elevation
+   * to reduce very small local variations
+   */
+  smoothingKernelSize?: number;
+};
+
 const customMessages = {
   403: "Key is missing, invalid or restricted",
 };
@@ -129,7 +140,7 @@ async function batch(
   /**
    * Options
    */
-  options: ElevationAtOptions = {},
+  options: ElevationBatchOptions = {},
 ): Promise<Position[]> {
   const apiKey = options.apiKey ?? config.apiKey;
 
@@ -209,13 +220,23 @@ async function batch(
     cache.set(tileID, tilePixelData);
   });
 
-  const elevations = positions.map((position, i) => {
+  const elevatedPositions = positions.map((position, i) => {
     const tileID = tileIDs[i];
     const tileIndexFloat = tileIndicesFloats[i];
     const tilePixelData = cache.get(tileID);
 
-    const pixelX = ~~(tilePixelData.width * (tileIndexFloat[0] % 1));
-    const pixelY = ~~(tilePixelData.height * (tileIndexFloat[1] % 1));
+    // const pixelX = ~~(tilePixelData.width * (tileIndexFloat[0] % 1));
+    // const pixelY = ~~(tilePixelData.height * (tileIndexFloat[1] % 1));
+
+    const pixelX = Math.min(
+      Math.round(tilePixelData.width * (tileIndexFloat[0] % 1)),
+      tilePixelData.width - 1,
+    );
+    const pixelY = Math.min(
+      Math.round(tilePixelData.height * (tileIndexFloat[1] % 1)),
+      tilePixelData.height - 1,
+    );
+
     const pixelDataIndex =
       (pixelY * tilePixelData.width + pixelX) * tilePixelData.components;
     const R = tilePixelData.pixels[pixelDataIndex];
@@ -226,7 +247,25 @@ async function batch(
     return [position[0], position[1], ~~(elevation * 1000) / 1000];
   });
 
-  return elevations;
+  // Smoothing
+  if (options.smoothingKernelSize) {
+    // make sure the kernel is of an odd size
+    const kernelSize = ~~(options.smoothingKernelSize / 2) * 2 + 1;
+    const elevations: number[] = elevatedPositions.map((pos) => pos[2]);
+    const kernelSpan = ~~(kernelSize / 2);
+
+    for (let i = kernelSpan; i < elevations.length - kernelSpan - 1; i += 1) {
+      let sum = 0;
+      for (let j = 0; j < kernelSize; j += 1) {
+        const elev = elevations[i - kernelSpan + j];
+        sum += elev;
+      }
+      sum /= kernelSize;
+      elevatedPositions[i][2] = sum;
+    }
+  }
+
+  return elevatedPositions;
 }
 
 /**
@@ -241,7 +280,7 @@ async function fromLineString(
   /**
    * Options
    */
-  options: ElevationAtOptions = {},
+  options: ElevationBatchOptions = {},
 ): Promise<LineString> {
   if (ls.type !== "LineString") {
     throw new Error("The provided object is not a GeoJSON LineString");
@@ -266,7 +305,7 @@ async function fromMultiLineString(
   /**
    * Options
    */
-  options: ElevationAtOptions = {},
+  options: ElevationBatchOptions = {},
 ): Promise<MultiLineString> {
   if (ls.type !== "MultiLineString") {
     throw new Error("The provided object is not a GeoJSON MultiLineString");
