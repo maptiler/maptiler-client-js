@@ -7,6 +7,11 @@
 ### Bug Fixes
 ### Others
 
+## 1.8.0
+### New Features
+- Rework of the elevation API to be improve developper experience (new module `elevation`)
+- Expoing some geo math with the new `math` module
+
 ## 1.7.0
 ### New Features
 - DEM elevation API (https://github.com/maptiler/maptiler-client-js/pull/24)
