@@ -8,7 +8,7 @@ const EARTH_RADIUS = 6371008.8;
 /**
  * Average circumfrence of Earth in meters
  */
-const EARTH_CIRCUMFRENCE = 2 * Math.PI * EARTH_RADIUS;
+const EARTH_CIRCUMFERENCE = 2 * Math.PI * EARTH_RADIUS;
 
 /**
  * Convert a wgs84 longitude to web Mercator X (west-east axis), where westmost X is 0 and eastmost X is 1.
@@ -113,7 +113,7 @@ function wrapWgs84(position: Position): Position {
  * The circumference at a line of latitude in meters.
  */
 export function circumferenceAtLatitude(latitude: number) {
-  return EARTH_CIRCUMFRENCE * Math.cos((latitude * Math.PI) / 180);
+  return EARTH_CIRCUMFERENCE * Math.cos((latitude * Math.PI) / 180);
 }
 
 /**
@@ -210,7 +210,7 @@ function haversineIntermediateWgs84(
 
 export const math = {
   EARTH_RADIUS,
-  EARTH_CIRCUMFRENCE,
+  EARTH_CIRCUMFERENCE,
   longitudeToMercatorX,
   latitudeToMercatorY,
   wgs84ToMercator,
