@@ -35,7 +35,8 @@ export type CommonForwardAndReverseGeocodingOptions =
     limit?: number;
 
     /**
-     * Filter of feature types to return. If not specified, feature of all available types except `poi` are returned.
+     * Filter of feature types to return.
+     * If not specified, feature of all available types except `poi` are returned (`types = ["poi"]`, `excludeTypes = true`).
      */
     types?: (
       | "country"
@@ -53,6 +54,11 @@ export type CommonForwardAndReverseGeocodingOptions =
       | "address"
       | "poi"
     )[];
+
+    /**
+     * Set to `true` to use all available feature types except those mentioned in `types`. Default value is `false` if `types` is specified.
+     */
+    excludeTypes?: boolean;
   };
 
 export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {

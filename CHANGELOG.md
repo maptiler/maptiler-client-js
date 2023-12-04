@@ -3,6 +3,7 @@
 ## DEVEL
 ### New Features
 - synchronized geocoding types with current geocoding API
+- added `excludeTypes` option to geocoding API
 
 ### Bug Fixes
 ### Others
