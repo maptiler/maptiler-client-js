@@ -61,7 +61,7 @@ let tileCache = null;
  */
 export function getTileCache(): QuickLRU<string, PixelData> {
   if (!tileCache) {
-    tileCache = new QuickLRU({ maxSize: config.cacheSize });
+    tileCache = new QuickLRU({ maxSize: config.tileCacheSize });
   }
   return tileCache;
 }

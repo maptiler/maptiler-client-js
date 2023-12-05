@@ -36,7 +36,7 @@ class ClientConfig {
   /**
    * Number of tiles to keep in cache
    */
-  public cacheSize: number = 200;
+  public tileCacheSize: number = 200;
 
   public bufferToPixelData: BufferToPixelDataFunction | null;
 
