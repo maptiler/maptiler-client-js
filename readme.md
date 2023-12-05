@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://docs.maptiler.com/client-js/">offcial page →</a><br>
+<a href="https://docs.maptiler.com/client-js/">official page →</a><br>
   <img src="images/maptiler-client-logo.svg" width="400px">
 </p>
 

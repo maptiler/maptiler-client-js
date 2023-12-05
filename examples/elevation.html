@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <title>tslib</title>
+  </head>
+
+  <body>
+    <p>
+      This demo is using the UMD bundle. Add <code>?key=YOUR_API_KEY</code> to the URL.
+    </p>
+    <p>
+      Open JS console.
+    </p>
+    <div id="images"></div>
+
+    <script src ="../dist/maptiler-client.umd.js"></script>
+    
+    <script>
+      // The API key must be in the URL param as `?key=ABCD1234`
+      maptilerClient.config.apiKey = (new URLSearchParams(location.search)).get("key");
+
+      (async () => {
+   
+
+        // A basic example with only a line string
+        // const resGeojson = await fetch("linestring.geojson");
+        // const geojson = await resGeojson.json();
+        // console.log(geojson);
+
+        // const allLines = maptilerClient.extractLineStrings(geojson);
+
+        // const ls = allLines[0]
+        // console.log(ls)
+
+        // const elevatedLs = await maptilerClient.elevation.fromLineString(ls);
+        // console.log(elevatedLs)
+
+
+
+        // an example with a single multilinestring
+        // const resGeojson = await fetch("multilinestring.geojson");
+        // const geojson = await resGeojson.json();
+        // console.log(geojson);
+
+        // const allMLS = maptilerClient.extractLineStrings(geojson);
+
+        // const mls = allMLS[0]
+        // console.log(mls)
+
+        // console.time("1")
+        // const elevatedMls = await maptilerClient.elevation.fromMultiLineString(mls);
+        // console.timeEnd("1")
+        // console.log(elevatedMls)
+
+
+
+        // a long multilinestrin
+        // const resGeojson = await fetch("long.geojson");
+        // const geojson = await resGeojson.json();
+        // console.log(geojson);
+
+        // const allMLS = maptilerClient.extractLineStrings(geojson);
+
+        // const mls = allMLS[0]
+        // console.log(mls)
+
+        // console.time("1")
+        // const elevatedMls = await maptilerClient.elevation.fromMultiLineString(mls);
+        // console.timeEnd("1")
+        // console.log(elevatedMls)
+
+
+
+
+        // A basic example with only a line string
+        // a long multilinestrin
+        // const resGeojson = await fetch("long.geojson");
+        // const geojson = await resGeojson.json();
+        // console.log(geojson);
+
+        // const allMLS = maptilerClient.extractLineStrings(geojson);
+
+        // const mls = allMLS[0]
+        // console.log(mls.coordinates[0])
+
+        // console.time("1")
+        // const ds = maptilerClient.math.haversineCumulatedDistanceWgs84(mls.coordinates[0]);
+        // console.timeEnd("1")
+        // console.log(ds);
+
+        // Batch elevation
+        // const all = await maptilerClient.elevation.batch(
+        //   [
+        //     [6.864884, 45.832743],   // Mont Blanc, Alps, 4808m
+        //     [6.864884, 45.832743],   // Mont Blanc, Alps, 4808m
+        //     [6.864884, 45.832743],   // Mont Blanc, Alps, 4808m
+        //     [6.864884, 45.832743],   // Mont Blanc, Alps, 4808m
+        //     [6.864884, 45.832743],   // Mont Blanc, Alps, 4808m
+        //     [6.864884, 45.832743],   // Mont Blanc, Alps, 4808m
+        //     // [86.9250, 27.9881],      // Mount Everest, Himalayas, 8848m
+        //     // [-70.0109, -32.6532],    // Aconcagua, Andes, 6960m
+        //     // [-151.0064, 63.0695],    // Denali, Alaska, 6190m
+        //     // [37.3556, -3.0674],      // Mount Kilimanjaro, 5895m
+        //     // [42.4453, 43.3499],      // Mount Elbrus, Caucasus, 5642m
+        //     // [137.1595, -4.0784],     // Puncak Jaya, Sudirman Range, 4884m
+        //     // [-140.4055, 60.5672],    // Mount Logan, Saint Elias Mountains, 5956m
+        //     // [138.73111, 35.358055],  // Mount Fuji, 3776m
+        //   ]
+        // );
+        // console.log(all);
+        
+      })()
+    </script>
+  </body>
+</html>

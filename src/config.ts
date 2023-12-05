@@ -1,3 +1,5 @@
+import { BufferToPixelDataFunction } from "./tiledecoding";
+
 export type FetchFunction = (
   input: RequestInfo | URL,
   init?: RequestInit,
@@ -30,6 +32,13 @@ class ClientConfig {
    * will be automatically resolved.
    */
   private _fetch: FetchFunction | null = tryGettingFetch();
+
+  /**
+   * Number of tiles to keep in cache
+   */
+  public tileCacheSize: number = 200;
+
+  public bufferToPixelData: BufferToPixelDataFunction | null;
 
   /**
    * Set the MapTiler Cloud API key
