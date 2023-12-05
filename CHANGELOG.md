@@ -2,9 +2,6 @@
 
 ## DEVEL
 ### New Features
-- synchronized geocoding types with current geocoding API
-- added `excludeTypes` option to geocoding API
-
 ### Bug Fixes
 ### Others
 
@@ -12,6 +9,8 @@
 ### New Features
 - Rework of the elevation API to be improve developper experience (new module `elevation`)
 - Expoing some geo math with the new `math` module
+- synchronized geocoding types with current geocoding API
+- added `excludeTypes` option to geocoding API
 
 ## 1.7.0
 ### New Features
