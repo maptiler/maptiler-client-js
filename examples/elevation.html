@@ -54,19 +54,19 @@
 
 
         // a long multilinestrin
-        // const resGeojson = await fetch("long.geojson");
-        // const geojson = await resGeojson.json();
-        // console.log(geojson);
+        const resGeojson = await fetch("long.geojson");
+        const geojson = await resGeojson.json();
+        console.log(geojson);
 
-        // const allMLS = maptilerClient.extractLineStrings(geojson);
+        const allMLS = maptilerClient.tools.extractLineStrings(geojson);
 
-        // const mls = allMLS[0]
-        // console.log(mls)
+        const mls = allMLS[0]
+        console.log(mls)
 
-        // console.time("1")
-        // const elevatedMls = await maptilerClient.elevation.fromMultiLineString(mls);
-        // console.timeEnd("1")
-        // console.log(elevatedMls)
+        console.time("1")
+        const elevatedMls = await maptilerClient.elevation.fromMultiLineString(mls);
+        console.timeEnd("1")
+        console.log(elevatedMls)
 
 
 
