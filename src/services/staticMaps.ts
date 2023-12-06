@@ -2,7 +2,7 @@ import { BBox, Position } from "geojson";
 import { config } from "../config";
 import { defaults } from "../defaults";
 import { MapStyleVariant, ReferenceMapStyle, styleToStyle } from "../mapstyle";
-import simplify from "./simplify";
+import { misc } from "../misc";
 
 /**
  * Base set of options that can be provided to all the types of static maps
@@ -177,7 +177,7 @@ function simplifyAndStringify(path: Array<Position>, maxNbChar = 3000): string {
   const toleranceStep = 0.00001;
 
   while (str.length > maxNbChar) {
-    const simplerPath = simplify(path, tolerance);
+    const simplerPath = misc.simplify(path, tolerance);
     // str = simplerPath.map(point => point.join(',')).join('|');
     str = simplerPath.map((point) => `${point[0]},${point[1]}`).join("|");
     tolerance += toleranceStep;

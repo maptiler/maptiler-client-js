@@ -1,5 +1,5 @@
-import { BBox, Position } from "geojson";
-export type { BBox, Position };
+import { BBox, Position, LineString, MultiLineString } from "geojson";
+export type { BBox, Position, LineString, MultiLineString };
 export * from "./config";
 export * from "./language";
 export * from "./services/geocoding";
@@ -12,4 +12,4 @@ export * from "./mapstyle";
 export * from "./services/math";
 export * from "./services/elevation";
 export * from "./tiledecoding";
-export * from "./geojsontools";
+export * from "./misc";
