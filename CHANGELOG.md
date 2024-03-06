@@ -5,6 +5,13 @@
 ### Bug Fixes
 ### Others
 
+## 1.8.1
+### Bug Fixes
+- The QuickLRU dependency is not CJS compatible to it is now fully bundled into the CJS bundle
+
+### Others
+- Moved somes wrongly positioned deps into devDep
+
 ## 1.8.0
 ### New Features
 - Rework of the elevation API to be improve developper experience (new module `elevation`)

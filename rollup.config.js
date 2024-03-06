@@ -25,7 +25,7 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: ["web-merc-projection", "quick-lru"]
+    external: ["quick-lru"]
   },
 
   // CJS module, not minified + sourcemap
@@ -48,7 +48,7 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: ["web-merc-projection", "quick-lru"]
+    external: [] // Decided to include QuickLRU to the CJS bundle because it is otherwise not CJS compatible
   },
 
   // UMD module, not minified
@@ -106,7 +106,7 @@ if (process.env.NODE_ENV === "production") {
       }
     ],
     input: "src/index.ts",
-    external: ["web-merc-projection", "quick-lru"],
+    external: ["quick-lru"],
   },
   {
     plugins: [
