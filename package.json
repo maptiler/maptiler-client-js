@@ -1,6 +1,6 @@
 {
   "name": "@maptiler/client",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "Javascript & Typescript wrapper to MapTiler Cloud API",
   "module": "dist/maptiler-client.mjs",
   "types": "dist/maptiler-client.d.ts",
@@ -71,11 +71,11 @@
     "typedoc": "^0.25.2",
     "typedoc-plugin-markdown": "^3.16.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "vitest": "^0.34.6",
+    "@rollup/pluginutils": "^5.0.5",
+    "@types/geojson": "^7946.0.10"
   },
   "dependencies": {
-    "@rollup/pluginutils": "^5.0.5",
-    "@types/geojson": "^7946.0.10",
     "quick-lru": "^7.0.0"
   }
 }
