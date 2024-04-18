@@ -2,6 +2,9 @@
 
 ## DEVEL
 ### New Features
+- Added `matching_text` and `matching_place_name` properties to geocoding feature response
+- Added `road` to geocoding `types`
+
 ### Bug Fixes
 ### Others
 

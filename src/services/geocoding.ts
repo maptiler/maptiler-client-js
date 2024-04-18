@@ -52,6 +52,7 @@ export type CommonForwardAndReverseGeocodingOptions =
       | "place"
       | "postal_code"
       | "address"
+      | "road"
       | "poi"
     )[];
 
@@ -220,6 +221,18 @@ export type GeocodingFeature = Feature<Geometry, FeatureProperties> &
      * You can use the relevance property to remove results that don't fully match the query.
      */
     relevance: number;
+
+    /**
+     * A string analogous to the `text` field that more closely matches the query than results in the specified language.
+     * For example, querying _Praha, Czechia_ with language set to English (`en`) might return a feature with the `text` _Prague_ and the `matching_text` _Praha_.
+     */
+    matching_text?: string;
+
+    /**
+     * A string analogous to the `place_name` field that more closely matches the query than results in the specified language.
+     * For example, querying _Praha, Czechia_ with language set to English (`en`) might return a feature with the `place_name` _Prague, Czechia_ and a `matching_place_name` of _Praha, Czechia_.
+     */
+    matching_place_name?: string;
   };
 
 export type GeocodingSearchResult = {
