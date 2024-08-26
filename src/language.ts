@@ -98,6 +98,7 @@ type LanguageInfo = {
    * as it is the case for some "modes".
    */
   code: string | null,
+
   /**
    * The full OSM language flag, such as `"name:en"` for the English language.
    * Can also be a non-OSM flag if the language needs to be evaluated at runtime, such as `"auto"`,
@@ -111,11 +112,6 @@ type LanguageInfo = {
   name: string,
 
   /**
-   * English name in capital letters without whitespaces or special characters.
-   */
-  key: string,
-
-  /**
    * Whether the language leverages only the latin charsets.
    */
   latin: boolean,
@@ -125,178 +121,484 @@ type LanguageInfo = {
    * For instance the "visitor" mode consists in displaying bylingual labels.
    */
   isMode: boolean,
+
+  /**
+   * Whether the language is compatible with the geocoding API
+   */
+  geocoding: boolean,
 }
 
-const VISITOR: LanguageInfo = { code: null, flag: "visitor", name: "Visitor", key: "VISITOR", latin: true, isMode: true };
-const VISITOR_ENGLISH: LanguageInfo = { code: null, flag: "visitor_en", name: "Visitor English", key: "VISITOR_ENGLISH", latin: true, isMode: true };
-const STYLE: LanguageInfo = { code: null, flag: "style", name: "Style", key: "STYLE", latin: false, isMode: true };
-const AUTO: LanguageInfo = { code: null, flag: "auto", name: "Auto", key: "AUTO", latin: false, isMode: true };
-const STYLE_LOCK: LanguageInfo = { code: null, flag: "style_lock", name: "Style Lock", key: "STYLE_LOCK", latin: false, isMode: true };
-const LATIN: LanguageInfo = { code: "latin", flag: "name:latin", name: "Latin", key: "LATIN", latin: true, isMode: true };
-const NON_LATIN: LanguageInfo = { code: "nonlatin", flag: "name:nonlatin", name: "Non Latin", key: "NON_LATIN", latin: false, isMode: true };
-const LOCAL: LanguageInfo = { code: "", flag: "name", name: "Local", key: "LOCAL", latin: true, isMode: true };
-
-const AMHARIC: LanguageInfo = { code: "am", flag: "name:am", name: "Amharic", key: "AMHARIC", latin: false, isMode: false };
-const ARABIC: LanguageInfo = { code: "ar", flag: "name:ar", name: "Arabic", key: "ARABIC", latin: false, isMode: false };
-const AZERBAIJANI: LanguageInfo = { code: "az", flag: "name:az", name: "Azerbaijani", key: "AZERBAIJANI", latin: true, isMode: false };
-const BELARUSIAN: LanguageInfo = { code: "be", flag: "name:be", name: "Belarusian", key: "BELARUSIAN", latin: false, isMode: false };
-const BULGARIAN: LanguageInfo = { code: "bg", flag: "bg", name: "Bulgarian", key: "BULGARIAN", latin: false, isMode: false };
-const BENGALI: LanguageInfo = { code: "bn", flag: "name:bn", name: "Bengali", key: "BENGALI", latin: true, isMode: false };
-
-// All the language infos as a list
-const languageInfoList: LanguageInfo[] = [
-  VISITOR,
-  VISITOR_ENGLISH,
-  STYLE,
-  AUTO,
-  STYLE_LOCK,
-  LATIN,
-  NON_LATIN,
-  LOCAL,
-
-  AMHARIC,
-  ARABIC,
-  AZERBAIJANI,
-  BELARUSIAN,
-  BULGARIAN,
-  BENGALI,
-] as const;
-
-// All the language info as a map, where the key is the `key`
-const languageInfoMap = new Map<string, LanguageInfo>();
-for (const l of languageInfoList) {
-  languageInfoMap.set(l.key, l);
-}
-
-// SDK-friendly struct of languages with keys being `key` and values being `flag`.
+/**
+ * The complete list of languages
+ */
 const Language = {
-  VISITOR: "visitor",
-  VISITOR_ENGLISH: "visitor_en",
-  STYLE: "style",
-  AUTO: "auto",
-  STYLE_LOCK: "style_lock",
-  LATIN: "name:latin",
-  NON_LATIN: "name:nonlatin",
-  LOCAL: "name",
+  /**
+   * Language mode to display labels in both the local language and the language of the visitor's device, concatenated.
+   * Note that if those two languages are the same, labels won't be duplicated.
+   */
+  VISITOR: { code: null, flag: "visitor", name: "Visitor", latin: true, isMode: true, geocoding: false } as LanguageInfo,
 
-  AMHARIC: "name:am",
-  ARABIC: "name:ar",
-  AZERBAIJANI: "name:az",
-  BELARUSIAN: "name:be",
-  BULGARIAN: "name:bg",
-  BENGALI: "name:bn",
+  /**
+   * Language mode to display labels in both the local language and English, concatenated.
+   * Note that if those two languages are the same, labels won't be duplicated.
+   */
+  VISITOR_ENGLISH: { code: null, flag: "visitor_en", name: "Visitor English", latin: true, isMode: true, geocoding: false } as LanguageInfo,
+
+  /**
+   * Language mode to display labels in a language enforced in the style.
+   */
+  STYLE: { code: null, flag: "style", name: "Style", latin: false, isMode: true, geocoding: false } as LanguageInfo,
+
+  /**
+   * Language mode to display the labels in the end user's device language.
+   */
+  AUTO: { code: null, flag: "auto", name: "Auto", latin: false, isMode: true, geocoding: true } as LanguageInfo,
+
+  /**
+   * Language mode to display labels in a language enforced in the style. The language cannot be further modified.
+   */
+  STYLE_LOCK: { code: null, flag: "style_lock", name: "Style Lock", latin: false, isMode: true, geocoding: false } as LanguageInfo,
+
+  /**
+   * The OSM language using latin script. MapTiler discourages its use as a primary language setting due to the lack of actual linguistic specificity,
+   * though it can be an handy fallback. This is not to be confused with the "Classical Latin" language, which is available under the tag `.CLASSICAL_LATIN`.
+   */
+  LATIN: { code: "latin", flag: "name:latin", name: "Latin", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * The OSM language using non-latin script. MapTiler discourages its use as a primary language setting due to the lack of actual linguistic specificity,
+   * though it can be an handy fallback.
+   */
+  NON_LATIN: { code: "nonlatin", flag: "name:nonlatin", name: "Non Latin", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Using the local language generaly (but not always) means that every labels of a given region will use the dominant local language.
+   */
+  LOCAL: { code: null, flag: "name", name: "Local", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Amharic language
+   */
+  AMHARIC: { code: "am", flag: "name:am", name: "Amharic", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Arabic language (right-to-left script)
+   */
+  ARABIC: { code: "ar", flag: "name:ar", name: "Arabic", latin: false, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Azerbaijani language
+   */
+  AZERBAIJANI: { code: "az", flag: "name:az", name: "Azerbaijani", latin: true, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Belarusian langauge
+   */
+  BELARUSIAN: { code: "be", flag: "name:be", name: "Belarusian", latin: false, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Bulgarian language
+   */
+  BULGARIAN: { code: "bg", flag: "bg", name: "Bulgarian", latin: false, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Bengali language
+   */
+  BENGALI: { code: "bn", flag: "name:bn", name: "Bengali", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Breton language
+   */
+  BRETON: { code: "br", flag: "name:br", name: "Breton", latin: true, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Bosnian language
+   */
+  BOSNIAN: { code: "bs", flag: "name:bs", name: "", latin: true, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Catalan language
+   */
+  CATALAN: { code: "ca", flag: "name:ca", name: "Catalan", latin: true, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Corsican language
+   */
+  CORSICAN: { code: "co", flag: "name:co", name: "Corsican", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Czech language
+   */
+  CZECH: { code: "cs", flag: "name:cs", name: "Czech", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Welsh language
+   */
+  WELSH: { code: "cy", flag: "name:cy", name: "WELSH", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Danish language
+   */
+  DANISH: { code: "da", flag: "name:da", name: "Danish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * German language
+   */
+  GERMAN: { code: "de", flag: "name:de", name: "German", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Greek language
+   */
+  GREEK: { code: "el", flag: "name:el", name: "Greek", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * English language
+   */
+  ENGLISH: { code: "en", flag: "name:en", name: "English", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Esperanto language
+   */
+  ESPERANTO: { code: "eo", flag: "name:eo", name: "Esperanto", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Spanish language
+   */
+  SPANISH: { code: "es", flag: "name:es", name: "Spanish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Estonian language
+   */
+  ESTONIAN: { code: "et", flag: "name:et", name: "Estonian", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Basque language
+   */
+  BASQUE: { code: "eu", flag: "name:eu", name: "Basque", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Finnish language
+   */
+  FINNISH: { code: "fi", flag: "name:fi", name: "Finnish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * French language
+   */
+  FRENCH: { code: "fr", flag: "name:fr", name: "French", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Frisian language
+   */
+  FRISIAN: { code: "fy", flag: "name:fy", name: "Frisian (West)", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Irish language
+   */
+  IRISH: { code: "ga", flag: "name:ga", name: "Irish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Scottish Gaelic language
+   */
+  SCOTTISH_GAELIC: { code: "gd", flag: "name:gd", name: "Scottish Gaelic", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Hebrew language (right-to-left non-latin script)
+   */
+  HEBREW: { code: "he", flag: "name:he", name: "Hebrew", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Hindi language
+   */
+  HINDI: { code: "hi", flag: "name:hi", name: "Hindi", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Croatian language
+   */
+  CROATIAN: { code: "hr", flag: "name:hr", name: "hr", latin: true, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Hungarian language
+   */
+  HUNGARIAN: { code: "hu", flag: "name:hu", name: "Hungarian", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Armenian language
+   */
+  ARMENIAN: { code: "hy", flag: "name:hy", name: "Armenian", latin: false, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Indonesian language
+   */
+  INDONESIAN: { code: "id", flag: "name:id", name: "Indonesian", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Icelandic language
+   */
+  ICELANDIC: { code: "is", flag: "name:is", name: "Icelandic", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Italian language
+   */
+  ITALIAN: { code: "it", flag: "name:it", name: "Italian", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Japanese language
+   */
+  JAPANESE: { code: "ja", flag: "name:ja", name: "Japanese", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Japanese language in Hiragana form
+   */
+  JAPANESE_HIRAGANA: { code: "ja-Hira", flag: "name:ja-Hira", name: "Japanese Hiragana form", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Japanese language (latin script)
+   */
+  JAPANESE_2018: { code: "ja-Latn", flag: "name:ja-Latn", name: "Japanese (Latin 2018)", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Japanese language in Kana form (non-latin script)
+   */
+  JAPANESE_KANA: { code: "ja_kana", flag: "name:ja_kana", name: "Japanese (Kana)", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Japanse language, romanized (latin script)
+   */
+  JAPANESE_LATIN: { code: "ja_rm", flag: "name:ja_rm", name: "Japanese (Latin script)", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Georgian language
+   */
+  GEORGIAN: { code: "ka", flag: "name:ka", name: "Georgian", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Kazakh language
+   */
+  KAZAKH: { code: "kk", flag: "name:kk", name: "Kazakh", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Kannada language
+   */
+  KANNADA: { code: "kn", flag: "name:kn", name: "Kannada", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Korean language
+   */
+  KOREAN: { code: "ko", flag: "name:ko", name: "Korean", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Korean language (latin script)
+   */
+  KOREAN_LATIN: { code: "ko-Latn", flag: "name:ko-Latn", name: "Korean (Latin script)", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Kurdish language
+   */
+  KURDISH: { code: "ku", flag: "name:ku", name: "Kurdish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Classical Latin language
+   */
+  CLASSICAL_LATIN: { code: "la", flag: "name:la", name: "Latin", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Luxembourgish language
+   */
+  LUXEMBOURGISH: { code: "lb", flag: "name:lb", name: "Luxembourgish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Lithuanian language
+   */
+  LITHUANIAN: { code: "lt", flag: "name:lt", name: "Lithuanian", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Latvian language
+   */
+  LATVIAN: { code: "lv", flag: "name:lv", name: "Latvian", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Macedonian language
+   */
+  MACEDONIAN: { code: "mk", flag: "name:mk", name: "Macedonian", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Malayalm language
+   */
+  MALAYALAM: { code: "ml", flag: "name:ml", name: "Malayalam", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Maltese language
+   */
+  MALTESE: { code: "mt", flag: "name:mt", name: "Maltese", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Dutch language
+   */
+  DUTCH: { code: "nl", flag: "name:nl", name: "Dutch", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Norwegian language
+   */
+  NORWEGIAN: { code: "no", flag: "name:no", name: "Norwegian", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Occitan language
+   */
+  OCCITAN: { code: "oc", flag: "name:oc", name: "Occitan", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Polish language
+   */
+  POLISH: { code: "pl", flag: "name:pl", name: "Polish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Persian language
+   */
+  PERSIAN: { code: "fa", flag: "name:fa", name: "Persian", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Punjabi language
+   */
+  PUNJABI: { code: "pa", flag: "name:pa", name: "Punjabi", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Western Punjabi language
+   */
+  WESTERN_PUNJABI: { code: "pnb", flag: "name:pnb", name: "Western Punjabi", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Portuguese language
+   */
+  PORTUGUESE: { code: "pt", flag: "name:pt", name: "Portuguese", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Romansh language
+   */
+  ROMANSH: { code: "rm", flag: "name:rm", name: "Romansh", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Romanian language
+   */
+  ROMANIAN: { code: "ro", flag: "name:ro", name: "Romanian", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Russian language
+   */
+  RUSSIAN: { code: "ru", flag: "name:ru", name: "Russian", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Slovak language
+   */
+  SLOVAK: { code: "sk", flag: "name:sk", name: "Slovak", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Slovene language
+   */
+  SLOVENE: { code: "sl", flag: "name:sl", name: "Slovene", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Albanian language
+   */
+  ALBANIAN: { code: "sq", flag: "name:sq", name: "Albanian", latin: true, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Serbian language (cyrillic script)
+   */
+  SERBIAN_CYRILLIC: { code: "sr", flag: "name:sr", name: "Serbian (Cyrillic script)", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Serbian language (latin script)
+   */
+  SERBIAN_LATIN: { code: "sr-Latn", flag: "name:sr-Latn", name: "Serbian (Latin script)", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Swedish language
+   */
+  SWEDISH: { code: "sv", flag: "name:sv", name: "Swedish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Tamil language
+   */
+  TAMIL: { code: "ta", flag: "name:ta", name: "Tamil", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Telugu language
+   */
+  TELUGU: { code: "te", flag: "name:te", name: "Telugu", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Thai language
+   */
+  THAI: { code: "th", flag: "name:th", name: "Thai", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Turkish language
+   */
+  TURKISH: { code: "tr", flag: "name:tr", name: "Turkish", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Ukrainian language
+   */
+  UKRAINIAN: { code: "uk", flag: "name:uk", name: "Ukrainian", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Vietnamese language (latin script)
+   */
+  VIETNAMESE: { code: "vi", flag: "name:vi", name: "Vietnamese (Latin script)", latin: true, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Chinese language
+   */
+  CHINESE: { code: "zh", flag: "name:zh", name: "Chinese", latin: false, isMode: false, geocoding: true } as LanguageInfo,
+
+  /**
+   * Traditional Chinese language
+   */
+  TRADITIONAL_CHINESE: { code: "zh-Hant", flag: "name:zh-Hant", name: "Chinese (traditional)", latin: false, isMode: false, geocoding: false } as LanguageInfo,
+
+  /**
+   * Simplified Chinese language
+   */
+  SIMPLIFIED_CHINESE: { code: "zh-Hans", flag: "name:zh-Hans", name: "Chinese (simplified)", latin: false, isMode: false, geocoding: false } as LanguageInfo,
 } as const;
 
 
+
 /**
- * Get language infos from a provided language key.
+ * Get language infos from a provided language key, the key being the no-whitespace capital name.
+ * Returns `null` if not found.
  */
-export function getLanguageInfo(languageKey: string): LanguageInfo | null {
-  if (languageInfoMap.has(languageKey)) {
-    return languageInfoMap.get(languageKey);
+export function getLanguageInfoFromKey(languageKey: string): LanguageInfo | null {
+  if (languageKey in Language) {
+    return languageKey[languageKey];
   }
   return null;
 }
 
 /**
- * Get the list of languages with the possibility to discard "modes".
+ * Get the language info from a provided 2-character iso code.
+ * Returns `null` if not found.
  */
-export function getlanguageList(
-  options: { 
-    /**
-     * The languages that correspond to modes (rather than to actual languages)
-     * will not be resturned if `true`.
-     * Default: `false`
-     */
-    excludeModes?: boolean
-  } = {}): LanguageInfo[] {
-  const excludeModes = options.excludeModes ?? false;
-
-  let tmpLanguageList = languageInfoList.slice();
-
-  if (excludeModes) {
-    tmpLanguageList = tmpLanguageList.filter((l) => !l.isMode);
+export function getLanguageInfoFromCode(languageCode: string): LanguageInfo | null {
+  for (const lang of Object.values(Language)) {
+    if (lang.code === languageCode) {
+      return lang;
+    }
   }
-
-  return tmpLanguageList;
+  return null;
 }
 
+/**
+ * Get the language info from a language flag (eg. `"name:en"`).
+ * This is also handy to check is a given language flag is a supported language.
+ * Returns `null` if not found.
+ */
+export function getLanguageInfoFromFlag(languageFlag: string): LanguageInfo | null {
+  for (const lang of Object.values(Language)) {
+    if (lang.flag === languageFlag) {
+      return lang;
+    }
+  }
+  return null;
+}
 
-// const CountryLanguages: LanguageStruct[] = [
-//   { code: "am", name: "Amharic", latin: false },
-//   { code: "ar", name: "Arabic", latin: false },
-//   { code: "az", name: "Azerbaijani", latin: true },
-//   { code: "be", name: "Belarusian", latin: false },
-//   { code: "bg", name: "Bulgarian", latin: false },
-//   { code: "bn", name: "Bengali", latin: true },
-//   { code: "br", name: "Breton", latin: true },
-//   { code: "bs", name: "Bosnian", latin: true },
-//   { code: "ca", name: "Catalan", latin: true },
-//   { code: "co", name: "Corsican", latin: true },
-//   { code: "cs", name: "Czech", latin: true },
-//   { code: "cy", name: "Welsh", latin: true },
-//   { code: "da", name: "Danish", latin: true },
-//   { code: "de", name: "German", latin: true },
-//   { code: "el", name: "Greek", latin: false },
-//   { code: "en", name: "English", latin: true },
-//   { code: "eo", name: "Esperanto", latin: true },
-//   { code: "es", name: "Spanish", latin: true },
-//   { code: "et", name: "Estonian", latin: true },
-//   { code: "eu", name: "Basque", latin: true },
-//   { code: "fi", name: "Finnish", latin: true },
-//   { code: "fr", name: "French", latin: true },
-//   { code: "fy", name: "Western Frisian", latin: true },
-//   { code: "ga", name: "Irish", latin: true },
-//   { code: "gd", name: "Scottish Gaelic", latin: true },
-//   { code: "he", name: "Hebrew", latin: false },
-//   { code: "hi", name: "Hindi", latin: false },
-//   { code: "hr", name: "Croatian", latin: true },
-//   { code: "hu", name: "Hungarian", latin: true },
-//   { code: "hy", name: "Armenian", latin: false },
-//   { code: "id", name: "Indonesian", latin: true },
-//   { code: "is", name: "Icelandic", latin: true },
-//   { code: "it", name: "Italian", latin: true },
-//   { code: "ja", name: "Japanese", latin: false },
-//   { code: "ja-Hira", name: "Japanese Hiragana form", latin: false },
-//   { code: "ja-Latn", name: "Japanese (Latin 2018)", latin: true },
-//   { code: "ja_kana", name: "Japanese (Kana)", latin: false },
-//   { code: "ja_rm", name: "Japanese (Latin)", latin: true },
-//   { code: "ka", name: "Georgian", latin: false },
-//   { code: "kk", name: "Kazakh", latin: false },
-//   { code: "kn", name: "Kannada", latin: false },
-//   { code: "ko", name: "Korean", latin: false },
-//   { code: "ko-Latn", name: "Korean (Latin)", latin: true },
-//   { code: "ku", name: "Kurdish", latin: true },
-//   { code: "la", name: "Latin", latin: true },
-//   { code: "lb", name: "Luxembourgish", latin: true },
-//   { code: "lt", name: "Lithuanian", latin: true },
-//   { code: "lv", name: "Latvian", latin: true },
-//   { code: "mk", name: "Macedonian", latin: false },
-//   { code: "ml", name: "Malayalam", latin: false },
-//   { code: "mt", name: "Maltese", latin: true },
-//   { code: "nl", name: "Dutch", latin: true },
-//   { code: "no", name: "Norwegian", latin: true },
-//   { code: "oc", name: "Occitan", latin: true },
-//   { code: "pl", name: "Polish", latin: true },
-//   { code: "pt", name: "Portuguese", latin: true },
-//   { code: "rm", name: "Romansh", latin: true },
-//   { code: "ro", name: "Romania", latin: true },
-//   { code: "ru", name: "Russian", latin: false },
-//   { code: "sk", name: "Slovak", latin: true },
-//   { code: "sl", name: "Slovene", latin: true },
-//   { code: "sq", name: "Albanian", latin: true },
-//   { code: "sr", name: "Serbian (Cyrillic)", latin: false },
-//   { code: "sr-Latn", name: "Serbian (Latin)", latin: true },
-//   { code: "sv", name: "Swedish", latin: true },
-//   { code: "ta", name: "Tamil", latin: false },
-//   { code: "te", name: "Telugu", latin: false },
-//   { code: "th", name: "Thai", latin: false },
-//   { code: "tr", name: "Turkish", latin: true },
-//   { code: "uk", name: "Ukrainian", latin: false },
-//   { code: "vi", name: "Vietnamese", latin: true },
-//   { code: "zh", name: "Chinese", latin: false },
-// ];
-
-const Languages = [
-
-]
