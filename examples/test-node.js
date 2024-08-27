@@ -4,7 +4,7 @@ import {
   geolocation,
   coordinates,
   data,
-  LanguageGeocoding,
+  Language,
 } from '../dist/maptiler-client.mjs';
 
 // For this examople to work, you must bring your own node-compatible fetch,
@@ -12,14 +12,14 @@ import {
 // import fetch from 'node-fetch';
 
 // config.fetch = fetch;
-config.apiKey = 'YOUR_MAPTILER_CLOUD_API_KEY';
+config.apiKey = 'YOUR_API_KEY';
 
 async function testGeocoding() {
-  // const result1 = await geocoding.forward('bordeaux', {language: [LanguageGeocoding.AUTO, LanguageGeocoding.ENGLISH]});
-  // console.log(result1);
+  const result1 = await geocoding.forward('bordeaux', {language: [Language.AUTO, Language.ENGLISH]});
+  console.log(result1);
 
-  const result2 = await geocoding.reverse([6.249638, 46.402056], {language: ['es', 'en']});
-  console.log(result2);
+  // const result2 = await geocoding.reverse([6.249638, 46.402056], {language: ['es', 'en']});
+  // console.log(result2);
 }
 
 async function testGeolocation() {

@@ -21,16 +21,13 @@
         coordinates,
         data,
         staticMaps,
-        LanguageGeocoding,
       } from '../dist/maptiler-client.mjs';
-
-      console.log(LanguageGeocoding);
 
       // The API key must be in the URL param as `?key=ABCD1234`
       config.apiKey = (new URLSearchParams(location.search)).get("key");
 
       async function testGeocoding() {
-        console.log(await geocoding.forward('bordeaux', {language: [geocoding.language.SPANISH, geocoding.language.ENGLISH]}));
+        console.log(await geocoding.forward('bordeaux', {language: [geocoding.Language.SPANISH, geocoding.Language.ENGLISH]}));
         console.log(await geocoding.forward('bordeaux',  {
           bbox: [-7.638157121837139, 33.595474163650685, -7.624914050102235, 33.600446760011856]
         }));

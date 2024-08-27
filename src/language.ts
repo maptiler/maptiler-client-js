@@ -1,97 +1,99 @@
 /**
  * Languages. Note that not all the languages of this list are available but the compatibility list may be expanded in the future.
  */
-const LanguageGeocoding = {
-  AUTO: "auto",
-  ALBANIAN: "sq",
-  ARABIC: "ar",
-  ARMENIAN: "hy",
-  AZERBAIJANI: "az",
-  BELORUSSIAN: "be",
-  BOSNIAN: "bs",
-  BRETON: "br",
-  BULGARIAN: "bg",
-  CATALAN: "ca",
-  CHINESE: "zh",
-  CROATIAN: "hr",
-  CZECH: "cs",
-  DANISH: "da",
-  DUTCH: "nl",
-  ENGLISH: "en",
-  ESPERANTO: "eo",
-  ESTONIAN: "et",
-  FINNISH: "fi",
-  FRENCH: "fr",
-  FRISIAN: "fy",
-  GEORGIAN: "ka",
-  GERMAN: "de",
-  GREEK: "el",
-  HEBREW: "he",
-  HUNGARIAN: "hu",
-  ICELANDIC: "is",
-  IRISH: "ga",
-  ITALIAN: "it",
-  JAPANESE: "ja",
-  KANNADA: "kn",
-  KAZAKH: "kk",
-  KOREAN: "ko",
-  ROMAN_LATIN: "la",
-  LATVIAN: "lv",
-  LITHUANIAN: "lt",
-  LUXEMBOURGISH: "lb",
-  MACEDONIAN: "mk",
-  MALTESE: "mt",
-  NORWEGIAN: "no",
-  POLISH: "pl",
-  PORTUGUESE: "pt",
-  ROMANIAN: "ro",
-  ROMANSH: "rm",
-  RUSSIAN: "ru",
-  SCOTTISH_GAELIC: "gd",
-  SERBIAN_CYRILLIC: "sr",
-  SLOVAK: "sk",
-  SLOVENE: "sl",
-  SPANISH: "es",
-  SWEDISH: "sv",
-  THAI: "th",
-  TURKISH: "tr",
-  UKRAINIAN: "uk",
-  WELSH: "cy",
-};
+// const LanguageGeocoding = {
+//   AUTO: "auto",
+//   ALBANIAN: "sq",
+//   ARABIC: "ar",
+//   ARMENIAN: "hy",
+//   AZERBAIJANI: "az",
+//   BELORUSSIAN: "be",
+//   BOSNIAN: "bs",
+//   BRETON: "br",
+//   BULGARIAN: "bg",
+//   CATALAN: "ca",
+//   CHINESE: "zh",
+//   CROATIAN: "hr",
+//   CZECH: "cs",
+//   DANISH: "da",
+//   DUTCH: "nl",
+//   ENGLISH: "en",
+//   ESPERANTO: "eo",
+//   ESTONIAN: "et",
+//   FINNISH: "fi",
+//   FRENCH: "fr",
+//   FRISIAN: "fy",
+//   GEORGIAN: "ka",
+//   GERMAN: "de",
+//   GREEK: "el",
+//   HEBREW: "he",
+//   HUNGARIAN: "hu",
+//   ICELANDIC: "is",
+//   IRISH: "ga",
+//   ITALIAN: "it",
+//   JAPANESE: "ja",
+//   KANNADA: "kn",
+//   KAZAKH: "kk",
+//   KOREAN: "ko",
+//   ROMAN_LATIN: "la",
+//   LATVIAN: "lv",
+//   LITHUANIAN: "lt",
+//   LUXEMBOURGISH: "lb",
+//   MACEDONIAN: "mk",
+//   MALTESE: "mt",
+//   NORWEGIAN: "no",
+//   POLISH: "pl",
+//   PORTUGUESE: "pt",
+//   ROMANIAN: "ro",
+//   ROMANSH: "rm",
+//   RUSSIAN: "ru",
+//   SCOTTISH_GAELIC: "gd",
+//   SERBIAN_CYRILLIC: "sr",
+//   SLOVAK: "sk",
+//   SLOVENE: "sl",
+//   SPANISH: "es",
+//   SWEDISH: "sv",
+//   THAI: "th",
+//   TURKISH: "tr",
+//   UKRAINIAN: "uk",
+//   WELSH: "cy",
+// };
 
-const languageCodeSet = new Set(Object.values(LanguageGeocoding));
+// const languageCodeSet = new Set(Object.values(LanguageGeocoding));
 
-type Values<T> = T[keyof T];
+// type Values<T> = T[keyof T];
 
-/**
- * Built-in languages values as strings
- */
-type LanguageGeocodingString = Values<typeof LanguageGeocoding>;
+// /**
+//  * Built-in languages values as strings
+//  */
+// type LanguageGeocodingString = Values<typeof LanguageGeocoding>;
 
-function getAutoLanguageGeocoding(): LanguageGeocodingString {
-  if (typeof navigator === "undefined") {
-    return Intl.DateTimeFormat()
-      .resolvedOptions()
-      .locale.split("-")[0] as LanguageGeocodingString;
-  }
+// function getAutoLanguageGeocoding(): LanguageGeocodingString {
+//   if (typeof navigator === "undefined") {
+//     return Intl.DateTimeFormat()
+//       .resolvedOptions()
+//       .locale.split("-")[0] as LanguageGeocodingString;
+//   }
 
-  const canditatelangs = Array.from(
-    new Set(navigator.languages.map((l) => l.split("-")[0])),
-  ).filter((l) => languageCodeSet.has(l as LanguageGeocodingString));
+//   const canditatelangs = Array.from(
+//     new Set(navigator.languages.map((l) => l.split("-")[0])),
+//   ).filter((l) => languageCodeSet.has(l as LanguageGeocodingString));
 
-  return canditatelangs.length
-    ? (canditatelangs[0] as LanguageGeocodingString)
-    : LanguageGeocoding.ENGLISH;
-}
-
-export { LanguageGeocoding, type LanguageGeocodingString, getAutoLanguageGeocoding };
+//   return canditatelangs.length
+//     ? (canditatelangs[0] as LanguageGeocodingString)
+//     : LanguageGeocoding.ENGLISH;
+// }
 
 
 
+// export { LanguageGeocoding, type LanguageGeocodingString, getAutoLanguageGeocoding };
 
 
 
-type LanguageInfo = {
+
+
+
+export type LanguageInfo = {
   /**
    * Two letter ISO code, such as `"en"` for English language.
    * Can be `null` if the language is a flag to be evaluated at runtime,
@@ -131,7 +133,7 @@ type LanguageInfo = {
 /**
  * The complete list of languages
  */
-const Language = {
+export const Language = {
   /**
    * Language mode to display labels in both the local language and the language of the visitor's device, concatenated.
    * Note that if those two languages are the same, labels won't be duplicated.
@@ -602,3 +604,41 @@ export function getLanguageInfoFromFlag(languageFlag: string): LanguageInfo | nu
   return null;
 }
 
+
+/**
+ * Get the default language of the device, as a LanguageInfo object.
+ */
+export function getAutoLanguage(): LanguageInfo {
+  if (typeof navigator === "undefined") {
+    const code = Intl.DateTimeFormat()
+      .resolvedOptions()
+      .locale.split("-")[0];
+    
+    const langInfo = getLanguageInfoFromCode(code);
+
+    if (langInfo) return langInfo;
+    return Language.ENGLISH;
+  }
+
+  const canditatelangs = Array.from(new Set(navigator.languages.map((l) => l.split("-")[0])))
+    .map((code) =>getLanguageInfoFromCode(code))
+    .filter((li) => li);
+
+  return canditatelangs.length
+    ? (canditatelangs[0])
+    : Language.ENGLISH;
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export function isLanguageInfo(obj: any): obj is LanguageInfo {
+  return (
+    obj !== null &&
+    typeof obj === "object" &&
+    (typeof obj.code === "string" || obj.code === null) &&
+    typeof obj.flag === "string" &&
+    typeof obj.name === "string" &&
+    typeof obj.latin === "boolean" &&
+    typeof obj.isMode === "boolean" &&
+    typeof obj.geocoding === "boolean"
+  );
+}
