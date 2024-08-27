@@ -1,4 +1,4 @@
-import { BBox, Feature, Geometry, Position } from "geojson";
+import type { BBox, Feature, Geometry, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
@@ -6,7 +6,7 @@ import { defaults } from "../defaults";
 import {
   getAutoLanguageGeocoding,
   LanguageGeocoding,
-  LanguageGeocodingString,
+  type LanguageGeocodingString,
 } from "../language";
 import { ServiceError } from "./ServiceError";
 
@@ -260,7 +260,7 @@ function addLanguageGeocodingOptions(
 ) {
   const { language } = options;
 
-  if (language == undefined) {
+  if (language === undefined) {
     return;
   }
 
@@ -283,15 +283,15 @@ function addCommonForwardAndReverseGeocodingOptions(
 
   searchParams.set("key", apiKey ?? config.apiKey);
 
-  if (limit != undefined) {
+  if (limit !== undefined) {
     searchParams.set("limit", String(limit));
   }
 
-  if (types != undefined) {
+  if (types !== undefined) {
     searchParams.set("types", types.join(","));
   }
 
-  if (excludeTypes != undefined) {
+  if (excludeTypes !== undefined) {
     searchParams.set("excludeTypes", String(excludeTypes));
   }
 
@@ -306,26 +306,26 @@ function addForwardGeocodingOptions(
 
   const { bbox, proximity, country, fuzzyMatch, autocomplete } = options;
 
-  if (bbox != undefined) {
+  if (bbox !== undefined) {
     searchParams.set("bbox", bbox.join(","));
   }
 
-  if (proximity != undefined) {
+  if (proximity !== undefined) {
     searchParams.set(
       "proximity",
       proximity === "ip" ? proximity : proximity.join(","),
     );
   }
 
-  if (country != undefined) {
+  if (country !== undefined) {
     searchParams.set("country", country.join(","));
   }
 
-  if (fuzzyMatch != undefined) {
+  if (fuzzyMatch !== undefined) {
     searchParams.set("fuzzyMatch", fuzzyMatch ? "true" : "false");
   }
 
-  if (autocomplete != undefined) {
+  if (autocomplete !== undefined) {
     searchParams.set("autocomplete", autocomplete ? "true" : "false");
   }
 }
