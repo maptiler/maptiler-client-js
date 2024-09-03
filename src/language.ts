@@ -179,7 +179,7 @@ export const Language = {
   BOSNIAN: {
     code: "bs",
     flag: "name:bs",
-    name: "",
+    name: "Bosnian",
     latin: true,
     isMode: false,
     geocoding: true,
@@ -197,6 +197,43 @@ export const Language = {
     geocoding: true,
   } as LanguageInfo,
 
+
+  /**
+   * Chinese language
+   */
+  CHINESE: {
+    code: "zh",
+    flag: "name:zh",
+    name: "Chinese",
+    latin: false,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+
+  /**
+   * Traditional Chinese language
+   */
+  TRADITIONAL_CHINESE: {
+    code: "zh-Hant",
+    flag: "name:zh-Hant",
+    name: "Chinese (traditional)",
+    latin: false,
+    isMode: false,
+    geocoding: false,
+  } as LanguageInfo,
+
+  /**
+   * Simplified Chinese language
+   */
+  SIMPLIFIED_CHINESE: {
+    code: "zh-Hans",
+    flag: "name:zh-Hans",
+    name: "Chinese (simplified)",
+    latin: false,
+    isMode: false,
+    geocoding: false,
+  } as LanguageInfo,
+  
   /**
    * Corsican language
    */
@@ -419,7 +456,7 @@ export const Language = {
   CROATIAN: {
     code: "hr",
     flag: "name:hr",
-    name: "hr",
+    name: "Croatian",
     latin: true,
     isMode: false,
     geocoding: true,
@@ -973,42 +1010,6 @@ export const Language = {
     flag: "name:vi",
     name: "Vietnamese (Latin script)",
     latin: true,
-    isMode: false,
-    geocoding: false,
-  } as LanguageInfo,
-
-  /**
-   * Chinese language
-   */
-  CHINESE: {
-    code: "zh",
-    flag: "name:zh",
-    name: "Chinese",
-    latin: false,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
-   * Traditional Chinese language
-   */
-  TRADITIONAL_CHINESE: {
-    code: "zh-Hant",
-    flag: "name:zh-Hant",
-    name: "Chinese (traditional)",
-    latin: false,
-    isMode: false,
-    geocoding: false,
-  } as LanguageInfo,
-
-  /**
-   * Simplified Chinese language
-   */
-  SIMPLIFIED_CHINESE: {
-    code: "zh-Hans",
-    flag: "name:zh-Hans",
-    name: "Chinese (simplified)",
-    latin: false,
     isMode: false,
     geocoding: false,
   } as LanguageInfo,
