@@ -272,31 +272,32 @@ function addLanguageGeocodingOptions(
     .map((elem) => toValidGeocodingLanguageCode(elem))
     .filter((elem) => elem); // removing the nulls
 
-  const languages = Array.from(
-    new Set(languageCodes)
-  ).join(",");
+  const languages = Array.from(new Set(languageCodes)).join(",");
 
   searchParams.set("language", languages);
 }
 
-
-function toValidGeocodingLanguageCode(lang: string | LanguageInfo): string | null {
+function toValidGeocodingLanguageCode(
+  lang: string | LanguageInfo,
+): string | null {
   let langInfo = null;
 
-  if (lang === Language.AUTO.flag) { // equal to the string "auto"
+  if (lang === Language.AUTO.flag) {
+    // equal to the string "auto"
     langInfo = getAutoLanguage();
   } else if (typeof lang === "string") {
     langInfo = getLanguageInfoFromCode(lang);
   } else if (isLanguageInfo(lang)) {
-    langInfo = lang.flag === Language.AUTO.flag ? getAutoLanguage() : getLanguageInfoFromFlag(lang.flag);
+    langInfo =
+      lang.flag === Language.AUTO.flag
+        ? getAutoLanguage()
+        : getLanguageInfoFromFlag(lang.flag);
   }
 
   if (langInfo?.geocoding) return langInfo.code;
 
   return null;
 }
-
-
 
 function addCommonForwardAndReverseGeocodingOptions(
   searchParams: URLSearchParams,
