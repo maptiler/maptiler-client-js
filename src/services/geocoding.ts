@@ -280,7 +280,7 @@ function addLanguageGeocodingOptions(
 function toValidGeocodingLanguageCode(
   lang: string | LanguageInfo,
 ): string | null {
-  let langInfo = null;
+  let langInfo: LanguageInfo | null = null;
 
   if (lang === Language.AUTO.flag) {
     // equal to the string "auto"
@@ -294,8 +294,8 @@ function toValidGeocodingLanguageCode(
         : getLanguageInfoFromFlag(lang.flag);
   }
 
-  if (langInfo?.geocoding) return langInfo.code;
-
+  if (!langInfo) return null;
+  if (langInfo.geocoding) return langInfo.code;
   return null;
 }
 
