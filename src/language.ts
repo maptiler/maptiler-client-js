@@ -1014,7 +1014,6 @@ export const Language = {
   } as LanguageInfo,
 } as const;
 
-
 /**
  * Get language infos from a provided language key, the key being the no-whitespace capital name.
  * By default, the language dictionnary to look into is the one defined in this library, but another one could be provided
@@ -1084,7 +1083,6 @@ export function getAutoLanguage(): LanguageInfo {
   return canditatelangs[0] ?? Language.ENGLISH;
 }
 
-
 export function isLanguageInfo(obj: unknown): obj is LanguageInfo {
   return (
     obj !== null &&
@@ -1123,10 +1121,12 @@ export function toLanguageInfo(
     return null;
   }
 
-  return getLanguageInfoFromKey(lang, languageDictionnary) ||
+  return (
+    getLanguageInfoFromKey(lang, languageDictionnary) ||
     getLanguageInfoFromCode(lang, languageDictionnary) ||
     getLanguageInfoFromFlag(lang, languageDictionnary) ||
-    null;
+    null
+  );
 }
 
 /**
