@@ -1014,31 +1014,6 @@ export const Language = {
   } as LanguageInfo,
 } as const;
 
-// export const LanguageWithModes = {
-//   ... Language,
-
-//   /**
-//    * Language mode to display labels in both the local language and the language of the visitor's device, concatenated.
-//    * Note that if those two languages are the same, labels won't be duplicated.
-//    */
-//   VISITOR: { code: null, flag: "visitor", name: "Visitor", latin: true, isMode: true, geocoding: false } as LanguageInfo,
-
-//   /**
-//    * Language mode to display labels in both the local language and English, concatenated.
-//    * Note that if those two languages are the same, labels won't be duplicated.
-//    */
-//   VISITOR_ENGLISH: { code: null, flag: "visitor_en", name: "Visitor English", latin: true, isMode: true, geocoding: false } as LanguageInfo,
-
-//   /**
-//    * Language mode to display labels in a language enforced in the style.
-//    */
-//   STYLE: { code: null, flag: "style", name: "Style", latin: false, isMode: true, geocoding: false } as LanguageInfo,
-
-//   /**
-//    * Language mode to display labels in a language enforced in the style. The language cannot be further modified.
-//    */
-//   STYLE_LOCK: { code: null, flag: "style_lock", name: "Style Lock", latin: false, isMode: true, geocoding: false } as LanguageInfo,
-// } as const;
 
 /**
  * Get language infos from a provided language key, the key being the no-whitespace capital name.
@@ -1096,11 +1071,8 @@ export function getLanguageInfoFromFlag(
 export function getAutoLanguage(): LanguageInfo {
   if (typeof navigator === "undefined") {
     const code = Intl.DateTimeFormat().resolvedOptions().locale.split("-")[0];
-
     const langInfo = getLanguageInfoFromCode(code);
-
-    if (langInfo) return langInfo;
-    return Language.ENGLISH;
+    return langInfo ?? Language.ENGLISH;
   }
 
   const canditatelangs = Array.from(
@@ -1112,11 +1084,17 @@ export function getAutoLanguage(): LanguageInfo {
   return canditatelangs.length ? canditatelangs[0] : Language.ENGLISH;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: the provided argument could be of any type, this is the point of this function
-export function isLanguageInfo(obj: any): obj is LanguageInfo {
+
+export function isLanguageInfo(obj: unknown): obj is LanguageInfo {
   return (
     obj !== null &&
     typeof obj === "object" &&
+    "code" in obj &&
+    "flag" in obj &&
+    "name" in obj &&
+    "latin" in obj &&
+    "isMode" in obj &&
+    "geocoding" in obj &&
     (typeof obj.code === "string" || obj.code === null) &&
     typeof obj.flag === "string" &&
     typeof obj.name === "string" &&
@@ -1145,19 +1123,10 @@ export function toLanguageInfo(
     return null;
   }
 
-  // The lang could be a string from the language dictionnary (eg. "ENGLISH")
-  const langFromKey = getLanguageInfoFromKey(lang, languageDictionnary);
-  if (langFromKey) return langFromKey;
-
-  // The lang could be a 2-letter ISO code (eg. "en")
-  const langFromCode = getLanguageInfoFromCode(lang, languageDictionnary);
-  if (langFromCode) return langFromCode;
-
-  // The lang could be a OSM flag (eg. "name:en")
-  const langFromFlag = getLanguageInfoFromFlag(lang, languageDictionnary);
-  if (langFromFlag) return langFromFlag;
-
-  return null;
+  return getLanguageInfoFromKey(lang, languageDictionnary) ||
+    getLanguageInfoFromCode(lang, languageDictionnary) ||
+    getLanguageInfoFromFlag(lang, languageDictionnary) ||
+    null;
 }
 
 /**
