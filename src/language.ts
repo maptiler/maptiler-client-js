@@ -197,7 +197,6 @@ export const Language = {
     geocoding: true,
   } as LanguageInfo,
 
-
   /**
    * Chinese language
    */
@@ -233,7 +232,7 @@ export const Language = {
     isMode: false,
     geocoding: false,
   } as LanguageInfo,
-  
+
   /**
    * Corsican language
    */
