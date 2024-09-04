@@ -1081,7 +1081,7 @@ export function getAutoLanguage(): LanguageInfo {
     .map((code) => getLanguageInfoFromCode(code))
     .filter((li) => li);
 
-  return canditatelangs.length ? canditatelangs[0] : Language.ENGLISH;
+  return canditatelangs[0] ?? Language.ENGLISH;
 }
 
 
