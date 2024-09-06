@@ -1,12 +1,12 @@
 # MapTiler Client Changelog
 
-## DEVEL
+## 2.0.0
 ### New Features
 - Added `matching_text` and `matching_place_name` properties to geocoding feature response
 - Added `road` to geocoding `types`
-
 ### Bug Fixes
 ### Others
+- Languages are now listed in the Client library
 
 ## 1.8.1
 ### Bug Fixes

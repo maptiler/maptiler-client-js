@@ -19,9 +19,9 @@
       maptilerClient.config.apiKey = (new URLSearchParams(location.search)).get("key");
 
       async function testGeocoding() {
-        console.log(await maptilerClient.geocoding.forward('bordeaux', {language: [maptilerClient.LanguageGeocoding.SPANISH, maptilerClient.LanguageGeocoding.ENGLISH]}));
-        console.log(await maptilerClient.geocoding.forward('bordeaux'));
-        console.log(await maptilerClient.geocoding.reverse([6.249638, 46.402056], {language: ['es', 'en']}));
+        console.log(await maptilerClient.geocoding.forward('bordeaux', {language: [maptilerClient.Language.SPANISH, maptilerClient.Language.ENGLISH]}));
+        // console.log(await maptilerClient.geocoding.forward('bordeaux'));
+        // console.log(await maptilerClient.geocoding.reverse([6.249638, 46.402056], {language: ['es', 'en']}));
       }
 
       async function testGeolocation() {
@@ -79,11 +79,11 @@
 
 
       (async () => {
-        // await testGeocoding();
+        await testGeocoding();
         // await testGeolocation();
         // await testCoordinates();
         // await testData();
-        staticMapTest();
+        // staticMapTest();
       })()
     </script>
   </body>

@@ -1,12 +1,15 @@
-import { BBox, Feature, Geometry, Position } from "geojson";
+import type { BBox, Feature, Geometry, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
 import { defaults } from "../defaults";
 
 import {
-  getAutoLanguageGeocoding,
-  LanguageGeocoding,
-  LanguageGeocodingString,
+  type LanguageInfo,
+  getAutoLanguage,
+  getLanguageInfoFromCode,
+  isLanguageInfo,
+  Language,
+  getLanguageInfoFromFlag,
 } from "../language";
 import { ServiceError } from "./ServiceError";
 
@@ -19,7 +22,7 @@ export type LanguageGeocodingOptions = {
   /**
    * Prefer results in specific language. It’s possible to specify multiple values.
    */
-  language?: LanguageGeocodingString | Array<LanguageGeocodingString>;
+  language?: string | Array<string> | LanguageInfo | Array<LanguageInfo>;
 };
 
 export type CommonForwardAndReverseGeocodingOptions =
@@ -260,19 +263,40 @@ function addLanguageGeocodingOptions(
 ) {
   const { language } = options;
 
-  if (language == undefined) {
+  if (language === undefined) {
     return;
   }
 
-  const languages = Array.from(
-    new Set(
-      (Array.isArray(language) ? language : [language]).map((lang) =>
-        lang === LanguageGeocoding.AUTO ? getAutoLanguageGeocoding() : lang,
-      ),
-    ),
-  ).join(",");
+  // Making it an array of language codes
+  const languageCodes = (Array.isArray(language) ? language : [language])
+    .map((elem) => toValidGeocodingLanguageCode(elem))
+    .filter((elem) => elem); // removing the nulls
+
+  const languages = Array.from(new Set(languageCodes)).join(",");
 
   searchParams.set("language", languages);
+}
+
+function toValidGeocodingLanguageCode(
+  lang: string | LanguageInfo,
+): string | null {
+  let langInfo: LanguageInfo | null = null;
+
+  if (lang === Language.AUTO.flag) {
+    // equal to the string "auto"
+    langInfo = getAutoLanguage();
+  } else if (typeof lang === "string") {
+    langInfo = getLanguageInfoFromCode(lang);
+  } else if (isLanguageInfo(lang)) {
+    langInfo =
+      lang.flag === Language.AUTO.flag
+        ? getAutoLanguage()
+        : getLanguageInfoFromFlag(lang.flag);
+  }
+
+  if (!langInfo) return null;
+  if (langInfo.geocoding) return langInfo.code;
+  return null;
 }
 
 function addCommonForwardAndReverseGeocodingOptions(
@@ -283,15 +307,15 @@ function addCommonForwardAndReverseGeocodingOptions(
 
   searchParams.set("key", apiKey ?? config.apiKey);
 
-  if (limit != undefined) {
+  if (limit !== undefined) {
     searchParams.set("limit", String(limit));
   }
 
-  if (types != undefined) {
+  if (types !== undefined) {
     searchParams.set("types", types.join(","));
   }
 
-  if (excludeTypes != undefined) {
+  if (excludeTypes !== undefined) {
     searchParams.set("excludeTypes", String(excludeTypes));
   }
 
@@ -306,26 +330,26 @@ function addForwardGeocodingOptions(
 
   const { bbox, proximity, country, fuzzyMatch, autocomplete } = options;
 
-  if (bbox != undefined) {
+  if (bbox !== undefined) {
     searchParams.set("bbox", bbox.join(","));
   }
 
-  if (proximity != undefined) {
+  if (proximity !== undefined) {
     searchParams.set(
       "proximity",
       proximity === "ip" ? proximity : proximity.join(","),
     );
   }
 
-  if (country != undefined) {
+  if (country !== undefined) {
     searchParams.set("country", country.join(","));
   }
 
-  if (fuzzyMatch != undefined) {
+  if (fuzzyMatch !== undefined) {
     searchParams.set("fuzzyMatch", fuzzyMatch ? "true" : "false");
   }
 
-  if (autocomplete != undefined) {
+  if (autocomplete !== undefined) {
     searchParams.set("autocomplete", autocomplete ? "true" : "false");
   }
 }
@@ -488,7 +512,6 @@ const geocoding = {
   reverse,
   byId,
   batch,
-  language: LanguageGeocoding,
 };
 
 export { geocoding };

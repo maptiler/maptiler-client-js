@@ -96,13 +96,15 @@ The same option object as the forward geocoding can be provided.
 Read more about reverse geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#reverse).
 
 ### Language
-For both *forward* and *reverse* geocoding, this library provides a list of supported languages as shorthands to [ISO language codes](https://en.wikipedia.org/wiki/ISO_639-1). The result will be provided in multiple languages if the `language` options is an array:
+For both *forward* and *reverse* geocoding, this library provides a list of supported languages as shorthands that include [ISO language codes](https://en.wikipedia.org/wiki/ISO_639-1). The result will be provided in multiple languages if the `language` options is an array:
 
 ```ts
-const result = await maptilerClient.geocoding.forward('paris', {language: [maptilerClient.geocoding.languages.SPANISH, maptilerClient.geocoding.languages.KOREAN]})
+const result = await maptilerClient.geocoding.forward('paris', {language: [maptilerClient.Language.SPANISH, maptilerClient.geocoding.Language.KOREAN]})
 ```
 
 The special language `AUTO` will detect the platform/browser preferred language.
+
+If the language is not specified as options, MapTiler Cloud will use the `Accept-language` from the HTTP header of the request. The language seleted this way is generaly similar to the `Language.AUTO` mode, but can still differ in some cases ([read more](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language)).
 
 ## 🕵️‍♂️ Geolocation
 The geolocation service provides location informations of a visitor using its IP address.
