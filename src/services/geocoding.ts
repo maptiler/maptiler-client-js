@@ -243,7 +243,7 @@ export type GeocodingSearchResult = {
 
 export type GeocodingType = {
   /** Name of the type */
-  type: string;
+  name: string;
 
   /** Tells if the type is included per default if no types parameter is explicitly provided */
   default: boolean;
@@ -256,7 +256,7 @@ export type GeocodingConfiguration = {
 
 function addLanguageGeocodingOptions(
   searchParams: URLSearchParams,
-  options: LanguageGeocodingOptions,
+  options: LanguageGeocodingOptions
 ) {
   const { language } = options;
 
@@ -275,7 +275,7 @@ function addLanguageGeocodingOptions(
 }
 
 function toValidGeocodingLanguageCode(
-  lang: string | LanguageInfo,
+  lang: string | LanguageInfo
 ): string | null {
   const langInfo =
     lang === Language.AUTO.flag
@@ -293,7 +293,7 @@ function toValidGeocodingLanguageCode(
 
 function addCommonForwardAndReverseGeocodingOptions(
   searchParams: URLSearchParams,
-  options: CommonForwardAndReverseGeocodingOptions,
+  options: CommonForwardAndReverseGeocodingOptions
 ) {
   const { apiKey, limit, types, excludeTypes } = options;
 
@@ -316,7 +316,7 @@ function addCommonForwardAndReverseGeocodingOptions(
 
 function addForwardGeocodingOptions(
   searchParams: URLSearchParams,
-  options: GeocodingOptions,
+  options: GeocodingOptions
 ) {
   addCommonForwardAndReverseGeocodingOptions(searchParams, options);
 
@@ -329,7 +329,7 @@ function addForwardGeocodingOptions(
   if (proximity !== undefined) {
     searchParams.set(
       "proximity",
-      proximity === "ip" ? proximity : proximity.join(","),
+      proximity === "ip" ? proximity : proximity.join(",")
     );
   }
 
@@ -359,7 +359,7 @@ function addForwardGeocodingOptions(
  */
 async function forward(
   query: string,
-  options: GeocodingOptions = {},
+  options: GeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   if (typeof query !== "string" || query.trim().length === 0) {
     throw new Error("The query must be a non-empty string");
@@ -367,7 +367,7 @@ async function forward(
 
   const endpoint = new URL(
     `geocoding/${encodeURIComponent(query)}.json`,
-    defaults.maptilerApiURL,
+    defaults.maptilerApiURL
   );
 
   addForwardGeocodingOptions(endpoint.searchParams, options);
@@ -393,7 +393,7 @@ async function forward(
  */
 async function reverse(
   position: Position,
-  options: ReverseGeocodingOptions = {},
+  options: ReverseGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   if (!Array.isArray(position) || position.length < 2) {
     throw new Error("The position must be an array of form [lng, lat].");
@@ -401,7 +401,7 @@ async function reverse(
 
   const endpoint = new URL(
     `geocoding/${position[0]},${position[1]}.json`,
-    defaults.maptilerApiURL,
+    defaults.maptilerApiURL
   );
 
   addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
@@ -428,7 +428,7 @@ async function reverse(
  */
 async function byId(
   id: string,
-  options: ByIdGeocodingOptions = {},
+  options: ByIdGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
 
@@ -457,7 +457,7 @@ async function byId(
  */
 async function batch(
   queries: string[],
-  options: GeocodingOptions = {},
+  options: GeocodingOptions = {}
 ): Promise<GeocodingSearchResult[]> {
   if (!queries.length) {
     return [];
@@ -469,7 +469,7 @@ async function batch(
 
   const endpoint = new URL(
     `geocoding/${joinedQuery}.json`,
-    defaults.maptilerApiURL,
+    defaults.maptilerApiURL
   );
 
   addForwardGeocodingOptions(endpoint.searchParams, options);
@@ -490,33 +490,20 @@ async function batch(
  *
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#get-configuration
  *
+ * @param fields Array of fields of the configuration to get. Empty means to retrieve configuration with all the fields.
  * @returns
  */
-async function getConfiguration(): Promise<GeocodingConfiguration> {
-  const res = await callFetch(
-    new URL("geocoding/configuration", defaults.maptilerApiURL).toString(),
-  );
+async function getConfiguration(
+  fields: Array<keyof GeocodingConfiguration> = []
+): Promise<GeocodingConfiguration> {
+  const url = new URL("geocoding/configuration", defaults.maptilerApiURL);
 
-  if (!res.ok) {
-    throw new ServiceError(res);
+  for (const field of fields) {
+    url.searchParams.append("field", field);
   }
 
-  return await res.json();
-}
-
-/**
- * Get all available geocoding types.
- *
- * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#get-types
- *
- * @returns
- */
-async function getTypes(): Promise<GeocodingType[]> {
   const res = await callFetch(
-    new URL(
-      "geocoding/configuration/types",
-      defaults.maptilerApiURL,
-    ).toString(),
+    new URL("geocoding/configuration", defaults.maptilerApiURL).toString()
   );
 
   if (!res.ok) {
@@ -537,7 +524,6 @@ const geocoding = {
   byId,
   batch,
   getConfiguration,
-  getTypes,
 };
 
 export { geocoding };
