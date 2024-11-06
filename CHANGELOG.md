@@ -1,5 +1,9 @@
 # MapTiler Client Changelog
 
+## 2.0.1
+### Bug Fixes
+- Fixed Czech language geocoding flag
+
 ## 2.0.0
 ### New Features
 - Added `matching_text` and `matching_place_name` properties to geocoding feature response
