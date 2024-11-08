@@ -25,6 +25,25 @@ export type LanguageGeocodingOptions = {
   language?: string | Array<string> | LanguageInfo | Array<LanguageInfo>;
 };
 
+export type PlaceType =
+  | "continental_marine"
+  | "country"
+  | "major_landform"
+  | "region"
+  | "subregion"
+  | "county"
+  | "joint_municipality"
+  | "joint_submunicipality"
+  | "municipality"
+  | "municipal_district"
+  | "locality"
+  | "neighbourhood"
+  | "place"
+  | "postal_code"
+  | "address"
+  | "road"
+  | "poi";
+
 export type CommonForwardAndReverseGeocodingOptions =
   LanguageGeocodingOptions & {
     /**
@@ -38,10 +57,10 @@ export type CommonForwardAndReverseGeocodingOptions =
     limit?: number;
 
     /**
-     * Filter of feature types to return.
-     * If not specified, default types are used.
+     * Types of features to query.
+     * If not specified, feature of all available types except `poi` and `major_landform` will be queried (`types = ["poi", "major_landform"]`, `excludeTypes = true`).
      */
-    types?: string[];
+    types?: PlaceType[];
 
     /**
      * Set to `true` to use all available feature types except those mentioned in `types`. Default value is `false` if `types` is specified.
@@ -185,7 +204,7 @@ export type GeocodingFeature = Feature<Geometry, FeatureProperties> &
      * An array of feature types describing the feature.
      * Currently each feature has only single type but this may change in the future.
      */
-    place_type: string[];
+    place_type: PlaceType[];
 
     /**
      * Localized type of the place name, matches `place_type` property

@@ -4,9 +4,6 @@
 
 ### New Features
 
-- Added `getConfiguration` and `getTypes` functions to geocoding API
-- Geocoding `types` is no more an enumeration but just a `string`
-
 ### Bug Fixes
 
 ### Others
