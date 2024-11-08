@@ -241,19 +241,6 @@ export type GeocodingSearchResult = {
   attribution: string;
 };
 
-export type GeocodingType = {
-  /** Name of the type */
-  name: string;
-
-  /** Tells if the type is included per default if no types parameter is explicitly provided */
-  default: boolean;
-};
-
-export type GeocodingConfiguration = {
-  /** All available geocoding types */
-  types: GeocodingType[];
-};
-
 function addLanguageGeocodingOptions(
   searchParams: URLSearchParams,
   options: LanguageGeocodingOptions
@@ -486,34 +473,6 @@ async function batch(
 }
 
 /**
- * Get geocoding service configuration.
- *
- * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#get-configuration
- *
- * @param fields Array of fields of the configuration to get. Empty means to retrieve configuration with all the fields.
- * @returns
- */
-async function getConfiguration(
-  fields: Array<keyof GeocodingConfiguration> = []
-): Promise<GeocodingConfiguration> {
-  const url = new URL("geocoding/configuration", defaults.maptilerApiURL);
-
-  for (const field of fields) {
-    url.searchParams.append("field", field);
-  }
-
-  const res = await callFetch(
-    new URL("geocoding/configuration", defaults.maptilerApiURL).toString()
-  );
-
-  if (!res.ok) {
-    throw new ServiceError(res);
-  }
-
-  return await res.json();
-}
-
-/**
  * The **geocoding** namespace contains asynchronous functions to call the [MapTiler Geocoding API](https://docs.maptiler.com/cloud/api/geocoding/).
  * The **Geocoding API** provides ways to get geographic coordinates from a human-readable search query of a place (forward geocoding)
  * and to get the location details (country, city, street, etc.) from a geographic coordinate (reverse geocoding);
@@ -523,7 +482,6 @@ const geocoding = {
   reverse,
   byId,
   batch,
-  getConfiguration,
 };
 
 export { geocoding };
