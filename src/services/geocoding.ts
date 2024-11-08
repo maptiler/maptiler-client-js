@@ -25,7 +25,7 @@ export type LanguageGeocodingOptions = {
   language?: string | Array<string> | LanguageInfo | Array<LanguageInfo>;
 };
 
-export type PlaceType =
+export type GeocodingPlaceType =
   | "continental_marine"
   | "country"
   | "major_landform"
@@ -60,7 +60,7 @@ export type CommonForwardAndReverseGeocodingOptions =
      * Types of features to query.
      * If not specified, feature of all available types except `poi` and `major_landform` will be queried (`types = ["poi", "major_landform"]`, `excludeTypes = true`).
      */
-    types?: PlaceType[];
+    types?: GeocodingPlaceType[];
 
     /**
      * Set to `true` to use all available feature types except those mentioned in `types`. Default value is `false` if `types` is specified.
@@ -204,7 +204,7 @@ export type GeocodingFeature = Feature<Geometry, FeatureProperties> &
      * An array of feature types describing the feature.
      * Currently each feature has only single type but this may change in the future.
      */
-    place_type: PlaceType[];
+    place_type: GeocodingPlaceType[];
 
     /**
      * Localized type of the place name, matches `place_type` property
