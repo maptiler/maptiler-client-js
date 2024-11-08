@@ -1,9 +1,18 @@
 # MapTiler Client Changelog
 
-## UNRELEASED
+## 2.1.0
 
 ### New Features
 
+- Added `continental_marine` and `major_landform` to geocoding type
+
+### Bug Fixes
+
+- Fixed Czech language geocoding flag
+
+### Others
+
+- Languages are now listed in the Client library
 - Improved geocoding types and limit documentation
 
 ## 2.0.0

@@ -254,7 +254,7 @@ export const Language = {
     name: "Czech",
     latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**

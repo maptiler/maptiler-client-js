@@ -25,10 +25,29 @@ export type LanguageGeocodingOptions = {
   language?: string | Array<string> | LanguageInfo | Array<LanguageInfo>;
 };
 
+export type GeocodingPlaceType =
+  | "continental_marine"
+  | "country"
+  | "major_landform"
+  | "region"
+  | "subregion"
+  | "county"
+  | "joint_municipality"
+  | "joint_submunicipality"
+  | "municipality"
+  | "municipal_district"
+  | "locality"
+  | "neighbourhood"
+  | "place"
+  | "postal_code"
+  | "address"
+  | "road"
+  | "poi";
+
 export type CommonForwardAndReverseGeocodingOptions =
   LanguageGeocodingOptions & {
     /**
-     * Custom MapTiler Cloud API key to use instead of the one in global `config`
+     * Custom MapTiler Cloud API key to use instead of the one in global `config`.
      */
     apiKey?: string;
 
@@ -40,28 +59,12 @@ export type CommonForwardAndReverseGeocodingOptions =
     limit?: number;
 
     /**
-     * Features of specified types to return.
-     * If not specified, feature of all available types except `poi` are returned (`types = ["poi"]`, `excludeTypes = true`).
+     * Features of specified types to query.
+     * If not specified, feature of all available types except `poi` and `major_landform` will be queried (`types = ["poi", "major_landform"]`, `excludeTypes = true`).
      * In case of reverse geocoding if just a single type is specified, then multiple nearby features of the single type can be returned,
      * otherwise single feature for every specified type (or default types) can be returned.
      */
-    types?: (
-      | "country"
-      | "region"
-      | "subregion"
-      | "county"
-      | "joint_municipality"
-      | "joint_submunicipality"
-      | "municipality"
-      | "municipal_district"
-      | "locality"
-      | "neighbourhood"
-      | "place"
-      | "postal_code"
-      | "address"
-      | "road"
-      | "poi"
-    )[];
+    types?: GeocodingPlaceType[];
 
     /**
      * Set to `true` to use all available feature types except those mentioned in `types`. Default value is `false` if `types` is specified.
@@ -205,7 +208,7 @@ export type GeocodingFeature = Feature<Geometry, FeatureProperties> &
      * An array of feature types describing the feature.
      * Currently each feature has only single type but this may change in the future.
      */
-    place_type: string[];
+    place_type: GeocodingPlaceType[];
 
     /**
      * Localized type of the place name, matches `place_type` property
@@ -284,23 +287,18 @@ function addLanguageGeocodingOptions(
 function toValidGeocodingLanguageCode(
   lang: string | LanguageInfo
 ): string | null {
-  let langInfo: LanguageInfo | null = null;
-
-  if (lang === Language.AUTO.flag) {
-    // equal to the string "auto"
-    langInfo = getAutoLanguage();
-  } else if (typeof lang === "string") {
-    langInfo = getLanguageInfoFromCode(lang);
-  } else if (isLanguageInfo(lang)) {
-    langInfo =
-      lang.flag === Language.AUTO.flag
+  const langInfo =
+    lang === Language.AUTO.flag
+      ? getAutoLanguage()
+      : typeof lang === "string"
+      ? getLanguageInfoFromCode(lang)
+      : isLanguageInfo(lang)
+      ? lang.flag === Language.AUTO.flag
         ? getAutoLanguage()
-        : getLanguageInfoFromFlag(lang.flag);
-  }
+        : getLanguageInfoFromFlag(lang.flag)
+      : null;
 
-  if (!langInfo) return null;
-  if (langInfo.geocoding) return langInfo.code;
-  return null;
+  return langInfo?.geocoding ? langInfo.code : null;
 }
 
 function addCommonForwardAndReverseGeocodingOptions(
@@ -362,7 +360,9 @@ function addForwardGeocodingOptions(
  * Performs a forward geocoding query to MapTiler API.
  * Providing a human readable place name (of a city, country, street, etc.), the function returns
  * a list of candidate locations including longitude and latitude.
+ *
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-name-forward
+ *
  * @param query
  * @param options
  * @returns
@@ -380,27 +380,23 @@ async function forward(
     defaults.maptilerApiURL
   );
 
-  const { searchParams } = endpoint;
+  addForwardGeocodingOptions(endpoint.searchParams, options);
 
-  addForwardGeocodingOptions(searchParams, options);
-
-  const urlWithParams = endpoint.toString();
-
-  const res = await callFetch(urlWithParams);
+  const res = await callFetch(endpoint.toString());
 
   if (!res.ok) {
     throw new ServiceError(res, customMessages[res.status] ?? "");
   }
 
-  const obj: GeocodingSearchResult = await res.json();
-
-  return obj;
+  return await res.json();
 }
 
 /**
  * Perform a reverse geocoding query to MapTiler API.
  * Providing a longitude and latitude, this function returns a set of human readable information about this place (country, city, street, etc.)
+ *
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-coordinates-reverse
+ *
  * @param position
  * @param options
  * @returns
@@ -420,24 +416,22 @@ async function reverse(
 
   addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
 
-  const urlWithParams = endpoint.toString();
-
-  const res = await callFetch(urlWithParams);
+  const res = await callFetch(endpoint.toString());
 
   if (!res.ok) {
     throw new ServiceError(res, customMessages[res.status] ?? "");
   }
 
-  const obj: GeocodingSearchResult = await res.json();
-
-  return obj;
+  return await res.json();
 }
 
 /**
  * Perform a geocoding query to MapTiler API to obtain fature by its ID.
  * Providing a feature ID, this function returns a feature which includes its full geometry.
  * Note that the feature ID is not stable and it changes when the database is re-indexed.
+ *
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#search-by-feature-id
+ *
  * @param id
  * @param options
  * @returns
@@ -447,27 +441,26 @@ async function byId(
   options: ByIdGeocodingOptions = {}
 ): Promise<GeocodingSearchResult> {
   const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
+
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   addLanguageGeocodingOptions(endpoint.searchParams, options);
 
-  const urlWithParams = endpoint.toString();
-
-  const res = await callFetch(urlWithParams);
+  const res = await callFetch(endpoint.toString());
 
   if (!res.ok) {
     throw new ServiceError(res, customMessages[res.status] ?? "");
   }
 
-  const obj: GeocodingSearchResult = await res.json();
-
-  return obj;
+  return await res.json();
 }
 
 /**
  * Perform a batch geocoding query to MapTiler API.
  * Provide multiple queries in the array. Each query can be forward, reverse or by feature ID.
+ *
  * Learn more on the MapTiler API reference page: https://docs.maptiler.com/cloud/api/geocoding/#batch-geocoding
+ *
  * @param queries
  * @param options
  * @returns
@@ -489,13 +482,9 @@ async function batch(
     defaults.maptilerApiURL
   );
 
-  const { searchParams } = endpoint;
+  addForwardGeocodingOptions(endpoint.searchParams, options);
 
-  addForwardGeocodingOptions(searchParams, options);
-
-  const urlWithParams = endpoint.toString();
-
-  const res = await callFetch(urlWithParams);
+  const res = await callFetch(endpoint.toString());
 
   if (!res.ok) {
     throw new ServiceError(res, customMessages[res.status] ?? "");
