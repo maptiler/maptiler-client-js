@@ -4,7 +4,11 @@
 
 ### New Features
 
+- added `continental_marine` and `major_landform` to geocoding type
+
 ### Bug Fixes
+
+- Fixed Czech language geocoding flag
 
 ### Others
 
