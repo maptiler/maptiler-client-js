@@ -4,7 +4,7 @@
 
 ### New Features
 
-- added `continental_marine` and `major_landform` to geocoding type
+- Added `continental_marine` and `major_landform` to geocoding type
 
 ### Bug Fixes
 
@@ -13,6 +13,7 @@
 ### Others
 
 - Languages are now listed in the Client library
+- Improved geocoding types and limit documentation
 
 ## 2.0.0
 

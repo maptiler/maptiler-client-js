@@ -52,13 +52,17 @@ export type CommonForwardAndReverseGeocodingOptions =
     apiKey?: string;
 
     /**
-     * Maximum number of results to show. Must be between 1 and 10. Default is 5 for forward and 1 for reverse geocoding.
+     * Maximum number of results to show. Must be between 1 and 10.
+     * For reverse geocoding with multiple `types` this must not be set or must be set to 1.
+     * Default is 5 for forward and 1 for reverse geocoding.
      */
     limit?: number;
 
     /**
-     * Types of features to query.
+     * Features of specified types to query.
      * If not specified, feature of all available types except `poi` and `major_landform` will be queried (`types = ["poi", "major_landform"]`, `excludeTypes = true`).
+     * In case of reverse geocoding if just a single type is specified, then multiple nearby features of the single type can be returned,
+     * otherwise single feature for every specified type (or default types) can be returned.
      */
     types?: GeocodingPlaceType[];
 
