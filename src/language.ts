@@ -1,6 +1,6 @@
 export type LanguageInfo = {
   /**
-   * Two letter ISO code, such as `"en"` for English language.
+   * Two-letter ISO code, such as `"en"` for English language.
    * Can be `null` if the language is a flag to be evaluated at runtime,
    * as it is the case for some "modes".
    */
@@ -25,7 +25,7 @@ export type LanguageInfo = {
 
   /**
    * Some language descriptions corresponds to "modes" rather than to actual languages.
-   * For instance the "visitor" mode consists in displaying bylingual labels.
+   * For instance the "visitor" mode consists in displaying bilingual labels.
    */
   isMode: boolean;
 
@@ -1029,14 +1029,14 @@ export const Language = {
 
 /**
  * Get language infos from a provided language key, the key being the no-whitespace capital name.
- * By default, the language dictionnary to look into is the one defined in this library, but another one could be provided
+ * By default, the language dictionary to look into is the one defined in this library, but another one could be provided
  * Returns `null` if not found.
  */
 export function getLanguageInfoFromKey(
   languageKey: string,
-  languageDictionnary: { [k: string]: LanguageInfo } = Language,
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
-  if (languageKey in languageDictionnary) {
+  if (languageKey in languageDictionary) {
     return languageKey[languageKey];
   }
   return null;
@@ -1044,14 +1044,14 @@ export function getLanguageInfoFromKey(
 
 /**
  * Get the language info from a provided 2-character iso code.
- * By default, the language dictionnary to look into is the one defined in this library, but another one could be provided
+ * By default, the language dictionary to look into is the one defined in this library, but another one could be provided
  * Returns `null` if not found.
  */
 export function getLanguageInfoFromCode(
   languageCode: string,
-  languageDictionnary: { [k: string]: LanguageInfo } = Language,
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
-  for (const lang of Object.values(languageDictionnary)) {
+  for (const lang of Object.values(languageDictionary)) {
     if (lang.code === languageCode) {
       return lang;
     }
@@ -1060,16 +1060,16 @@ export function getLanguageInfoFromCode(
 }
 
 /**
- * Get the language info from a language flag (eg. `"name:en"`).
+ * Get the language info from a language flag (e.g. `"name:en"`).
  * This is also handy to check is a given language flag is a supported language.
- * By default, the language dictionnary to look into is the one defined in this library, but another one could be provided
+ * By default, the language dictionary to look into is the one defined in this library, but another one could be provided
  * Returns `null` if not found.
  */
 export function getLanguageInfoFromFlag(
   languageFlag: string,
-  languageDictionnary: { [k: string]: LanguageInfo } = Language,
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
-  for (const lang of Object.values(languageDictionnary)) {
+  for (const lang of Object.values(languageDictionary)) {
     if (lang.flag === languageFlag) {
       return lang;
     }
@@ -1116,17 +1116,17 @@ export function isLanguageInfo(obj: unknown): obj is LanguageInfo {
 }
 
 /**
- * By default, the language dictionnary to look into is the one defined in this library, but another one could be provided
+ * By default, the language dictionary to look into is the one defined in this library, but another one could be provided
  */
 export function toLanguageInfo(
   lang: LanguageInfo | string,
-  languageDictionnary: { [k: string]: LanguageInfo } = Language,
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
   // Could be directly an object of type LanguageInfo
   if (isLanguageInfo(lang)) {
     // Yet we want to make sure the provided languageInfo obj is not corrupted or incomplete,
     // so we ask for the equivalent original:
-    return getLanguageInfoFromFlag(lang.flag, languageDictionnary); // possibly returns null, which is fine.
+    return getLanguageInfoFromFlag(lang.flag, languageDictionary); // possibly returns null, which is fine.
   }
 
   // If it's not even a string, then it does not represent a language
@@ -1135,9 +1135,9 @@ export function toLanguageInfo(
   }
 
   return (
-    getLanguageInfoFromKey(lang, languageDictionnary) ||
-    getLanguageInfoFromCode(lang, languageDictionnary) ||
-    getLanguageInfoFromFlag(lang, languageDictionnary) ||
+    getLanguageInfoFromKey(lang, languageDictionary) ||
+    getLanguageInfoFromCode(lang, languageDictionary) ||
+    getLanguageInfoFromFlag(lang, languageDictionary) ||
     null
   );
 }
@@ -1149,10 +1149,10 @@ export function toLanguageInfo(
 export function areSameLanguages(
   langA: string | LanguageInfo,
   langB: string | LanguageInfo,
-  languageDictionnary: { [k: string]: LanguageInfo } = Language,
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): boolean {
-  const langAObj = toLanguageInfo(langA, languageDictionnary);
-  const langBObj = toLanguageInfo(langB, languageDictionnary);
+  const langAObj = toLanguageInfo(langA, languageDictionary);
+  const langBObj = toLanguageInfo(langB, languageDictionary);
 
   return langAObj && langBObj && langAObj.flag === langBObj.flag;
 }
