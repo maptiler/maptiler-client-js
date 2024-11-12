@@ -36,9 +36,9 @@ export type LanguageInfo = {
 };
 
 /**
- * The complete list of languages
+ * List of "non-ISO specific" languages.
  */
-export const Language = {
+export const NonISOLanguage = {
   /**
    * Language mode to display the labels in the end user's device language.
    */
@@ -88,7 +88,12 @@ export const Language = {
     isMode: false,
     geocoding: false,
   } as LanguageInfo,
+} as const
 
+/**
+ * List of "country specific" languages.
+ */
+export const ISOLanguage = {
   /**
    * Amharic language
    */
@@ -1012,6 +1017,14 @@ export const Language = {
     isMode: false,
     geocoding: false,
   } as LanguageInfo,
+} as const
+
+/**
+ * The complete list of languages
+ */
+export const Language = {
+  ...NonISOLanguage,
+  ...ISOLanguage
 } as const;
 
 /**
