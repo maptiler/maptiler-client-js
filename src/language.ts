@@ -88,12 +88,24 @@ export const NonISOLanguage = {
     isMode: false,
     geocoding: false,
   } as LanguageInfo,
-} as const
+} as const;
 
 /**
  * List of "country specific" languages.
  */
 export const ISOLanguage = {
+  /**
+   * Albanian language
+   */
+  ALBANIAN: {
+    code: "sq",
+    flag: "name:sq",
+    name: "Albanian",
+    latin: true,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+
   /**
    * Amharic language
    */
@@ -119,6 +131,18 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
+   * Armenian language
+   */
+  ARMENIAN: {
+    code: "hy",
+    flag: "name:hy",
+    name: "Armenian",
+    latin: false,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+
+  /**
    * Azerbaijani language
    */
   AZERBAIJANI: {
@@ -131,24 +155,24 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
+   * Basque language
+   */
+  BASQUE: {
+    code: "eu",
+    flag: "name:eu",
+    name: "Basque",
+    latin: true,
+    isMode: false,
+    geocoding: false,
+  } as LanguageInfo,
+
+  /**
    * Belarusian langauge
    */
   BELARUSIAN: {
     code: "be",
     flag: "name:be",
     name: "Belarusian",
-    latin: false,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
-   * Bulgarian language
-   */
-  BULGARIAN: {
-    code: "bg",
-    flag: "bg",
-    name: "Bulgarian",
     latin: false,
     isMode: false,
     geocoding: true,
@@ -167,6 +191,18 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
+   * Bosnian language
+   */
+  BOSNIAN: {
+    code: "bs",
+    flag: "name:bs",
+    name: "Bosnian",
+    latin: true,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+
+  /**
    * Breton language
    */
   BRETON: {
@@ -179,13 +215,13 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Bosnian language
+   * Bulgarian language
    */
-  BOSNIAN: {
-    code: "bs",
-    flag: "name:bs",
-    name: "Bosnian",
-    latin: true,
+  BULGARIAN: {
+    code: "bg",
+    flag: "bg",
+    name: "Bulgarian",
+    latin: false,
     isMode: false,
     geocoding: true,
   } as LanguageInfo,
@@ -251,6 +287,18 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
+   * Croatian language
+   */
+  CROATIAN: {
+    code: "hr",
+    flag: "name:hr",
+    name: "Croatian",
+    latin: true,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+
+  /**
    * Czech language
    */
   CZECH: {
@@ -263,24 +311,24 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Welsh language
-   */
-  WELSH: {
-    code: "cy",
-    flag: "name:cy",
-    name: "WELSH",
-    latin: true,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
    * Danish language
    */
   DANISH: {
     code: "da",
     flag: "name:da",
     name: "Danish",
+    latin: true,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+
+  /**
+   * Dutch language
+   */
+  DUTCH: {
+    code: "nl",
+    flag: "name:nl",
+    name: "Dutch",
     latin: true,
     isMode: false,
     geocoding: true,
@@ -335,18 +383,6 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Spanish language
-   */
-  SPANISH: {
-    code: "es",
-    flag: "name:es",
-    name: "Spanish",
-    latin: true,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
    * Estonian language
    */
   ESTONIAN: {
@@ -356,18 +392,6 @@ export const ISOLanguage = {
     latin: true,
     isMode: false,
     geocoding: true,
-  } as LanguageInfo,
-
-  /**
-   * Basque language
-   */
-  BASQUE: {
-    code: "eu",
-    flag: "name:eu",
-    name: "Basque",
-    latin: true,
-    isMode: false,
-    geocoding: false,
   } as LanguageInfo,
 
   /**
@@ -407,25 +431,13 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Irish language
+   * Georgian language
    */
-  IRISH: {
-    code: "ga",
-    flag: "name:ga",
-    name: "Irish",
-    latin: true,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
-   * Scottish Gaelic language
-   */
-  SCOTTISH_GAELIC: {
-    code: "gd",
-    flag: "name:gd",
-    name: "Scottish Gaelic",
-    latin: true,
+  GEORGIAN: {
+    code: "ka",
+    flag: "name:ka",
+    name: "Georgian",
+    latin: false,
     isMode: false,
     geocoding: true,
   } as LanguageInfo,
@@ -455,18 +467,6 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Croatian language
-   */
-  CROATIAN: {
-    code: "hr",
-    flag: "name:hr",
-    name: "Croatian",
-    latin: true,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
    * Hungarian language
    */
   HUNGARIAN: {
@@ -479,13 +479,13 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Armenian language
+   * Icelandic language
    */
-  ARMENIAN: {
-    code: "hy",
-    flag: "name:hy",
-    name: "Armenian",
-    latin: false,
+  ICELANDIC: {
+    code: "is",
+    flag: "name:is",
+    name: "Icelandic",
+    latin: true,
     isMode: false,
     geocoding: true,
   } as LanguageInfo,
@@ -503,12 +503,12 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Icelandic language
+   * Irish language
    */
-  ICELANDIC: {
-    code: "is",
-    flag: "name:is",
-    name: "Icelandic",
+  IRISH: {
+    code: "ga",
+    flag: "name:ga",
+    name: "Irish",
     latin: true,
     isMode: false,
     geocoding: true,
@@ -587,13 +587,13 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Georgian language
+   * Kannada language
    */
-  GEORGIAN: {
-    code: "ka",
-    flag: "name:ka",
-    name: "Georgian",
-    latin: false,
+  KANNADA: {
+    code: "kn",
+    flag: "name:kn",
+    name: "Kannada",
+    latin: true,
     isMode: false,
     geocoding: true,
   } as LanguageInfo,
@@ -606,18 +606,6 @@ export const ISOLanguage = {
     flag: "name:kk",
     name: "Kazakh",
     latin: false,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
-   * Kannada language
-   */
-  KANNADA: {
-    code: "kn",
-    flag: "name:kn",
-    name: "Kannada",
-    latin: true,
     isMode: false,
     geocoding: true,
   } as LanguageInfo,
@@ -671,12 +659,12 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Luxembourgish language
+   * Latvian language
    */
-  LUXEMBOURGISH: {
-    code: "lb",
-    flag: "name:lb",
-    name: "Luxembourgish",
+  LATVIAN: {
+    code: "lv",
+    flag: "name:lv",
+    name: "Latvian",
     latin: true,
     isMode: false,
     geocoding: true,
@@ -695,12 +683,12 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Latvian language
+   * Luxembourgish language
    */
-  LATVIAN: {
-    code: "lv",
-    flag: "name:lv",
-    name: "Latvian",
+  LUXEMBOURGISH: {
+    code: "lb",
+    flag: "name:lb",
+    name: "Luxembourgish",
     latin: true,
     isMode: false,
     geocoding: true,
@@ -743,18 +731,6 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Dutch language
-   */
-  DUTCH: {
-    code: "nl",
-    flag: "name:nl",
-    name: "Dutch",
-    latin: true,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
    * Norwegian language
    */
   NORWEGIAN: {
@@ -779,6 +755,18 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
+   * Persian language
+   */
+  PERSIAN: {
+    code: "fa",
+    flag: "name:fa",
+    name: "Persian",
+    latin: false,
+    isMode: false,
+    geocoding: false,
+  } as LanguageInfo,
+
+  /**
    * Polish language
    */
   POLISH: {
@@ -791,15 +779,15 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Persian language
+   * Portuguese language
    */
-  PERSIAN: {
-    code: "fa",
-    flag: "name:fa",
-    name: "Persian",
-    latin: false,
+  PORTUGUESE: {
+    code: "pt",
+    flag: "name:pt",
+    name: "Portuguese",
+    latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -827,12 +815,12 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Portuguese language
+   * Romanian language
    */
-  PORTUGUESE: {
-    code: "pt",
-    flag: "name:pt",
-    name: "Portuguese",
+  ROMANIAN: {
+    code: "ro",
+    flag: "name:ro",
+    name: "Romanian",
     latin: true,
     isMode: false,
     geocoding: true,
@@ -851,18 +839,6 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Romanian language
-   */
-  ROMANIAN: {
-    code: "ro",
-    flag: "name:ro",
-    name: "Romanian",
-    latin: true,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
    * Russian language
    */
   RUSSIAN: {
@@ -870,6 +846,42 @@ export const ISOLanguage = {
     flag: "name:ru",
     name: "Russian",
     latin: false,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+
+  /**
+   * Serbian language (cyrillic script)
+   */
+  SERBIAN_CYRILLIC: {
+    code: "sr",
+    flag: "name:sr",
+    name: "Serbian (Cyrillic script)",
+    latin: false,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+
+  /**
+   * Serbian language (latin script)
+   */
+  SERBIAN_LATIN: {
+    code: "sr-Latn",
+    flag: "name:sr-Latn",
+    name: "Serbian (Latin script)",
+    latin: true,
+    isMode: false,
+    geocoding: false,
+  } as LanguageInfo,
+
+  /**
+   * Scottish Gaelic language
+   */
+  SCOTTISH_GAELIC: {
+    code: "gd",
+    flag: "name:gd",
+    name: "Scottish Gaelic",
+    latin: true,
     isMode: false,
     geocoding: true,
   } as LanguageInfo,
@@ -899,39 +911,15 @@ export const ISOLanguage = {
   } as LanguageInfo,
 
   /**
-   * Albanian language
+   * Spanish language
    */
-  ALBANIAN: {
-    code: "sq",
-    flag: "name:sq",
-    name: "Albanian",
+  SPANISH: {
+    code: "es",
+    flag: "name:es",
+    name: "Spanish",
     latin: true,
     isMode: false,
     geocoding: true,
-  } as LanguageInfo,
-
-  /**
-   * Serbian language (cyrillic script)
-   */
-  SERBIAN_CYRILLIC: {
-    code: "sr",
-    flag: "name:sr",
-    name: "Serbian (Cyrillic script)",
-    latin: false,
-    isMode: false,
-    geocoding: true,
-  } as LanguageInfo,
-
-  /**
-   * Serbian language (latin script)
-   */
-  SERBIAN_LATIN: {
-    code: "sr-Latn",
-    flag: "name:sr-Latn",
-    name: "Serbian (Latin script)",
-    latin: true,
-    isMode: false,
-    geocoding: false,
   } as LanguageInfo,
 
   /**
@@ -1017,14 +1005,26 @@ export const ISOLanguage = {
     isMode: false,
     geocoding: false,
   } as LanguageInfo,
-} as const
+
+  /**
+   * Welsh language
+   */
+  WELSH: {
+    code: "cy",
+    flag: "name:cy",
+    name: "Welsh",
+    latin: true,
+    isMode: false,
+    geocoding: true,
+  } as LanguageInfo,
+} as const;
 
 /**
  * The complete list of languages
  */
 export const Language = {
   ...NonISOLanguage,
-  ...ISOLanguage
+  ...ISOLanguage,
 } as const;
 
 /**
