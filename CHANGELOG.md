@@ -6,7 +6,8 @@
 ### Others
 - fixing typos
 - languages are now ordered alphabetically
-
+### Bug Fixes
+- Fixed incorrect `geocoding: false` for some more languages
 
 ## 2.1.0
 ### New Features
