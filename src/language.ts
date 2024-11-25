@@ -1034,7 +1034,7 @@ export const Language = {
  */
 export function getLanguageInfoFromKey(
   languageKey: string,
-  languageDictionary: { [k: string]: LanguageInfo } = Language
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
   if (languageKey in languageDictionary) {
     return languageKey[languageKey];
@@ -1049,7 +1049,7 @@ export function getLanguageInfoFromKey(
  */
 export function getLanguageInfoFromCode(
   languageCode: string,
-  languageDictionary: { [k: string]: LanguageInfo } = Language
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
   for (const lang of Object.values(languageDictionary)) {
     if (lang.code === languageCode) {
@@ -1067,7 +1067,7 @@ export function getLanguageInfoFromCode(
  */
 export function getLanguageInfoFromFlag(
   languageFlag: string,
-  languageDictionary: { [k: string]: LanguageInfo } = Language
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
   for (const lang of Object.values(languageDictionary)) {
     if (lang.flag === languageFlag) {
@@ -1088,7 +1088,7 @@ export function getAutoLanguage(): LanguageInfo {
   }
 
   const canditatelangs = Array.from(
-    new Set(navigator.languages.map((l) => l.split("-")[0]))
+    new Set(navigator.languages.map((l) => l.split("-")[0])),
   )
     .map((code) => getLanguageInfoFromCode(code))
     .filter((li) => li);
@@ -1120,7 +1120,7 @@ export function isLanguageInfo(obj: unknown): obj is LanguageInfo {
  */
 export function toLanguageInfo(
   lang: LanguageInfo | string,
-  languageDictionary: { [k: string]: LanguageInfo } = Language
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
   // Could be directly an object of type LanguageInfo
   if (isLanguageInfo(lang)) {
@@ -1149,7 +1149,7 @@ export function toLanguageInfo(
 export function areSameLanguages(
   langA: string | LanguageInfo,
   langB: string | LanguageInfo,
-  languageDictionary: { [k: string]: LanguageInfo } = Language
+  languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): boolean {
   const langAObj = toLanguageInfo(langA, languageDictionary);
   const langBObj = toLanguageInfo(langB, languageDictionary);
