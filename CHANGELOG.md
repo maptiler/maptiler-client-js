@@ -1,13 +1,15 @@
 # MapTiler Client Changelog
 
+## 2.2.1
+### Bug Fixes
+- Fixed incorrect `geocoding: false` for some more languages
+
 ## 2.2.0
 ### New Features
 - Exposing ISO languages and non-ISO language separately
 ### Others
 - fixing typos
 - languages are now ordered alphabetically
-### Bug Fixes
-- Fixed incorrect `geocoding: false` for some more languages
 
 ## 2.1.0
 ### New Features
