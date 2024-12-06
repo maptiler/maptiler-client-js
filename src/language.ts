@@ -115,7 +115,7 @@ export const ISOLanguage = {
     name: "Amharic",
     latin: false,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -163,7 +163,7 @@ export const ISOLanguage = {
     name: "Basque",
     latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -187,7 +187,7 @@ export const ISOLanguage = {
     name: "Bengali",
     latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -283,7 +283,7 @@ export const ISOLanguage = {
     name: "Corsican",
     latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -463,7 +463,7 @@ export const ISOLanguage = {
     name: "Hindi",
     latin: false,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -499,7 +499,7 @@ export const ISOLanguage = {
     name: "Indonesian",
     latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -643,7 +643,7 @@ export const ISOLanguage = {
     name: "Kurdish",
     latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -715,7 +715,7 @@ export const ISOLanguage = {
     name: "Malayalam",
     latin: false,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -751,7 +751,7 @@ export const ISOLanguage = {
     name: "Occitan",
     latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -763,7 +763,7 @@ export const ISOLanguage = {
     name: "Persian",
     latin: false,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -799,7 +799,7 @@ export const ISOLanguage = {
     name: "Punjabi",
     latin: false,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -943,7 +943,7 @@ export const ISOLanguage = {
     name: "Tamil",
     latin: false,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -955,7 +955,7 @@ export const ISOLanguage = {
     name: "Telugu",
     latin: false,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
@@ -1003,7 +1003,7 @@ export const ISOLanguage = {
     name: "Vietnamese (Latin script)",
     latin: true,
     isMode: false,
-    geocoding: false,
+    geocoding: true,
   } as LanguageInfo,
 
   /**
