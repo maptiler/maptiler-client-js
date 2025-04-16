@@ -30,14 +30,12 @@ export type MapStylePreset = {
   referenceStyleID: string;
   name: string;
   description: string;
-  deprecated?: boolean;
   variants: Array<{
     id: string;
     name: string;
     variantType: string;
     description: string;
     imageURL: string;
-    deprecated?: boolean;
   }>;
 };
 
@@ -76,7 +74,6 @@ export class MapStyleVariant {
      */
     private imageURL: string,
 
-    public readonly deprecated?: boolean,
   ) {}
 
   /**
@@ -327,7 +324,6 @@ export type MapStyleType = {
 
   /**
    * High resolution imagery with labels, political borders and roads.
-   * @deprecated
    */
   HYBRID: ReferenceMapStyle & {
     /**
@@ -397,7 +393,6 @@ export type MapStyleType = {
     DARK: MapStyleVariant;
     /**
      * A nice high-contrast, and high saturation alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
-     * @deprecated
      */
     SHINY: MapStyleVariant;
     /**
@@ -417,23 +412,19 @@ export type MapStyleType = {
   VOYAGER: ReferenceMapStyle & {
     /**
      * A nice alternative to `streets` with a soft color palette
-     * @deprecated
      * 
      */
     DEFAULT: MapStyleVariant;
     /**
      * A nice alternative to `streets`, in very dark mode
-     * @deprecated
      */
     DARK: MapStyleVariant;
     /**
      * A nice alternative to `streets`, in light mode
-     * @deprecated
      */
     LIGHT: MapStyleVariant;
     /**
      * A nice alternative to `streets` with a soft sepia color palette and vintage look
-     * @deprecated
      */
     VINTAGE: MapStyleVariant;
   };
@@ -448,7 +439,6 @@ export type MapStyleType = {
     DEFAULT: MapStyleVariant;
     /**
      * A bold very high contrast black and white (no gray!) style for the city, without any label
-     * @deprecated
      */
     BACKGROUND: MapStyleVariant;
     /**
@@ -457,7 +447,6 @@ export type MapStyleType = {
     LITE: MapStyleVariant;
     /**
      * A bold very high contrast black and white (no gray!) style for the city, with no building, only roads!
-     * @deprecated
      */
     LINES: MapStyleVariant;
   };
@@ -651,13 +640,11 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   {
     referenceStyleID: "HYBRID",
     name: "Hybrid",
-    deprecated: true,
     description: "",
     variants: [
       {
         id: "hybrid",
         name: "Default",
-        deprecated: true,
         variantType: "DEFAULT",
         description: "",
         imageURL: "",
@@ -766,7 +753,6 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "topo-v2-shiny",
         name: "Shiny",
-        deprecated: true,
         variantType: "SHINY",
         description: "",
         imageURL: "",
@@ -791,21 +777,18 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   {
     referenceStyleID: "VOYAGER",
     name: "Voyager",
-    deprecated: true,
     description: "",
     variants: [
       {
         id: "voyager-v2",
         name: "Default",
         variantType: "DEFAULT",
-        deprecated: true,
         description: "",
         imageURL: "",
       },
       {
         id: "voyager-v2-darkmatter",
         name: "Darkmatter",
-        deprecated: true,
         variantType: "DARK",
         description: "",
         imageURL: "",
@@ -813,14 +796,12 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2-positron",
         name: "Positron",
-        deprecated: true,
         variantType: "LIGHT",
         description: "",
         imageURL: "",
       },
       {
         id: "voyager-v2-vintage",
-        deprecated: true,
         name: "Vintage",
         variantType: "VINTAGE",
         description: "",
@@ -844,7 +825,6 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "toner-v2-background",
         name: "Background",
-        deprecated: true,
         variantType: "BACKGROUND",
         description: "",
         imageURL: "",
@@ -859,7 +839,6 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "toner-v2-lines",
         name: "Lines",
-        deprecated: true,
         variantType: "LINES",
         description: "",
         imageURL: "",
@@ -987,38 +966,17 @@ function makeReferenceStyleProxy(referenceStyle: ReferenceMapStyle) {
   return new Proxy(referenceStyle, {
     get(target, prop, receiver) {
       if (target.hasVariant(prop as string)) {
-        const variant = target.getVariant(prop as string);
-        if (variant.deprecated) {
-          console.warn(
-            `Warning: Style "${variant.getFullName()}" is deprecated and will be removed in future releases.`,
-          );
-        }
-        return variant;
+        return target.getVariant(prop as string);
       }
 
       // This variant does not exist for this style, but since it's full uppercase
       // we guess that the dev tries to access a style variant. So instead of
       // returning the default (STREETS.DEFAULT), we return the non-variant of the current style
       if (prop.toString().toUpperCase() === (prop as string)) {
-        const defaultVariant = referenceStyle.getDefaultVariant();
-        if (defaultVariant.deprecated) {
-          console.warn(
-            `Warning: Style "${defaultVariant.getFullName()}" is deprecated and will be removed in future releases.`,
-          );
-        }
-        return defaultVariant;
+        return referenceStyle.getDefaultVariant();
       }
 
-      const style = Reflect.get(target, prop, receiver);
-
-      if (style?.deprecated) {
-        console.warn(
-          `Warning: Style "${
-            style?.getFullName() ?? prop
-          }" is deprecated and will be removed in future releases.`,
-        );
-      }
-      return style;
+      return Reflect.get(target, prop, receiver);
     },
   });
 }
@@ -1042,7 +1000,6 @@ function buildMapStyles(): MapStyleType {
         refStyle, // referenceStyle
         variantInfo.description,
         variantInfo.imageURL, // imageURL
-        variantInfo.deprecated, // deprecated
       );
 
       refStyle.addVariant(variant);
