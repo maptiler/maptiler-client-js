@@ -1,5 +1,15 @@
 # MapTiler Client Changelog
 
+## 2.3.0
+### New Features
+- Additional new map styles as part of the MapStyle Object
+
+### Bug Fixes
+None
+
+### Others
+- Added deprecation warnings for older / deprecated styles.
+
 ## 2.2.1
 ### Bug Fixes
 - Fixed incorrect `geocoding: false` for some more languages

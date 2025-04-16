@@ -73,6 +73,7 @@ export class MapStyleVariant {
      * URL to an image describing the style variant
      */
     private imageURL: string,
+
   ) {}
 
   /**
@@ -411,6 +412,7 @@ export type MapStyleType = {
   VOYAGER: ReferenceMapStyle & {
     /**
      * A nice alternative to `streets` with a soft color palette
+     * 
      */
     DEFAULT: MapStyleVariant;
     /**
@@ -497,6 +499,38 @@ export type MapStyleType = {
      *  Light greyscale style with hillshading suitable for colorful terrain-aware visualization
      */
     LIGHT: MapStyleVariant;
+  };
+
+  LANDSCAPE: ReferenceMapStyle & {
+    /**
+     *  Light terrain map for data overlays and visualisations
+     */
+    DEFAULT: MapStyleVariant;
+    /**
+     *  Dark terrain map for data overlays and visualisations
+     */
+    DARK: MapStyleVariant;
+    /**
+     *  Vivid terrain map for data overlays and visualisations
+     */
+    VIVID: MapStyleVariant;
+  };
+  /**
+   *  Watercolor map for creative use
+   */
+  AQUARELLE: ReferenceMapStyle & {
+    /**
+     *  Watercolor map for creative use
+     */
+    DEFAULT: MapStyleVariant;
+    /**
+     *  Dark watercolor map for creative use
+     */
+    DARK: MapStyleVariant;
+    /**
+     *  Vivid watercolor map for creative use
+     */
+    VIVID: MapStyleVariant;
   };
 };
 
@@ -697,7 +731,6 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       },
     ],
   },
-
   {
     referenceStyleID: "TOPO",
     name: "Topo",
@@ -880,6 +913,48 @@ export const mapStylePresetList: Array<MapStylePreset> = [
         id: "ocean",
         name: "Default",
         variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "AQUARELLE",
+    name: "Aquarelle",
+    description: "Watercolor map for creative use",
+    variants: [
+      {
+        id: "aquarelle-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "aquarelle-vivid",
+        name: "Vivid",
+        variantType: "VIVID",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "LANDSCAPE",
+    name: "Landscape",
+    description: "Terrain map for data overlays and visualisations",
+    variants: [
+      {
+        id: "landscape-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "landscape-vivid",
+        name: "Vivid",
+        variantType: "VIVID",
         description: "",
         imageURL: "",
       },
