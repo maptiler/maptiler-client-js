@@ -8,7 +8,7 @@
 None
 
 ### Others
-- Added deprecation warnings for older / depreacted styles.
+- Added deprecation warnings for older / deprecated styles.
 
 ## 2.2.1
 ### Bug Fixes
