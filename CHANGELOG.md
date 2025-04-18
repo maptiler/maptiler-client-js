@@ -15,7 +15,7 @@ None
 None
 
 ### Others
-- Added deprecation warnings for older / depreacted styles.
+None
 
 ## 2.2.1
 ### Bug Fixes
