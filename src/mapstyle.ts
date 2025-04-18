@@ -924,6 +924,13 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     description: "Watercolor map for creative use",
     variants: [
       {
+        id: "aquarelle",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
         id: "aquarelle-dark",
         name: "Dark",
         variantType: "DARK",
@@ -944,6 +951,13 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     name: "Landscape",
     description: "Terrain map for data overlays and visualisations",
     variants: [
+      {
+        id: "landscape",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
       {
         id: "landscape-dark",
         name: "Dark",

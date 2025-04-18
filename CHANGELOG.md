@@ -1,5 +1,12 @@
 # MapTiler Client Changelog
 
+## 2.3.1
+### New Features
+None
+
+### Bug Fixes
+- Fixed default export for new styles
+
 ## 2.3.0
 ### New Features
 - Additional new map styles as part of the MapStyle Object
@@ -8,7 +15,7 @@
 None
 
 ### Others
-- Added deprecation warnings for older / deprecated styles.
+None
 
 ## 2.2.1
 ### Bug Fixes
