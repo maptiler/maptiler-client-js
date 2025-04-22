@@ -31,6 +31,7 @@ export type MapStylePreset = {
   name: string;
   description: string;
   variants: Array<{
+    deprecated?: boolean;
     id: string;
     name: string;
     variantType: string;
@@ -74,6 +75,10 @@ export class MapStyleVariant {
      */
     private imageURL: string,
 
+    /**
+     * Whether this variant is deprecated or not
+     */
+    public deprecated: boolean = false,
   ) {}
 
   /**
@@ -412,7 +417,7 @@ export type MapStyleType = {
   VOYAGER: ReferenceMapStyle & {
     /**
      * A nice alternative to `streets` with a soft color palette
-     * 
+     *
      */
     DEFAULT: MapStyleVariant;
     /**
@@ -644,6 +649,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     variants: [
       {
         id: "hybrid",
+        deprecated: true,
         name: "Default",
         variantType: "DEFAULT",
         description: "",
@@ -753,6 +759,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "topo-v2-shiny",
         name: "Shiny",
+        deprecated: true,
         variantType: "SHINY",
         description: "",
         imageURL: "",
@@ -782,6 +789,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2",
         name: "Default",
+        deprecated: true,
         variantType: "DEFAULT",
         description: "",
         imageURL: "",
@@ -789,6 +797,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2-darkmatter",
         name: "Darkmatter",
+        deprecated: true,
         variantType: "DARK",
         description: "",
         imageURL: "",
@@ -796,6 +805,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2-positron",
         name: "Positron",
+        deprecated: true,
         variantType: "LIGHT",
         description: "",
         imageURL: "",
@@ -803,6 +813,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2-vintage",
         name: "Vintage",
+        deprecated: true,
         variantType: "VINTAGE",
         description: "",
         imageURL: "",
@@ -826,6 +837,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
         id: "toner-v2-background",
         name: "Background",
         variantType: "BACKGROUND",
+        deprecated: true,
         description: "",
         imageURL: "",
       },
@@ -840,6 +852,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
         id: "toner-v2-lines",
         name: "Lines",
         variantType: "LINES",
+        deprecated: true,
         description: "",
         imageURL: "",
       },
@@ -976,21 +989,39 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   },
 ];
 
+function warnDeprecated(variant: MapStyleVariant) {
+  if (!variant.deprecated) return;
+
+  const name = variant.getFullName();
+
+  console.warn(
+    `Style "${name}" is deprecated and will be removed in a future version.`,
+  );
+}
+
 function makeReferenceStyleProxy(referenceStyle: ReferenceMapStyle) {
   return new Proxy(referenceStyle, {
     get(target, prop, receiver) {
       if (target.hasVariant(prop as string)) {
-        return target.getVariant(prop as string);
+        const variant = target.getVariant(prop as string);
+        warnDeprecated(variant);
+        return variant;
       }
 
       // This variant does not exist for this style, but since it's full uppercase
       // we guess that the dev tries to access a style variant. So instead of
       // returning the default (STREETS.DEFAULT), we return the non-variant of the current style
       if (prop.toString().toUpperCase() === (prop as string)) {
+        const defaultVariant = referenceStyle.getDefaultVariant();
+        warnDeprecated(defaultVariant);
         return referenceStyle.getDefaultVariant();
       }
 
-      return Reflect.get(target, prop, receiver);
+      const style = Reflect.get(target, prop, receiver);
+
+      warnDeprecated(style);
+
+      return style;
     },
   });
 }
@@ -1014,6 +1045,7 @@ function buildMapStyles(): MapStyleType {
         refStyle, // referenceStyle
         variantInfo.description,
         variantInfo.imageURL, // imageURL
+        variantInfo.deprecated, // deprecated
       );
 
       refStyle.addVariant(variant);
