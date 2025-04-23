@@ -141,7 +141,9 @@ export class MapStyleVariant {
    * @returns
    */
   getVariant(variantType: string): MapStyleVariant {
-    return this.referenceStyle.getVariant(variantType);
+    const variant = this.referenceStyle.getVariant(variantType);
+    this.warnIfDeprecated(variant);
+    return variant;
   }
 
   /**
@@ -149,7 +151,12 @@ export class MapStyleVariant {
    * @returns
    */
   getVariants(): Array<MapStyleVariant> {
-    return this.referenceStyle.getVariants().filter((v) => v !== this);
+    return this.referenceStyle.getVariants()
+      .filter((v) => v !== this)
+      .map((v) => {
+        this.warnIfDeprecated(v);
+        return v;
+      });
   }
 
   /**
@@ -167,6 +174,19 @@ export class MapStyleVariant {
   getExpandedStyleURL(): string {
     return expandMapStyle(this.getId());
   }
+
+  warnIfDeprecated(variant: MapStyleVariant = this): MapStyleVariant {
+    if (!variant.deprecated) return variant;
+  
+    const name = variant.getFullName();
+  
+    console.warn(
+      `Style "${name}" is deprecated and will be removed in a future version.`,
+    );
+
+    return variant;
+  }
+
 }
 
 /**
@@ -254,7 +274,7 @@ export class ReferenceMapStyle {
    * @returns
    */
   getDefaultVariant(): MapStyleVariant {
-    return this.orderedVariants[0];
+    return this.orderedVariants[0].warnIfDeprecated();
   }
 }
 
@@ -989,37 +1009,23 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   },
 ];
 
-function warnDeprecated(variant: MapStyleVariant) {
-  if (!variant.deprecated) return;
 
-  const name = variant.getFullName();
-
-  console.warn(
-    `Style "${name}" is deprecated and will be removed in a future version.`,
-  );
-}
 
 function makeReferenceStyleProxy(referenceStyle: ReferenceMapStyle) {
   return new Proxy(referenceStyle, {
     get(target, prop, receiver) {
       if (target.hasVariant(prop as string)) {
-        const variant = target.getVariant(prop as string);
-        warnDeprecated(variant);
-        return variant;
+        return target.getVariant(prop as string);
       }
 
       // This variant does not exist for this style, but since it's full uppercase
       // we guess that the dev tries to access a style variant. So instead of
       // returning the default (STREETS.DEFAULT), we return the non-variant of the current style
       if (prop.toString().toUpperCase() === (prop as string)) {
-        const defaultVariant = referenceStyle.getDefaultVariant();
-        warnDeprecated(defaultVariant);
         return referenceStyle.getDefaultVariant();
       }
 
       const style = Reflect.get(target, prop, receiver);
-
-      warnDeprecated(style);
 
       return style;
     },
