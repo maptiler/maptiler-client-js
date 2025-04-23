@@ -151,7 +151,8 @@ export class MapStyleVariant {
    * @returns
    */
   getVariants(): Array<MapStyleVariant> {
-    return this.referenceStyle.getVariants()
+    return this.referenceStyle
+      .getVariants()
       .filter((v) => v !== this)
       .map((v) => {
         this.warnIfDeprecated(v);
@@ -177,16 +178,15 @@ export class MapStyleVariant {
 
   warnIfDeprecated(variant: MapStyleVariant = this): MapStyleVariant {
     if (!variant.deprecated) return variant;
-  
+
     const name = variant.getFullName();
-  
+
     console.warn(
       `Style "${name}" is deprecated and will be removed in a future version.`,
     );
 
     return variant;
   }
-
 }
 
 /**
@@ -1008,8 +1008,6 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     ],
   },
 ];
-
-
 
 function makeReferenceStyleProxy(referenceStyle: ReferenceMapStyle) {
   return new Proxy(referenceStyle, {
