@@ -31,6 +31,7 @@ export type MapStylePreset = {
   name: string;
   description: string;
   variants: Array<{
+    deprecated?: boolean;
     id: string;
     name: string;
     variantType: string;
@@ -74,6 +75,10 @@ export class MapStyleVariant {
      */
     private imageURL: string,
 
+    /**
+     * Whether this variant is deprecated or not
+     */
+    public deprecated: boolean = false,
   ) {}
 
   /**
@@ -136,7 +141,9 @@ export class MapStyleVariant {
    * @returns
    */
   getVariant(variantType: string): MapStyleVariant {
-    return this.referenceStyle.getVariant(variantType);
+    const variant = this.referenceStyle.getVariant(variantType);
+    this.warnIfDeprecated(variant);
+    return variant;
   }
 
   /**
@@ -144,7 +151,13 @@ export class MapStyleVariant {
    * @returns
    */
   getVariants(): Array<MapStyleVariant> {
-    return this.referenceStyle.getVariants().filter((v) => v !== this);
+    return this.referenceStyle
+      .getVariants()
+      .filter((v) => v !== this)
+      .map((v) => {
+        this.warnIfDeprecated(v);
+        return v;
+      });
   }
 
   /**
@@ -161,6 +174,18 @@ export class MapStyleVariant {
    */
   getExpandedStyleURL(): string {
     return expandMapStyle(this.getId());
+  }
+
+  warnIfDeprecated(variant: MapStyleVariant = this): MapStyleVariant {
+    if (!variant.deprecated) return variant;
+
+    const name = variant.getFullName();
+
+    console.warn(
+      `Style "${name}" is deprecated and will be removed in a future version.`,
+    );
+
+    return variant;
   }
 }
 
@@ -249,7 +274,7 @@ export class ReferenceMapStyle {
    * @returns
    */
   getDefaultVariant(): MapStyleVariant {
-    return this.orderedVariants[0];
+    return this.orderedVariants[0].warnIfDeprecated();
   }
 }
 
@@ -412,7 +437,7 @@ export type MapStyleType = {
   VOYAGER: ReferenceMapStyle & {
     /**
      * A nice alternative to `streets` with a soft color palette
-     * 
+     *
      */
     DEFAULT: MapStyleVariant;
     /**
@@ -644,6 +669,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     variants: [
       {
         id: "hybrid",
+        deprecated: true,
         name: "Default",
         variantType: "DEFAULT",
         description: "",
@@ -753,6 +779,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "topo-v2-shiny",
         name: "Shiny",
+        deprecated: true,
         variantType: "SHINY",
         description: "",
         imageURL: "",
@@ -782,6 +809,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2",
         name: "Default",
+        deprecated: true,
         variantType: "DEFAULT",
         description: "",
         imageURL: "",
@@ -789,6 +817,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2-darkmatter",
         name: "Darkmatter",
+        deprecated: true,
         variantType: "DARK",
         description: "",
         imageURL: "",
@@ -796,6 +825,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2-positron",
         name: "Positron",
+        deprecated: true,
         variantType: "LIGHT",
         description: "",
         imageURL: "",
@@ -803,6 +833,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       {
         id: "voyager-v2-vintage",
         name: "Vintage",
+        deprecated: true,
         variantType: "VINTAGE",
         description: "",
         imageURL: "",
@@ -826,6 +857,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
         id: "toner-v2-background",
         name: "Background",
         variantType: "BACKGROUND",
+        deprecated: true,
         description: "",
         imageURL: "",
       },
@@ -840,6 +872,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
         id: "toner-v2-lines",
         name: "Lines",
         variantType: "LINES",
+        deprecated: true,
         description: "",
         imageURL: "",
       },
@@ -990,7 +1023,9 @@ function makeReferenceStyleProxy(referenceStyle: ReferenceMapStyle) {
         return referenceStyle.getDefaultVariant();
       }
 
-      return Reflect.get(target, prop, receiver);
+      const style = Reflect.get(target, prop, receiver);
+
+      return style;
     },
   });
 }
@@ -1014,6 +1049,7 @@ function buildMapStyles(): MapStyleType {
         refStyle, // referenceStyle
         variantInfo.description,
         variantInfo.imageURL, // imageURL
+        variantInfo.deprecated, // deprecated
       );
 
       refStyle.addVariant(variant);

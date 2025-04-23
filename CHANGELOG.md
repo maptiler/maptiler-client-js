@@ -1,5 +1,15 @@
 # MapTiler Client Changelog
 
+## 2.3.2
+### New Features
+None
+
+### Bug Fixes
+None
+
+### Others
+Added deprecation warning and field for styles that will be deprecated in the future.
+
 ## 2.3.1
 ### New Features
 None
