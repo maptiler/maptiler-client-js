@@ -1,5 +1,15 @@
 # MapTiler Client Changelog
 
+## 2.4.0
+### New Features
+- Added `elevation` option to Geolocation API
+
+### Bug Fixes
+None
+
+### Others
+None
+
 ## 2.3.2
 ### New Features
 None
