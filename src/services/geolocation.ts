@@ -16,6 +16,12 @@ export type GeolocationInfoOptions = {
    * Custom MapTiler Cloud API key to use instead of the one in global `config`
    */
   apiKey?: string;
+
+  /**
+   * Include elevation (in meters) in the results.
+   * Default: `false`
+   */
+  elevation?: boolean;
 };
 
 export type GeolocationResult = {
@@ -101,6 +107,12 @@ export type GeolocationResult = {
    * Example: Europe/Zurich
    */
   timezone?: string;
+
+  /**
+   * Elevation of the location in meters
+   * Example: 433
+   */
+  elevation?: number;
 };
 
 /**
@@ -113,6 +125,14 @@ async function info(
 ): Promise<GeolocationResult> {
   const endpoint = new URL(`geolocation/ip.json`, defaults.maptilerApiURL);
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
+
+  if ("elevation" in options) {
+    endpoint.searchParams.set(
+      "elevation",
+      options.elevation ? "true" : "false",
+    );
+  }
+
   const urlWithParams = endpoint.toString();
 
   const res = await callFetch(urlWithParams);
