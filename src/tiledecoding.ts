@@ -3,6 +3,7 @@ import { config } from "./config";
 
 /**
  * Informations about an image
+ * @deprecated This type will be removed in the next major version
  */
 export type PixelData = {
   /**
@@ -25,11 +26,13 @@ export type PixelData = {
 
 /**
  * Type for the function that decodes an image file ArrayBuffer into valid pixel data
+ * @deprecated This type will be removed in the next major version
  */
 export type BufferToPixelDataFunction = (ArrayBuffer) => Promise<PixelData>;
 
 /**
  * Main properties necessary from a TileJSON
+ * @deprecated This type will be removed in the next major version
  */
 export type TileJSON = {
   scale: string;
@@ -58,6 +61,7 @@ let tileCache = null;
 
 /**
  * Singleton-like function to access the tile cache
+ * @deprecated This function will be removed in the next major version
  */
 export function getTileCache(): QuickLRU<string, PixelData> {
   if (!tileCache) {
@@ -68,6 +72,7 @@ export function getTileCache(): QuickLRU<string, PixelData> {
 
 /**
  * Browser function to decode an image file buffer into valid pixel data
+ * @deprecated This function will be removed in the next major version
  */
 export async function bufferToPixelDataBrowser(
   buff: ArrayBuffer,
@@ -90,6 +95,9 @@ export async function bufferToPixelDataBrowser(
   };
 }
 
+/**
+ * @deprecated This function will be removed in the next major version
+ */
 export function getBufferToPixelDataParser(): BufferToPixelDataFunction {
   if (config.bufferToPixelData) {
     return config.bufferToPixelData;

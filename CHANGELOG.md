@@ -1,5 +1,13 @@
 # MapTiler Client Changelog
 
+## DEVEL
+### Others
+- Elevation now works from Node.js, uses Elevation Cloud API and counts as Elevation requests
+- Deprecated `zoom` option from `ElevationAtOptions`
+- Deprecated `PixelData`, `BufferToPixelDataFunction`, `TileJSON` types
+- Deprecated `bufferToPixelData` and `tileCacheSize` options from `ClientConfig`
+- Deprecated `getTileCache`, `bufferToPixelDataBrowser` and `getBufferToPixelDataParser` functions
+
 ## 2.4.0
 ### New Features
 - Added `elevation` option to Geolocation API
