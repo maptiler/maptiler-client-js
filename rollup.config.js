@@ -25,7 +25,6 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: ["quick-lru"]
   },
 
   // CJS module, not minified + sourcemap
@@ -48,7 +47,6 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: [] // Decided to include QuickLRU to the CJS bundle because it is otherwise not CJS compatible
   },
 
   // UMD module, not minified
@@ -72,7 +70,6 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: []
   },
 
   // types
@@ -106,7 +103,6 @@ if (process.env.NODE_ENV === "production") {
       }
     ],
     input: "src/index.ts",
-    external: ["quick-lru"],
   },
   {
     plugins: [
@@ -131,7 +127,6 @@ if (process.env.NODE_ENV === "production") {
     watch: {
       include: "src/**"
     },
-    external: []
   })
 
 }

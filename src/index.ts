@@ -11,6 +11,5 @@ export * from "./services/ServiceError";
 export * from "./mapstyle";
 export * from "./services/math";
 export * from "./services/elevation";
-export * from "./tiledecoding";
 export * from "./misc";
 export * from "./language";

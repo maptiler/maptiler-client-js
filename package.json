@@ -74,8 +74,5 @@
     "typedoc-plugin-markdown": "^3.16.0",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6"
-  },
-  "dependencies": {
-    "quick-lru": "^7.0.0"
   }
 }

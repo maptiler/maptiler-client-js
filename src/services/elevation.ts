@@ -13,13 +13,6 @@ export type ElevationAtOptions = {
    * Custom MapTiler Cloud API key to use instead of the one in global `config`
    */
   apiKey?: string;
-
-  /**
-   * Zoom level to use for the terrain RGB tileset.
-   * If not provided, the highest zoom level will be used
-   * @deprecated This property has no effect and will be removed in the next major version
-   */
-  zoom?: number;
 };
 
 /**

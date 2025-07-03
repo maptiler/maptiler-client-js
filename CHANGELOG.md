@@ -2,6 +2,13 @@
 
 ## DEVEL
 ### Others
+- Removed `zoom` option from `ElevationAtOptions`
+- Removed `PixelData`, `BufferToPixelDataFunction`, `TileJSON` types
+- Removed `bufferToPixelData` and `tileCacheSize` options from `ClientConfig`
+- Removed `getTileCache`, `bufferToPixelDataBrowser` and `getBufferToPixelDataParser` functions
+- Removed QuickLRU dependency
+
+### Others
 - Elevation now works from Node.js, uses Elevation Cloud API and counts as Elevation requests
 - Deprecated `zoom` option from `ElevationAtOptions`
 - Deprecated `PixelData`, `BufferToPixelDataFunction`, `TileJSON` types

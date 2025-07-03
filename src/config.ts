@@ -1,5 +1,3 @@
-import { BufferToPixelDataFunction } from "./tiledecoding";
-
 export type FetchFunction = (
   input: RequestInfo | URL,
   init?: RequestInit,
@@ -32,17 +30,6 @@ class ClientConfig {
    * will be automatically resolved.
    */
   private _fetch: FetchFunction | null = tryGettingFetch();
-
-  /**
-   * Number of tiles to keep in cache
-   * @deprecated This property has no effect and will be removed in the next major version
-   */
-  public tileCacheSize: number = 200;
-
-  /**
-   * @deprecated This property has no effect and will be removed in the next major version
-   */
-  public bufferToPixelData: BufferToPixelDataFunction | null;
 
   /**
    * Set the MapTiler Cloud API key
