@@ -105,5 +105,5 @@ export function getBufferToPixelDataParser(): BufferToPixelDataFunction {
 }
 
 export function canParsePixelData(): boolean {
-  return config.bufferToPixelData && typeof window !== "undefined";
+  return !!config.bufferToPixelData || typeof window !== "undefined";
 }
