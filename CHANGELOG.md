@@ -1,5 +1,11 @@
 # MapTiler Client Changelog
 
+## DEVEL
+### New Features
+- `at` and `batch` functions compute elevation on the server using MapTiler Elevation API by default
+- Elevation supports Node.js: computed on server when `bufferToPixelData` is not provided
+- Added `computeOn` option to force client/server elevation processing
+
 ## 2.4.0
 ### New Features
 - Added `elevation` option to Geolocation API

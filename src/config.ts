@@ -38,7 +38,7 @@ class ClientConfig {
    */
   public tileCacheSize: number = 200;
 
-  public bufferToPixelData: BufferToPixelDataFunction | null;
+  public bufferToPixelData?: BufferToPixelDataFunction | null;
 
   /**
    * Set the MapTiler Cloud API key
