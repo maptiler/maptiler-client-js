@@ -6,6 +6,9 @@
 - Elevation supports Node.js: computed on server when `bufferToPixelData` is not provided
 - Added `computeOn` option to force client/server elevation processing
 
+### Bug Fixes
+- `bufferToPixelData` can be undefined
+
 ## 2.4.0
 ### New Features
 - Added `elevation` option to Geolocation API
