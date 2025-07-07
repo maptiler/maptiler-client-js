@@ -5,6 +5,7 @@
 - `at` and `batch` functions compute elevation on the server using MapTiler Elevation API by default
 - Elevation supports Node.js: computed on server when `bufferToPixelData` is not provided
 - Added `computeOn` option to force client/server elevation processing
+- Added `canParsePixelData` function to check if elevation can be computed on the client
 
 ### Bug Fixes
 - `bufferToPixelData` can be undefined
