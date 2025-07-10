@@ -77,20 +77,26 @@ async function computeOnServer(
     respPromises[part] = callFetch(endpoint.toString());
   }
 
-  let elevatedPositions: Position[];
-  try {
-    const resps = await Promise.all(respPromises);
-    const jsons = await Promise.all(
-      resps.map((resp) => {
-        if (!resp.ok) throw new Error(`HTTP response ${resp.status}`);
-        return resp.json();
-      }),
-    );
-    elevatedPositions = jsons.flat();
-  } catch {
-    throw new Error("Some segments could not be fetched.");
-  }
-  return elevatedPositions;
+  const resps = await Promise.allSettled(respPromises);
+  const jsons = await Promise.all(
+    resps.map(async (resp) => {
+      if (resp.status === "rejected") {
+        throw new Error(
+          `Some segments could not be fetched, error: ${resp.reason}`,
+        );
+      }
+      if (!resp.value.ok) {
+        throw new Error(
+          `Some segments could not be fetched, response: ${
+            resp.value.status
+          } ${await resp.value.text()}, url: ${resp.value.url}`,
+        );
+      }
+      return resp.value.json();
+    }),
+  );
+
+  return jsons.flat();
 }
 
 async function computeOnClient(
