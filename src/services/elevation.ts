@@ -64,8 +64,7 @@ async function computeOnServer(
   }
 
   const parts = Math.ceil(positions.length / API_BATCH_SIZE);
-  const respPromises = new Array<Promise<Response>>(parts);
-  for (let part = 0; part < parts; part++) {
+  const respPromises = new Array(parts).map((_, part) => {
     const startPos = part * API_BATCH_SIZE;
     const batch = positions.slice(startPos, startPos + API_BATCH_SIZE);
     const batchEncoded = batch.map((pos) => pos.join(",")).join(";");
@@ -74,8 +73,8 @@ async function computeOnServer(
       defaults.maptilerApiURL,
     );
     endpoint.searchParams.set("key", apiKey);
-    respPromises[part] = callFetch(endpoint.toString());
-  }
+    return callFetch(endpoint.toString());
+  });
 
   const resps = await Promise.allSettled(respPromises);
   const jsons = await Promise.all(
