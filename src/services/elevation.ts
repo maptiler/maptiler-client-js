@@ -64,17 +64,19 @@ async function computeOnServer(
   }
 
   const parts = Math.ceil(positions.length / API_BATCH_SIZE);
-  const respPromises = new Array(parts).map((_, part) => {
-    const startPos = part * API_BATCH_SIZE;
-    const batch = positions.slice(startPos, startPos + API_BATCH_SIZE);
-    const batchEncoded = batch.map((pos) => pos.join(",")).join(";");
-    const endpoint = new URL(
-      `elevation/${batchEncoded}.json`,
-      defaults.maptilerApiURL,
-    );
-    endpoint.searchParams.set("key", apiKey);
-    return callFetch(endpoint.toString());
-  });
+  const respPromises = Array.from({ length: parts }, () => null).map(
+    (_, part) => {
+      const startPos = part * API_BATCH_SIZE;
+      const batch = positions.slice(startPos, startPos + API_BATCH_SIZE);
+      const batchEncoded = batch.map((pos) => pos.join(",")).join(";");
+      const endpoint = new URL(
+        `elevation/${batchEncoded}.json`,
+        defaults.maptilerApiURL,
+      );
+      endpoint.searchParams.set("key", apiKey);
+      return callFetch(endpoint.toString());
+    },
+  );
 
   const resps = await Promise.allSettled(respPromises);
   const jsons = await Promise.all(
