@@ -7,11 +7,15 @@ import { ServiceError } from "./ServiceError";
 import { math } from "./math";
 import {
   TileJSON,
+  canParsePixelData,
   getBufferToPixelDataParser,
   getTileCache,
 } from "../tiledecoding";
 
-const terrainTileJsonURL = "tiles/terrain-rgb-v2/tiles.json";
+const TERRAIN_TILESET = "terrain-rgb-v2";
+const API_BATCH_SIZE = 50;
+const API_WARN_SIZE = 1000;
+
 let terrainTileJson: TileJSON = null;
 
 export type ElevationAtOptions = {
@@ -21,10 +25,17 @@ export type ElevationAtOptions = {
   apiKey?: string;
 
   /**
-   * Zoom level to use for the terrain RGB tileset.
-   * If not provided, the highest zoom level will be used
+   * Zoom level to use for the terrain tileset in `client` mode.
+   * If not provided, the highest zoom level will be used.
    */
   zoom?: number;
+
+  /**
+   * If set to `client`, the elevation will be computed from the terrain tiles on the client side.
+   * If set to `server`, the elevation will be obtained from the MapTiler Elevation API.
+   * Defaults to `server` for `at`, `batch`, and `client` for `fromLineString`, `fromMultiLineString` (in browser envs).
+   */
+  computeOn?: "client" | "server";
 };
 
 /**
@@ -42,110 +53,72 @@ const customMessages = {
   403: "Key is missing, invalid or restricted",
 };
 
-async function fetchTerrainTileJson(apiKey: string): Promise<TileJSON> {
-  const endpoint = new URL(terrainTileJsonURL, defaults.maptilerApiURL);
-  endpoint.searchParams.set("key", apiKey);
-  const urlWithParams = endpoint.toString();
+async function computeOnServer(
+  positions: Position[],
+  apiKey: string,
+): Promise<Position[]> {
+  if (positions.length > API_WARN_SIZE) {
+    console.warn(
+      "Computing elevation for complex geometries is discouraged - simplify the geometry before proceeding",
+    );
+  }
 
-  const res = await callFetch(urlWithParams);
-  if (res.ok) {
-    terrainTileJson = (await res.json()) as TileJSON;
-    return terrainTileJson;
-  } else {
-    if (!res.ok) {
+  const parts = Math.ceil(positions.length / API_BATCH_SIZE);
+  const respPromises = Array.from({ length: parts }, () => null).map(
+    (_, part) => {
+      const startPos = part * API_BATCH_SIZE;
+      const batch = positions.slice(startPos, startPos + API_BATCH_SIZE);
+      const batchEncoded = batch.map((pos) => pos.join(",")).join(";");
+      const endpoint = new URL(
+        `elevation/${batchEncoded}.json`,
+        defaults.maptilerApiURL,
+      );
+      endpoint.searchParams.set("key", apiKey);
+      return callFetch(endpoint.toString());
+    },
+  );
+
+  const resps = await Promise.allSettled(respPromises);
+  const jsons = await Promise.all(
+    resps.map(async (resp) => {
+      if (resp.status === "rejected") {
+        throw new Error(
+          `Some segments could not be fetched, error: ${resp.reason}`,
+        );
+      }
+      if (!resp.value.ok) {
+        throw new Error(
+          `Some segments could not be fetched, response: ${
+            resp.value.status
+          } ${await resp.value.text()}, url: ${resp.value.url}`,
+        );
+      }
+      return resp.value.json();
+    }),
+  );
+
+  return jsons.flat();
+}
+
+async function computeOnClient(
+  positions: Position[],
+  apiKey: string,
+  zoom?: number,
+): Promise<Position[]> {
+  // Fetch terrain TileJSON
+  if (!terrainTileJson) {
+    const endpoint = new URL(
+      `tiles/${TERRAIN_TILESET}/tiles.json`,
+      defaults.maptilerApiURL,
+    );
+    endpoint.searchParams.set("key", apiKey);
+    const urlWithParams = endpoint.toString();
+    const res = await callFetch(urlWithParams);
+    if (res.ok) {
+      terrainTileJson = (await res.json()) as TileJSON;
+    } else {
       throw new ServiceError(res, customMessages[res.status] ?? "");
     }
-  }
-}
-
-/**
- * Get the elevation at a given position.
- * The returned position is of form [longitude, latitude, altitude]
- */
-async function at(
-  /**
-   * Wgs84 position as [longitude, latitude]
-   */
-  position: Position,
-  /**
-   * Options
-   */
-  options: ElevationAtOptions = {},
-): Promise<Position> {
-  const apiKey = options.apiKey ?? config.apiKey;
-
-  if (!terrainTileJson) {
-    await fetchTerrainTileJson(apiKey);
-  }
-
-  const maxZoom = terrainTileJson.maxzoom;
-  let zoom = ~~(options.zoom ?? maxZoom);
-  if (zoom > maxZoom || zoom < 0) {
-    zoom = maxZoom;
-  }
-  const tileIndex = math.wgs84ToTileIndex(position, zoom, false);
-
-  const tileX = ~~tileIndex[0];
-  const tileY = ~~tileIndex[1];
-
-  if (!terrainTileJson.tiles.length) {
-    throw new Error("Terrain tileJSON tile list is empty.");
-  }
-
-  const tileID = `terrain_${zoom.toString()}_${tileX.toString()}_${tileY.toString()}`;
-  let tilePixelData;
-
-  const cache = getTileCache();
-
-  if (cache.has(tileID)) {
-    tilePixelData = cache.get(tileID);
-  } else {
-    const tileURL = terrainTileJson.tiles[0]
-      .replace("{x}", tileX.toString())
-      .replace("{y}", tileY.toString())
-      .replace("{z}", zoom.toString());
-
-    const tileRes = await callFetch(tileURL);
-
-    if (!tileRes.ok) {
-      throw new ServiceError(tileRes, customMessages[tileRes.status] ?? "");
-    }
-
-    const tileBuff = await tileRes.arrayBuffer();
-    const tileParser = getBufferToPixelDataParser();
-    tilePixelData = await tileParser(tileBuff);
-    cache.set(tileID, tilePixelData);
-  }
-
-  const pixelX = ~~(tilePixelData.width * (tileIndex[0] % 1));
-  const pixelY = ~~(tilePixelData.height * (tileIndex[1] % 1));
-  const pixelDataIndex =
-    (pixelY * tilePixelData.width + pixelX) * tilePixelData.components;
-  const R = tilePixelData.pixels[pixelDataIndex];
-  const G = tilePixelData.pixels[pixelDataIndex + 1];
-  const B = tilePixelData.pixels[pixelDataIndex + 2];
-  const elevation = -10000 + (R * 256 * 256 + G * 256 + B) * 0.1;
-
-  return [position[0], position[1], elevation];
-}
-
-/**
- * Perform a batch elevation request
- */
-async function batch(
-  /**
-   * Wgs84 positions as [[lng0, lat0], [lng1, lat1], [lng2, lat2], ...]
-   */
-  positions: Position[],
-  /**
-   * Options
-   */
-  options: ElevationBatchOptions = {},
-): Promise<Position[]> {
-  const apiKey = options.apiKey ?? config.apiKey;
-
-  if (!terrainTileJson) {
-    await fetchTerrainTileJson(apiKey);
   }
 
   // Better throw about not bein able to parse tiles before fetching them
@@ -154,12 +127,12 @@ async function batch(
   const cache = getTileCache();
 
   const maxZoom = terrainTileJson.maxzoom;
-  let zoom = ~~(options.zoom ?? maxZoom);
-  if (zoom > maxZoom || zoom < 0) {
-    zoom = maxZoom;
+  let usedZoom = ~~(zoom ?? maxZoom);
+  if (usedZoom > maxZoom || usedZoom < 0) {
+    usedZoom = maxZoom;
   }
   const tileIndicesFloats = positions.map((position) =>
-    math.wgs84ToTileIndex(position, zoom, false),
+    math.wgs84ToTileIndex(position, usedZoom, false),
   );
   const tileIndicesInteger = tileIndicesFloats.map((index) => [
     ~~index[0],
@@ -167,7 +140,7 @@ async function batch(
   ]);
   const tileIDs = tileIndicesInteger.map(
     (index) =>
-      `terrain_${zoom.toString()}_${index[0].toString()}_${index[1].toString()}`,
+      `terrain_${usedZoom.toString()}_${index[0].toString()}_${index[1].toString()}`,
   );
 
   // unique tiles to fetch (excluding those already in cache and the doublons)
@@ -247,6 +220,49 @@ async function batch(
     return [position[0], position[1], ~~(elevation * 1000) / 1000];
   });
 
+  return elevatedPositions;
+}
+
+/**
+ * Get the elevation at a given position.
+ * The returned position is of form [longitude, latitude, altitude]
+ */
+async function at(
+  /**
+   * Wgs84 position as [longitude, latitude]
+   */
+  position: Position,
+  /**
+   * Options
+   */
+  options: ElevationAtOptions = {},
+): Promise<Position> {
+  const elevatedPositions = await batch([position], options);
+  return elevatedPositions[0];
+}
+
+/**
+ * Perform a batch elevation request
+ */
+async function batch(
+  /**
+   * Wgs84 positions as [[lng0, lat0], [lng1, lat1], [lng2, lat2], ...]
+   */
+  positions: Position[],
+  /**
+   * Options
+   */
+  options: ElevationBatchOptions = {},
+): Promise<Position[]> {
+  if (positions.length === 0) return [];
+
+  const apiKey = options.apiKey ?? config.apiKey;
+
+  const elevatedPositions =
+    options.computeOn === "client"
+      ? await computeOnClient(positions, apiKey, options.zoom)
+      : await computeOnServer(positions, apiKey);
+
   // Smoothing
   if (options.smoothingKernelSize) {
     // make sure the kernel is of an odd size
@@ -286,6 +302,7 @@ async function fromLineString(
     throw new Error("The provided object is not a GeoJSON LineString");
   }
 
+  options.computeOn ??= canParsePixelData() ? "client" : "server";
   const clone = structuredClone(ls) as LineString;
   const elevatedPositions = await batch(clone.coordinates, options);
   clone.coordinates = elevatedPositions;
@@ -311,11 +328,12 @@ async function fromMultiLineString(
     throw new Error("The provided object is not a GeoJSON MultiLineString");
   }
 
+  options.computeOn ??= canParsePixelData() ? "client" : "server";
   const clone = structuredClone(ls) as MultiLineString;
   const multiLengths = clone.coordinates.map((poss) => poss.length);
 
-  // This is equivalent to a batch of batch, so we makes the multilinestring a unique
-  // line string to prevent batch to fetch multiple times the same tile
+  // This is equivalent to a batch of batch, so we makes the multilinestring
+  // a unique line string to reduce number of requests
   const flattenPositions = clone.coordinates.flat();
   const flattenPositionsElevated = await batch(flattenPositions, options);
 

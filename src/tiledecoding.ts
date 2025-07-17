@@ -103,3 +103,7 @@ export function getBufferToPixelDataParser(): BufferToPixelDataFunction {
     "An image file buffer to pixel data parser is necessary. Specify it in `config.bufferToPixelData`",
   );
 }
+
+export function canParsePixelData(): boolean {
+  return !!config.bufferToPixelData || typeof window !== "undefined";
+}
