@@ -669,7 +669,6 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     variants: [
       {
         id: "hybrid",
-        deprecated: true,
         name: "Default",
         variantType: "DEFAULT",
         description: "",
