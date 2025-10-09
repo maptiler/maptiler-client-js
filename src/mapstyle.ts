@@ -1,4 +1,3 @@
-console.log("mapstyle.ts");
 /**
  * Expand the map style provided as argument of the Map constructor
  * @param style
@@ -184,7 +183,6 @@ export class MapStyleVariant {
   }
 
   warnIfDeprecated(variant: MapStyleVariant = this): MapStyleVariant {
-    console.log("warnIfDeprecated", variant.deprecated, variant.deprecationMessage, variant.getFullName());
     if (!variant.deprecated) return variant;
     
     if (variant.deprecationMessage) {
