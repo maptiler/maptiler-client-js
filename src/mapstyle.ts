@@ -1,3 +1,4 @@
+console.log("mapstyle.ts");
 /**
  * Expand the map style provided as argument of the Map constructor
  * @param style
@@ -32,6 +33,7 @@ export type MapStylePreset = {
   description: string;
   variants: Array<{
     deprecated?: boolean;
+    deprecationMessage?: string;
     id: string;
     name: string;
     variantType: string;
@@ -79,6 +81,11 @@ export class MapStyleVariant {
      * Whether this variant is deprecated or not
      */
     public deprecated: boolean = false,
+
+    /**
+     * Message to display when the variant is deprecated
+     */
+    public deprecationMessage?: string,
   ) {}
 
   /**
@@ -177,13 +184,17 @@ export class MapStyleVariant {
   }
 
   warnIfDeprecated(variant: MapStyleVariant = this): MapStyleVariant {
+    console.log("warnIfDeprecated", variant.deprecated, variant.deprecationMessage, variant.getFullName());
     if (!variant.deprecated) return variant;
-
-    const name = variant.getFullName();
-
-    console.warn(
-      `Style "${name}" is deprecated and will be removed in a future version.`,
-    );
+    
+    if (variant.deprecationMessage) {
+      console.warn(variant.deprecationMessage);
+    } else {
+      const name = variant.getFullName();
+      console.warn(
+        `Style "${name}" is deprecated and will be removed in a future version.`,
+      );
+    }
 
     return variant;
   }
@@ -286,26 +297,59 @@ export type MapStyleType = {
    * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings
    */
   STREETS: ReferenceMapStyle & {
+
     /**
      * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings.
-     */
+     */ 
     DEFAULT: MapStyleVariant;
     /**
      * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in dark mode.
      */
     DARK: MapStyleVariant;
     /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in light mode.
-     */
-    LIGHT: MapStyleVariant;
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in blue night mode.
-     */
-    NIGHT: MapStyleVariant;
-    /**
      * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, with a pastel color palette.
      */
     PASTEL: MapStyleVariant;
+
+    /**
+     * Streets v2 is deprecated, use streets v4 instead
+     */
+    DEFAULT_V2: MapStyleVariant;
+    /**
+     * Streets v2 is deprecated, use streets v4-dark instead
+     */
+    DARK_V2: MapStyleVariant;
+    /**
+     * Streets v2 is deprecated, use streets v4-light instead
+     */
+    LIGHT_V2: MapStyleVariant;
+    /**
+     * Streets v2 is deprecated, use streets v4-night instead
+     */
+    NIGHT_V2: MapStyleVariant;
+    /**
+     * Streets v2 is deprecated, use streets v4-pastel instead
+     */
+    PASTEL_V2: MapStyleVariant;
+  };
+
+  BASE: ReferenceMapStyle & {
+    /**
+     * Light and informative map, for general use.
+     */
+    DEFAULT: MapStyleVariant;
+    /**
+     * Darker version of the base style, for night use.
+     */
+    DARK: MapStyleVariant;
+    /**
+     * Light version of the base style, for day use.
+     */
+    LIGHT: MapStyleVariant;
+    /**
+     * A clear and informative map, for general use.
+     */
+    AI: MapStyleVariant;
   };
 
   /**
@@ -539,6 +583,18 @@ export type MapStyleType = {
      *  Vivid terrain map for data overlays and visualisations
      */
     VIVID: MapStyleVariant;
+    /**
+     *  Default v2 is deprecated, use DEFAULT instead
+     */
+    DEFAULT_V2: MapStyleVariant;
+    /**
+     *  Dark v2 is deprecated, use DARK instead
+     */
+    DARK_V2: MapStyleVariant;
+    /**
+     *  Vivid v2 is deprecated, use VIVID instead
+     */
+    VIVID_V2: MapStyleVariant;
   };
   /**
    *  Watercolor map for creative use
@@ -566,37 +622,104 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     description: "",
     variants: [
       {
-        id: "streets-v2",
+        id: "streets-v4",
         name: "Default",
         variantType: "DEFAULT",
         description: "",
         imageURL: "",
       },
       {
-        id: "streets-v2-dark",
+        id: "streets-v4-dark",
         name: "Dark",
         variantType: "DARK",
         description: "",
         imageURL: "",
       },
       {
+        id: "streets-v4-pastel",
+        name: "Pastel",
+        variantType: "PASTEL",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "streets-v2",
+        name: "Default v2",
+        variantType: "DEFAULT_V2",
+        description: "",
+        imageURL: "",
+        deprecated: true,
+        deprecationMessage: `"streets-v2" is deprecated, use "streets-v4" instead`,
+      },
+      {
+        id: "streets-v2-dark",
+        name: "Dark v2",
+        variantType: "DARK_V2",
+        description: "",
+        imageURL: "",
+        deprecated: true,
+        deprecationMessage: `"streets-v2-dark" is deprecated, use "streets-v4-dark" instead`,
+      },
+      {
         id: "streets-v2-light",
+        name: "Light v2",
+        variantType: "LIGHT_V2",
+        description: "",
+        imageURL: "",
+        deprecated: true,
+        deprecationMessage: `"streets-v2-light" is deprecated, use "streets-v4-light" instead`,
+      },
+      {
+        id: "streets-v2-night",
+        name: "Night v2",
+        variantType: "NIGHT_V2",
+        description: "",
+        imageURL: "",
+        deprecated: true,
+        deprecationMessage: `"streets-v2-night" is deprecated, use "streets-v4-night" instead`,
+      },
+      {
+        id: "streets-v2-pastel",
+        name: "Pastel v2",
+        variantType: "PASTEL_V2",
+        description: "",
+        imageURL: "",
+        deprecated: true,
+        deprecationMessage: `"streets-v2-pastel" is deprecated, use "streets-v4-pastel" instead`,
+      },
+    ],
+  },
+
+  {
+    referenceStyleID: "BASE",
+    name: "Base",
+    description: "",
+    variants: [
+      {
+        id: "base-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "base-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "base-v4-light",
         name: "Light",
         variantType: "LIGHT",
         description: "",
         imageURL: "",
       },
       {
-        id: "streets-v2-night",
+        id: "base-v4-ai",
         name: "Night",
         variantType: "NIGHT",
-        description: "",
-        imageURL: "",
-      },
-      {
-        id: "streets-v2-pastel",
-        name: "Pastel",
-        variantType: "PASTEL",
         description: "",
         imageURL: "",
       },
@@ -984,25 +1107,52 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     description: "Terrain map for data overlays and visualisations",
     variants: [
       {
-        id: "landscape",
+        id: "landscape-v4",
         name: "Default",
         variantType: "DEFAULT",
         description: "",
         imageURL: "",
       },
       {
-        id: "landscape-dark",
+        id: "landscape-v4-dark",
         name: "Dark",
         variantType: "DARK",
         description: "",
         imageURL: "",
       },
       {
-        id: "landscape-vivid",
+        id: "landscape-v4-vivid",
         name: "Vivid",
         variantType: "VIVID",
         description: "",
         imageURL: "",
+      },
+      {
+        id: "landscape",
+        name: "Default",
+        variantType: "DEFAULT_V2",
+        description: "",
+        imageURL: "",
+        deprecated: true,
+        deprecationMessage: `"landscape" is deprecated, use "landscape-v4" instead`,
+      },
+      {
+        id: "landscape-dark",
+        name: "Dark",
+        variantType: "DARK_V2",
+        description: "",
+        imageURL: "",
+        deprecated: true,
+        deprecationMessage: `"landscape-dark" is deprecated, use "landscape-v4-dark" instead`,
+      },
+      {
+        id: "landscape-vivid",
+        name: "Vivid",
+        variantType: "VIVID_V2",
+        description: "",
+        imageURL: "",
+        deprecated: true,
+        deprecationMessage: `"landscape-vivid" is deprecated, use "landscape-v4-vivid" instead`,
       },
     ],
   },
