@@ -4,6 +4,7 @@
 ### New Features
 - Bumps 'Streets' & 'Landscape' styles (and their variants) to new v4 styles.
 - Adds the new 'Base' style and its variants.
+- Namespaces V4 and V2 Styles and adds mechanism for switching to defaults.
 
 ### Bug Fixes
 None
