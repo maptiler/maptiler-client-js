@@ -1,8 +1,9 @@
-import { BBox, Position } from "geojson";
+import { BBox, Position, GeoJSON, FeatureCollection } from "geojson";
 import { config } from "../config";
 import { defaults } from "../defaults";
 import { MapStyleVariant, ReferenceMapStyle, styleToStyle } from "../mapstyle";
 import { misc } from "../misc";
+import Color from "color";
 
 /**
  * Base set of options that can be provided to all the types of static maps
@@ -53,7 +54,7 @@ export type StaticMapBaseOptions = {
    * A marker or list of markers to show on the map
    * Default: none provided
    */
-  markers?: StaticMapMarker | Array<StaticMapMarker>;
+  markers?: StaticMapMarker | StaticMapMarker[];
 
   /**
    * URL of the marker image. Applies only if one or multiple markers positions are provided.
@@ -67,22 +68,13 @@ export type StaticMapBaseOptions = {
    * - if one or multiple markers positions are provided.
    * Default: `"bottom"`
    */
-  markerAnchor?:
-    | "top"
-    | "left"
-    | "bottom"
-    | "right"
-    | "center"
-    | "topleft"
-    | "bottomleft"
-    | "topright"
-    | "bottomright";
+  markerAnchor?: MarkerAnchor;
 
   /**
-   * Draw a path or polygon on top of the map. If the path is too long it will be simplified, yet remaining accurate.
+   * Path or list of paths on top of the map. If the path is too long it will be simplified, yet remaining accurate.
    * Default: none provided
    */
-  path?: Array<Position>;
+  path?: StaticMapPath | StaticMapPath[];
 
   /**
    * Color of the path line. The color must be CSS compatible.
@@ -117,7 +109,20 @@ export type StaticMapBaseOptions = {
    * Default: `1` if `hiDPI` is `false` and `2` if `hiDPI` is `true`.
    */
   pathWidth?: number;
+
+  geoJson?: GeoJSON;
 };
+
+export type MarkerAnchor =
+  | "top"
+  | "left"
+  | "bottom"
+  | "right"
+  | "center"
+  | "topleft"
+  | "bottomleft"
+  | "topright"
+  | "bottomright";
 
 /**
  * Options that can be provided to centered static maps
@@ -142,36 +147,85 @@ export type AutomaticStaticMapOptions = BoundedStaticMapOptions;
 
 /**
  * Definition of a maker to show on a static map
+ * Longitude, latitude, color (optional)
+ * Color of the marker with CSS syntax. Applies only if a custom `markerIcon` is not provided.
  */
-export type StaticMapMarker = [
-  /**
-   * Longitude of the marker
-   */
-  number,
-  /**
-   * latitude of the marker
-   */
-  number,
-  /**
-   * Color of the marker with CSS syntax. Applies only if a custom `markerIcon` is not provided.
-   */
-  string,
-];
+export type StaticMapMarker =
+  | [number, number, string]
+  | [number, number]
+  | {
+      markers: [number, number][];
 
-function staticMapMarkerToString(
-  marker: StaticMapMarker,
-  includeColor = true,
-): string {
-  let str = `${marker[0]},${marker[1]}`;
+      /**
+       * Position of the marker regarding its coordinates. Applies only:
+       * - with a custom icon provided with `markerIcon`
+       * - if one or multiple markers positions are provided.
+       * Default: `"bottom"`
+       */
+      anchor?: MarkerAnchor;
 
-  if (marker.length === 3 && includeColor) {
-    str += `,${marker[2]}`;
-  }
+      /**
+       * Color of the marker. The color must be CSS compatible.
+       * Examples:
+       * - long form hex without transparency `"#FF0000"` (red)
+       * - short form hex without transparency `"#F00"` (red)
+       * - long form hex with transparency `"#FF000008"` (red, half opacity)
+       * - short form hex with transparency `"#F008"` (red, half opacity)
+       * - CSS color shorthands: `"red"`, `"chartreuse"`, etc.
+       * - decimal RGB values without transparency: `"rgb(128, 100, 255)"`
+       * - decimal RGB values with transparency: `"rgb(128, 100, 255, 0.5)"`
+       * Default: `"blue"`
+       */
+      color?: string;
 
-  return str;
-}
+      /**
+       * URL of the marker image.
+       * Default: none provided
+       */
+      icon?: string;
+    };
 
-function simplifyAndStringify(path: Array<Position>, maxNbChar = 3000): string {
+export type StaticMapPath =
+  | Position[]
+  | {
+      path: Position[];
+
+      /**
+       * Color of the path line. The color must be CSS compatible.
+       * Examples:
+       * - long form hex without transparency `"#FF0000"` (red)
+       * - short form hex without transparency `"#F00"` (red)
+       * - long form hex with transparency `"#FF000008"` (red, half opacity)
+       * - short form hex with transparency `"#F008"` (red, half opacity)
+       * - CSS color shorthands: `"red"`, `"chartreuse"`, etc.
+       * - decimal RGB values without transparency: `"rgb(128, 100, 255)"`
+       * - decimal RGB values with transparency: `"rgb(128, 100, 255, 0.5)"`
+       * Default: `"blue"`
+       */
+      strokeColor?: string;
+
+      /**
+       * Color of the filling, also works if the polygon is not closed. The color must be CSS compatible.
+       * Examples:
+       * - long form hex without transparency `"#FF0000"` (red)
+       * - short form hex without transparency `"#F00"` (red)
+       * - long form hex with transparency `"#FF000008"` (red, half opacity)
+       * - short form hex with transparency `"#F008"` (red, half opacity)
+       * - CSS color shorthands: `"red"`, `"chartreuse"`, etc.
+       * - decimal RGB values without transparency: `"rgb(128, 100, 255)"`
+       * - decimal RGB values with transparency: `"rgb(128, 100, 255, 0.5)"`
+       * Default: none (transparent filling)
+       */
+      fillColor?: string;
+
+      /**
+       * Width of the path line in pixel. It can be floating point precision (ex: `0.5`)
+       * Default: `1` if `hiDPI` is `false` and `2` if `hiDPI` is `true`.
+       */
+      width?: number;
+    };
+
+function simplifyAndStringify(path: Position[], maxNbChar = 3000): string {
   let str = path.map((point) => point.join(",")).join("|");
   let tolerance = 0.000005;
   const toleranceStep = 0.00001;
@@ -184,6 +238,159 @@ function simplifyAndStringify(path: Array<Position>, maxNbChar = 3000): string {
   }
 
   return str;
+}
+
+function getEndpoint(
+  area: string,
+  options: StaticMapBaseOptions,
+  padding: boolean,
+): string {
+  const style = encodeURIComponent(styleToStyle(options.style));
+  const scale = options.hiDPI ? "@2x" : "";
+  const format = options.format ?? "png";
+  let width = ~~(options.width ?? 1024);
+  let height = ~~(options.height ?? 1024);
+
+  if (options.hiDPI) {
+    width = ~~(width / 2);
+    height = ~~(height / 2);
+  }
+
+  const endpoint = new URL(
+    `maps/${style}/static/${area}/${width}x${height}${scale}.${format}`,
+    defaults.maptilerApiURL,
+  );
+
+  if ("attribution" in options && options.attribution) {
+    endpoint.searchParams.set("attribution", options.attribution.toString());
+  }
+
+  if (padding && "padding" in options && options.padding) {
+    endpoint.searchParams.set("padding", options.padding.toString());
+  }
+
+  if ("geoJson" in options && options.geoJson) {
+    optionsFromGeoJson(options);
+  }
+
+  getMarkers(options).forEach((marker) => {
+    endpoint.searchParams.append("markers", marker);
+  });
+
+  getPaths(options).forEach((path) => {
+    endpoint.searchParams.append("path", path);
+  });
+
+  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
+
+  if (area == "auto" && !("markers" in options) && !("path" in options)) {
+    throw new Error(
+      "Automatic static maps require markers and/or path to be created.",
+    );
+  }
+
+  return endpoint.toString();
+}
+
+function getMarkers(options: StaticMapBaseOptions): string[] {
+  if (!("markers" in options) || !options.markers) {
+    return [];
+  }
+
+  const isSingleMarker =
+    (Array.isArray(options.markers) &&
+      typeof options.markers[0] === "number") ||
+    (!Array.isArray(options.markers) && "markers" in options.markers);
+
+  const markerList = isSingleMarker
+    ? [options.markers as StaticMapMarker]
+    : (options.markers as StaticMapMarker[]);
+
+  const markers: string[] = [];
+
+  for (const marker of markerList) {
+    const isObject = !Array.isArray(marker);
+
+    // Get icon, anchor, and color with fallback to global options
+    const icon = isObject
+      ? marker.icon || options.markerIcon
+      : options.markerIcon;
+    const anchor = isObject
+      ? marker.anchor || options.markerAnchor
+      : options.markerAnchor;
+    let color = isObject
+      ? marker.color
+      : Array.isArray(marker) && marker.length === 3
+      ? marker[2]
+      : null;
+    const hasIcon = !!icon;
+
+    // Build marker string
+    let markerStr = "";
+    if (hasIcon) {
+      color = undefined;
+      markerStr += `icon:${icon}|`;
+
+      if (anchor) {
+        markerStr += `anchor:${anchor}|`;
+      }
+
+      if (options.hiDPI) {
+        markerStr += `scale:2|`;
+      }
+    }
+
+    // Add coordinates
+    if (isObject) {
+      markerStr += marker.markers
+        .map((m) => (color ? `${m[0]},${m[1]},${color}` : `${m[0]},${m[1]}`))
+        .join("|");
+    } else if (Array.isArray(marker)) {
+      markerStr += marker.slice(0, 2).join(",");
+    }
+
+    markers.push(markerStr);
+  }
+
+  return markers;
+}
+
+function getPaths(options: StaticMapBaseOptions): string[] {
+  if (!("path" in options) || !options.path) {
+    return [];
+  }
+
+  const pathList = Array.isArray(options.path) ? options.path : [options.path];
+
+  return pathList.map((pathItem: Position | StaticMapPath) => {
+    const isObject = !Array.isArray(pathItem);
+
+    // Get path properties with fallback to global options
+    const fillColor = isObject
+      ? pathItem.fillColor ?? options.pathFillColor ?? "none"
+      : options.pathFillColor ?? "none";
+    const strokeColor = isObject
+      ? pathItem.strokeColor ?? options.pathStrokeColor
+      : options.pathStrokeColor;
+    const width = isObject
+      ? pathItem.width ?? options.pathWidth
+      : options.pathWidth;
+    const pathCoords = isObject ? pathItem.path : (pathItem as Position[]);
+
+    // Build path string
+    let pathStr = `fill:${fillColor}|`;
+
+    if (strokeColor) {
+      pathStr += `stroke:${strokeColor}|`;
+    }
+
+    if (width !== undefined) {
+      const adjustedWidth = width / (options.hiDPI ? 2 : 1);
+      pathStr += `width:${adjustedWidth.toString()}|`;
+    }
+
+    return pathStr + simplifyAndStringify(pathCoords);
+  });
 }
 
 /**
@@ -201,75 +408,8 @@ function centered(
   zoom: number,
   options: CenteredStaticMapOptions = {},
 ): string {
-  const style = styleToStyle(options.style);
-  const scale = options.hiDPI ? "@2x" : "";
-  const format = options.format ?? "png";
-  let width = ~~(options.width ?? 1024);
-  let height = ~~(options.height ?? 1024);
-
-  if (options.hiDPI) {
-    width = ~~(width / 2);
-    height = ~~(height / 2);
-  }
-
-  const endpoint = new URL(
-    `maps/${encodeURIComponent(style)}/static/${center[0]},${
-      center[1]
-    },${zoom}/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL,
-  );
-
-  if ("attribution" in options) {
-    endpoint.searchParams.set("attribution", options.attribution.toString());
-  }
-
-  if ("markers" in options) {
-    let markerStr = "";
-
-    const hasIcon = "markerIcon" in options;
-
-    if (hasIcon) {
-      markerStr += `icon:${options.markerIcon}|`;
-    }
-
-    if (hasIcon && "markerAnchor" in options) {
-      markerStr += `anchor:${options.markerAnchor}|`;
-    }
-
-    if (hasIcon && options.hiDPI) {
-      markerStr += `scale:2|`;
-    }
-
-    const markerList = Array.isArray(options.markers[0])
-      ? options.markers
-      : [options.markers];
-    markerStr += markerList
-      .map((m) => staticMapMarkerToString(m, !hasIcon))
-      .join("|");
-    endpoint.searchParams.set("markers", markerStr);
-  }
-
-  if ("path" in options) {
-    let pathStr = "";
-
-    pathStr += `fill:${options.pathFillColor ?? "none"}|`;
-
-    if ("pathStrokeColor" in options) {
-      pathStr += `stroke:${options.pathStrokeColor}|`;
-    }
-
-    if ("pathWidth" in options) {
-      const pathWidth = options.pathWidth / (options.hiDPI ? 2 : 1);
-      pathStr += `width:${pathWidth.toString()}|`;
-    }
-
-    pathStr += simplifyAndStringify(options.path);
-    endpoint.searchParams.set("path", pathStr);
-  }
-
-  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
-
-  return endpoint.toString();
+  const area = `${center[0]},${center[1]},${zoom}`;
+  return getEndpoint(area, options, false);
 }
 
 /**
@@ -285,79 +425,8 @@ function bounded(
   boundingBox: BBox,
   options: BoundedStaticMapOptions = {},
 ): string {
-  const style = styleToStyle(options.style);
-  const scale = options.hiDPI ? "@2x" : "";
-  const format = options.format ?? "png";
-  let width = ~~(options.width ?? 1024);
-  let height = ~~(options.height ?? 1024);
-
-  if (options.hiDPI) {
-    width = ~~(width / 2);
-    height = ~~(height / 2);
-  }
-
-  const endpoint = new URL(
-    `maps/${encodeURIComponent(style)}/static/${boundingBox[0]},${
-      boundingBox[1]
-    },${boundingBox[2]},${boundingBox[3]}/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL,
-  );
-
-  if ("attribution" in options) {
-    endpoint.searchParams.set("attribution", options.attribution.toString());
-  }
-
-  if ("padding" in options) {
-    endpoint.searchParams.set("padding", options.padding.toString());
-  }
-
-  if ("markers" in options) {
-    let markerStr = "";
-
-    const hasIcon = "markerIcon" in options;
-
-    if (hasIcon) {
-      markerStr += `icon:${options.markerIcon}|`;
-    }
-
-    if (hasIcon && "markerAnchor" in options) {
-      markerStr += `anchor:${options.markerAnchor}|`;
-    }
-
-    if (hasIcon && options.hiDPI) {
-      markerStr += `scale:2|`;
-    }
-
-    const markerList = Array.isArray(options.markers[0])
-      ? options.markers
-      : [options.markers];
-    markerStr += markerList
-      .map((m) => staticMapMarkerToString(m, !hasIcon))
-      .join("|");
-    endpoint.searchParams.set("markers", markerStr);
-  }
-
-  if ("path" in options) {
-    let pathStr = "";
-
-    pathStr += `fill:${options.pathFillColor ?? "none"}|`;
-
-    if ("pathStrokeColor" in options) {
-      pathStr += `stroke:${options.pathStrokeColor}|`;
-    }
-
-    if ("pathWidth" in options) {
-      const pathWidth = options.pathWidth / (options.hiDPI ? 2 : 1);
-      pathStr += `width:${pathWidth.toString()}|`;
-    }
-
-    pathStr += simplifyAndStringify(options.path);
-    endpoint.searchParams.set("path", pathStr);
-  }
-
-  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
-
-  return endpoint.toString();
+  const area = `${boundingBox[0]},${boundingBox[1]},${boundingBox[2]},${boundingBox[3]}`;
+  return getEndpoint(area, options, true);
 }
 
 /**
@@ -369,85 +438,104 @@ function bounded(
  * @returns
  */
 function automatic(options: AutomaticStaticMapOptions = {}): string {
-  if (!("markers" in options) && !("path" in options)) {
-    throw new Error(
-      "Automatic static maps require markers and/or path to be created.",
-    );
-  }
+  return getEndpoint("auto", options, true);
+}
 
-  const style = styleToStyle(options.style);
-  const scale = options.hiDPI ? "@2x" : "";
-  const format = options.format ?? "png";
-  let width = ~~(options.width ?? 1024);
-  let height = ~~(options.height ?? 1024);
+function optionsFromGeoJson(options: StaticMapBaseOptions) {
+  if (!options.geoJson) return;
 
-  if (options.hiDPI) {
-    width = ~~(width / 2);
-    height = ~~(height / 2);
-  }
+  const collection =
+    "type" in options.geoJson && options.geoJson.type == "FeatureCollection"
+      ? (options.geoJson as FeatureCollection).features
+      : [options.geoJson];
 
-  const endpoint = new URL(
-    `maps/${encodeURIComponent(
-      style,
-    )}/static/auto/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL,
-  );
+  for (const item of collection) {
+    const geometry = "geometry" in item ? item.geometry : item;
+    const properties =
+      "properties" in item && item.properties ? item.properties : {};
 
-  if ("attribution" in options) {
-    endpoint.searchParams.set("attribution", options.attribution.toString());
-  }
+    switch (geometry.type) {
+      case "GeometryCollection":
+        collection.push(...geometry.geometries);
+        break;
 
-  if ("padding" in options) {
-    endpoint.searchParams.set("padding", options.padding.toString());
-  }
+      case "Point":
+      case "MultiPoint": {
+        const points =
+          geometry.type === "Point"
+            ? [geometry.coordinates]
+            : geometry.coordinates;
 
-  if ("markers" in options) {
-    let markerStr = "";
+        for (const coords of points) {
+          const marker: StaticMapMarker = {
+            markers: [[coords[0], coords[1]]],
+          };
+          if (properties["marker-color"]) {
+            marker.color = properties["marker-color"];
+          }
 
-    const hasIcon = "markerIcon" in options;
+          if (!options.markers) {
+            options.markers = marker;
+          } else {
+            const isSingleMarker =
+              (Array.isArray(options.markers) &&
+                typeof options.markers[0] === "number") ||
+              (!Array.isArray(options.markers) && "markers" in options.markers);
 
-    if (hasIcon) {
-      markerStr += `icon:${options.markerIcon}|`;
+            if (isSingleMarker) {
+              options.markers = [options.markers as StaticMapMarker, marker];
+            } else {
+              (options.markers as StaticMapMarker[]).push(marker);
+            }
+          }
+        }
+        break;
+      }
+
+      case "LineString":
+      case "MultiLineString":
+      case "Polygon":
+      case "MultiPolygon": {
+        const lines =
+          geometry.type === "LineString"
+            ? [geometry.coordinates]
+            : geometry.coordinates;
+
+        for (const line of lines) {
+          const path = {
+            path: line as Position[],
+            strokeColor: properties["stroke"] || "rgba(0,64,255,0.7)",
+            fillColor: properties["fill"] || "none",
+            width: undefined,
+          };
+
+          if (properties["stroke-opacity"]) {
+            path.strokeColor = Color(path.strokeColor)
+              .alpha(properties["stroke-opacity"])
+              .hexa();
+          }
+
+          if (properties["fill-opacity"]) {
+            path.fillColor = Color(path.fillColor)
+              .alpha(properties["fill-opacity"])
+              .hexa();
+          }
+
+          if (properties["stroke-width"]) {
+            path.width = properties["stroke-width"];
+          }
+
+          options.path ??= [];
+          if (Array.isArray(options.path)) {
+            (options.path as StaticMapPath[]).push(path);
+          } else {
+            options.path = [options.path, path];
+          }
+        }
+        break;
+      }
     }
-
-    if (hasIcon && "markerAnchor" in options) {
-      markerStr += `anchor:${options.markerAnchor}|`;
-    }
-
-    if (hasIcon && options.hiDPI) {
-      markerStr += `scale:2|`;
-    }
-
-    const markerList = Array.isArray(options.markers[0])
-      ? options.markers
-      : [options.markers];
-    markerStr += markerList
-      .map((m) => staticMapMarkerToString(m, !hasIcon))
-      .join("|");
-    endpoint.searchParams.set("markers", markerStr);
   }
-
-  if ("path" in options) {
-    let pathStr = "";
-
-    pathStr += `fill:${options.pathFillColor ?? "none"}|`;
-
-    if ("pathStrokeColor" in options) {
-      pathStr += `stroke:${options.pathStrokeColor}|`;
-    }
-
-    if ("pathWidth" in options) {
-      const pathWidth = options.pathWidth / (options.hiDPI ? 2 : 1);
-      pathStr += `width:${pathWidth.toString()}|`;
-    }
-
-    pathStr += simplifyAndStringify(options.path);
-    endpoint.searchParams.set("path", pathStr);
-  }
-
-  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
-
-  return endpoint.toString();
 }
 
 /**
