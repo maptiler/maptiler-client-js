@@ -1,5 +1,9 @@
 # MapTiler Client Changelog
 
+## NEXT
+### Bug Fixes
+- `math.latitudeToMercatorY` now always returns a value that is valid in Web Mercator context.
+
 ## 2.6.0
 ### New Features
 - Bumps 'Streets' & 'Landscape' styles (and their variants) to new v4 styles.
