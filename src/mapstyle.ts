@@ -371,6 +371,32 @@ export type MapStyleType = {
      */
     DARK: MapStyleVariant;
   };
+  OUTDOOR_V2: ReferenceMapStyle & {
+    /**
+     * Suitable for outdoor activities. With elevation isolines and hillshading.
+     */
+    DEFAULT: MapStyleVariant;
+
+    /**
+     * Suitable for outdoor activities. With elevation isolines and hillshading, in dark mode.
+     */
+    DARK: MapStyleVariant;
+  };
+
+  /**
+   * Suitable for outdoor activities. With elevation isolines and hillshading.
+   */
+  OUTDOOR_V4: ReferenceMapStyle & {
+    /**
+     * Suitable for outdoor activities. With elevation isolines and hillshading.
+     */
+    DEFAULT: MapStyleVariant;
+
+    /**
+     * Suitable for outdoor activities. With elevation isolines and hillshading, in dark mode.
+     */
+    DARK: MapStyleVariant;
+  };
 
   /**
    * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading.
@@ -390,6 +416,22 @@ export type MapStyleType = {
    * High resolution imagery only, without any label.
    */
   SATELLITE: ReferenceMapStyle & {
+    /**
+     * High resolution imagery only, without any label.
+     */
+    DEFAULT: MapStyleVariant;
+  };
+  SATELLITE_V2: ReferenceMapStyle & {
+    /**
+     * High resolution imagery only, without any label.
+     */
+    DEFAULT: MapStyleVariant;
+  };
+
+  /**
+   * High resolution imagery only, without any label.
+   */
+  SATELLITE_V4: ReferenceMapStyle & {
     /**
      * High resolution imagery only, without any label.
      */
@@ -498,6 +540,29 @@ export type MapStyleType = {
   };
 
   /**
+   * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
+   */
+  TOPO_V4: ReferenceMapStyle & {
+    /**
+     * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
+     */
+    DEFAULT: MapStyleVariant;
+    /**
+     * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details, in dark mode
+     */
+    DARK: MapStyleVariant;
+    /**
+     * A nice low-contrast, alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details, using a soft pastel color palette
+     */
+    PASTEL: MapStyleVariant;
+
+    /**
+     * A nice very high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
+     */
+    TOPOGRAPHIQUE: MapStyleVariant;
+  };
+
+  /**
    * A nice alternative to `streets` with a soft color palette
    */
   VOYAGER: ReferenceMapStyle & {
@@ -543,9 +608,39 @@ export type MapStyleType = {
   };
 
   /**
+   * A bold very high contrast black and white (no gray!) style for the city
+   */
+  TONER_V4: ReferenceMapStyle & {
+    /**
+     * A bold very high contrast black and white (no gray!) style for the city
+     */
+    DEFAULT: MapStyleVariant;
+  };
+
+  /**
    * Minimalist style, perfect for data visualization
    */
   DATAVIZ: ReferenceMapStyle & {
+    /**
+     *  Minimalist style, perfect for data visualization
+     */
+    DEFAULT: MapStyleVariant;
+
+    /**
+     *  Minimalist style, perfect for data visualization in dark mode
+     */
+    DARK: MapStyleVariant;
+
+    /**
+     *  Minimalist style, perfect for data visualization in light mode
+     */
+    LIGHT: MapStyleVariant;
+  };
+
+  /**
+   * Minimalist style, perfect for data visualization
+   */
+  DATAVIZ_V4: ReferenceMapStyle & {
     /**
      *  Minimalist style, perfect for data visualization
      */
@@ -573,9 +668,44 @@ export type MapStyleType = {
   };
 
   /**
+   * Explore deep see trenches and mountains, with isolines and depth labels
+   */
+  OCEAN_V4: ReferenceMapStyle & {
+    /**
+     * Explore deep see trenches and mountains, with isolines and depth labels
+     */
+    DEFAULT: MapStyleVariant;
+
+    /**
+     * Explore deep see trenches and mountains, with isolines and depth labels, in dark mode
+     */
+    DARK: MapStyleVariant;
+  };
+
+  /**
    * Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
    */
   BACKDROP: ReferenceMapStyle & {
+    /**
+     *  Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
+     */
+    DEFAULT: MapStyleVariant;
+
+    /**
+     *  Dark greyscale style with hillshading suitable for colorful terrain-aware visualization
+     */
+    DARK: MapStyleVariant;
+
+    /**
+     *  Light greyscale style with hillshading suitable for colorful terrain-aware visualization
+     */
+    LIGHT: MapStyleVariant;
+  };
+
+  /**
+   * Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
+   */
+  BACKDROP_V4: ReferenceMapStyle & {
     /**
      *  Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
      */
@@ -627,6 +757,24 @@ export type MapStyleType = {
    *  Watercolor map for creative use
    */
   AQUARELLE: ReferenceMapStyle & {
+    /**
+     *  Watercolor map for creative use
+     */
+    DEFAULT: MapStyleVariant;
+    /**
+     *  Dark watercolor map for creative use
+     */
+    DARK: MapStyleVariant;
+    /**
+     *  Vivid watercolor map for creative use
+     */
+    VIVID: MapStyleVariant;
+  };
+
+  /**
+   *  Watercolor map for creative use
+   */
+  AQUARELLE_V4: ReferenceMapStyle & {
     /**
      *  Watercolor map for creative use
      */
@@ -915,7 +1063,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     ],
   },
   {
-    referenceStyleID: "TOPO",
+    referenceStyleID: "TOPO_V2",
     name: "Topo",
     description: "",
     variants: [
@@ -959,7 +1107,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   },
 
   {
-    referenceStyleID: "VOYAGER",
+    referenceStyleID: "VOYAGER_V2",
     name: "Voyager",
     description: "",
     variants: [
@@ -999,7 +1147,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   },
 
   {
-    referenceStyleID: "TONER",
+    referenceStyleID: "TONER_V2",
     name: "Toner",
     description: "",
     variants: [
@@ -1037,7 +1185,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   },
 
   {
-    referenceStyleID: "DATAVIZ",
+    referenceStyleID: "DATAVIZ_V2",
     name: "Dataviz",
     description: "",
     variants: [
@@ -1066,7 +1214,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   },
 
   {
-    referenceStyleID: "BACKDROP",
+    referenceStyleID: "BACKDROP_V2",
     name: "Backdrop",
     description: "",
     variants: [
@@ -1095,7 +1243,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
   },
 
   {
-    referenceStyleID: "OCEAN",
+    referenceStyleID: "OCEAN_V2",
     name: "Ocean",
     description: "",
     variants: [
@@ -1109,7 +1257,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
     ],
   },
   {
-    referenceStyleID: "AQUARELLE",
+    referenceStyleID: "AQUARELLE_V2",
     name: "Aquarelle",
     description: "Watercolor map for creative use",
     variants: [
@@ -1198,6 +1346,195 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       },
     ],
   },
+  {
+    referenceStyleID: "SATELLITE_V4",
+    name: "Satellite",
+    description: "",
+    variants: [
+      {
+        id: "satellite-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "DATAVIZ_V4",
+    name: "Dataviz",
+    description: "",
+    variants: [
+      {
+        id: "dataviz-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "dataviz-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "dataviz-v4-light",
+        name: "Light",
+        variantType: "LIGHT",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "OUTDOOR_V4",
+    name: "Outdoor",
+    description: "",
+    variants: [
+      {
+        id: "outdoor-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "outdoor-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "BACKDROP_V4",
+    name: "Backdrop",
+    description: "",
+    variants: [
+      {
+        id: "backdrop-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "backdrop-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "backdrop-v4-light",
+        name: "Light",
+        variantType: "LIGHT",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "AQUARELLE_V4",
+    name: "Aquarelle",
+    description: "Watercolor map for creative use",
+    variants: [
+      {
+        id: "aquarelle-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "aquarelle-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "aquarelle-v4-vivid",
+        name: "Vivid",
+        variantType: "VIVID",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "OCEAN_V4",
+    name: "Ocean",
+    description: "",
+    variants: [
+      {
+        id: "ocean-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "ocean-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "TONER_V4",
+    name: "Toner",
+    description: "",
+    variants: [
+      {
+        id: "toner-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+  {
+    referenceStyleID: "TOPO_V4",
+    name: "Topo",
+    description: "",
+    variants: [
+      {
+        id: "topo-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "topo-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "topo-v4-pastel",
+        name: "Pastel",
+        variantType: "PASTEL",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "topo-v4-topographique",
+        name: "Topographique",
+        variantType: "TOPOGRAPHIQUE",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
 ];
 
 /**
@@ -1209,6 +1546,13 @@ const defaultReferenceStyleMap = {
   STREETS: "STREETS_V2",
   BASIC: "BASIC_V2",
   LANDSCAPE: "LANDSCAPE_V2",
+  AQUARELLE: "AQUARELLE_V2",
+  OCEAN: "OCEAN_V2",
+  TONER: "TONER_V2",
+  TOPO: "TOPO_V2",
+  DATAVIZ: "DATAVIZ_V2",
+  BACKDROP: "BACKDROP_V2",
+  VOYAGER: "VOYAGER_V2",
 };
 
 function applyVersionToDefaultReferenceStyle(
