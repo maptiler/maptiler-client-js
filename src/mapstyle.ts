@@ -27,17 +27,17 @@ export function expandMapStyle(style): string {
  * Type for object containing style details
  */
 export type MapStylePreset = {
-  referenceStyleID: string;
-  name: string;
-  description: string;
-  variants: Array<{
-    deprecated?: boolean;
-    deprecationMessage?: string;
-    id: string;
-    name: string;
-    variantType: string;
-    description: string;
-    imageURL: string;
+  readonly referenceStyleID: string;
+  readonly name: string;
+  readonly description: string;
+  readonly variants: ReadonlyArray<{
+    readonly id: string;
+    readonly name: string;
+    readonly variantType: string;
+    readonly description: string;
+    readonly imageURL: string;
+    readonly deprecated?: boolean;
+    readonly deprecationMessage?: string;
   }>;
 };
 
@@ -287,510 +287,7 @@ export class ReferenceMapStyle {
   }
 }
 
-/**
- * All the styles and variants maintained by MapTiler.
- */
-export type MapStyleType = {
-  /**
-   * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings
-   */
-  STREETS: MapStyleType["STREETS_V2"];
-  /**
-   * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings
-   */
-  STREETS_V2: ReferenceMapStyle & {
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings.
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in dark mode.
-     */
-    DARK: MapStyleVariant;
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in light mode.
-     */
-    LIGHT: MapStyleVariant;
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in night mode.
-     */
-    NIGHT: MapStyleVariant;
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, with a pastel color palette.
-     */
-    PASTEL: MapStyleVariant;
-  };
-  /**
-   * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings
-   */
-  STREETS_V4: ReferenceMapStyle & {
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings.
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, in dark mode.
-     */
-    DARK: MapStyleVariant;
-    /**
-     * Suitable for navigation, with high level of detail on urban areas, plenty of POIs and 3D buildings, with a pastel color palette.
-     */
-    PASTEL: MapStyleVariant;
-  };
-
-  BASE_V4: ReferenceMapStyle & {
-    /**
-     * Light and informative map, for general use.
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * Darker version of the base style, for night use.
-     */
-    DARK: MapStyleVariant;
-    /**
-     * Light version of the base style, for day use.
-     */
-    LIGHT: MapStyleVariant;
-    /**
-     * A clear and informative map, for general use.
-     */
-    AI: MapStyleVariant;
-  };
-
-  /**
-   * Suitable for outdoor activities. With elevation isolines and hillshading.
-   */
-  OUTDOOR: ReferenceMapStyle & {
-    /**
-     * Suitable for outdoor activities. With elevation isolines and hillshading.
-     */
-    DEFAULT: MapStyleVariant;
-
-    /**
-     * Suitable for outdoor activities. With elevation isolines and hillshading, in dark mode.
-     */
-    DARK: MapStyleVariant;
-  };
-  OUTDOOR_V2: ReferenceMapStyle & {
-    /**
-     * Suitable for outdoor activities. With elevation isolines and hillshading.
-     */
-    DEFAULT: MapStyleVariant;
-
-    /**
-     * Suitable for outdoor activities. With elevation isolines and hillshading, in dark mode.
-     */
-    DARK: MapStyleVariant;
-  };
-
-  /**
-   * Suitable for outdoor activities. With elevation isolines and hillshading.
-   */
-  OUTDOOR_V4: ReferenceMapStyle & {
-    /**
-     * Suitable for outdoor activities. With elevation isolines and hillshading.
-     */
-    DEFAULT: MapStyleVariant;
-
-    /**
-     * Suitable for outdoor activities. With elevation isolines and hillshading, in dark mode.
-     */
-    DARK: MapStyleVariant;
-  };
-
-  /**
-   * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading.
-   */
-  WINTER: ReferenceMapStyle & {
-    /**
-     * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading.
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * Suitabe for winter outdoor activities. With ski tracks, elevation isolines and hillshading, in dark mode.
-     */
-    DARK: MapStyleVariant;
-  };
-
-  /**
-   * High resolution imagery only, without any label.
-   */
-  SATELLITE: ReferenceMapStyle & {
-    /**
-     * High resolution imagery only, without any label.
-     */
-    DEFAULT: MapStyleVariant;
-  };
-  SATELLITE_V2: ReferenceMapStyle & {
-    /**
-     * High resolution imagery only, without any label.
-     */
-    DEFAULT: MapStyleVariant;
-  };
-
-  /**
-   * High resolution imagery only, without any label.
-   */
-  SATELLITE_V4: ReferenceMapStyle & {
-    /**
-     * High resolution imagery only, without any label.
-     */
-    DEFAULT: MapStyleVariant;
-  };
-
-  /**
-   * High resolution imagery with labels, political borders and roads.
-   */
-  HYBRID: ReferenceMapStyle & {
-    /**
-     * High resolution imagery with labels, political borders and roads.
-     */
-    DEFAULT: MapStyleVariant;
-  };
-
-  /**
-   * A minimalist street-oriented style without POI
-   */
-  BASIC: ReferenceMapStyle & {
-    /**
-     * A minimalist street-oriented style without POI
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * A minimalist street-oriented style without POI, in dark mode
-     */
-    DARK: MapStyleVariant;
-    /**
-     * A minimalist street-oriented style without POI, in light mode
-     */
-    LIGHT: MapStyleVariant;
-  };
-  /**
-   * A minimalist street-oriented style without POI
-   */
-  BASIC_V2: ReferenceMapStyle & {
-    /**
-     * A minimalist street-oriented style without POI
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * A minimalist street-oriented style without POI, in dark mode
-     */
-    DARK: MapStyleVariant;
-    /**
-     * A minimalist street-oriented style without POI, in light mode
-     */
-    LIGHT: MapStyleVariant;
-  };
-
-  /**
-   * A bright street-oriented style, a nice alternative to `streets`
-   */
-  BRIGHT: ReferenceMapStyle & {
-    /**
-     * A bright street-oriented style, a nice alternative to `streets`
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * A bright street-oriented style, a nice alternative to `streets`, in dark mode
-     */
-    DARK: MapStyleVariant;
-    /**
-     * A bright street-oriented style, a nice alternative to `streets`, in light mode
-     */
-    LIGHT: MapStyleVariant;
-    /**
-     * A bright street-oriented style, a nice alternative to `streets`, with a soft pastel color palette
-     */
-    PASTEL: MapStyleVariant;
-  };
-
-  /**
-   * Classic OpenStreetMap style
-   */
-  OPENSTREETMAP: ReferenceMapStyle & {
-    DEFAULT: MapStyleVariant;
-  };
-
-  /**
-   * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
-   */
-  TOPO: ReferenceMapStyle & {
-    /**
-     * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details, in dark mode
-     */
-    DARK: MapStyleVariant;
-    /**
-     * A nice high-contrast, and high saturation alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
-     */
-    SHINY: MapStyleVariant;
-    /**
-     * A nice low-contrast, alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details, using a soft pastel color palette
-     */
-    PASTEL: MapStyleVariant;
-
-    /**
-     * A nice very high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
-     */
-    TOPOGRAPHIQUE: MapStyleVariant;
-  };
-
-  /**
-   * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
-   */
-  TOPO_V4: ReferenceMapStyle & {
-    /**
-     * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * A nice high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details, in dark mode
-     */
-    DARK: MapStyleVariant;
-    /**
-     * A nice low-contrast, alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details, using a soft pastel color palette
-     */
-    PASTEL: MapStyleVariant;
-
-    /**
-     * A nice very high-contrast, yet less saturated alternative to the `outdoor` style, with hillshading, 3D buildings and fairly high street details
-     */
-    TOPOGRAPHIQUE: MapStyleVariant;
-  };
-
-  /**
-   * A nice alternative to `streets` with a soft color palette
-   */
-  VOYAGER: ReferenceMapStyle & {
-    /**
-     * A nice alternative to `streets` with a soft color palette
-     *
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * A nice alternative to `streets`, in very dark mode
-     */
-    DARK: MapStyleVariant;
-    /**
-     * A nice alternative to `streets`, in light mode
-     */
-    LIGHT: MapStyleVariant;
-    /**
-     * A nice alternative to `streets` with a soft sepia color palette and vintage look
-     */
-    VINTAGE: MapStyleVariant;
-  };
-
-  /**
-   * A bold very high contrast black and white (no gray!) style for the city
-   */
-  TONER: ReferenceMapStyle & {
-    /**
-     * A bold very high contrast black and white (no gray!) style for the city
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     * A bold very high contrast black and white (no gray!) style for the city, without any label
-     */
-    BACKGROUND: MapStyleVariant;
-    /**
-     * A bold very high contrast, yet faded, style for the city
-     */
-    LITE: MapStyleVariant;
-    /**
-     * A bold very high contrast black and white (no gray!) style for the city, with no building, only roads!
-     */
-    LINES: MapStyleVariant;
-  };
-
-  /**
-   * A bold very high contrast black and white (no gray!) style for the city
-   */
-  TONER_V4: ReferenceMapStyle & {
-    /**
-     * A bold very high contrast black and white (no gray!) style for the city
-     */
-    DEFAULT: MapStyleVariant;
-  };
-
-  /**
-   * Minimalist style, perfect for data visualization
-   */
-  DATAVIZ: ReferenceMapStyle & {
-    /**
-     *  Minimalist style, perfect for data visualization
-     */
-    DEFAULT: MapStyleVariant;
-
-    /**
-     *  Minimalist style, perfect for data visualization in dark mode
-     */
-    DARK: MapStyleVariant;
-
-    /**
-     *  Minimalist style, perfect for data visualization in light mode
-     */
-    LIGHT: MapStyleVariant;
-  };
-
-  /**
-   * Minimalist style, perfect for data visualization
-   */
-  DATAVIZ_V4: ReferenceMapStyle & {
-    /**
-     *  Minimalist style, perfect for data visualization
-     */
-    DEFAULT: MapStyleVariant;
-
-    /**
-     *  Minimalist style, perfect for data visualization in dark mode
-     */
-    DARK: MapStyleVariant;
-
-    /**
-     *  Minimalist style, perfect for data visualization in light mode
-     */
-    LIGHT: MapStyleVariant;
-  };
-
-  /**
-   * Explore deep see trenches and mountains, with isolines and depth labels
-   */
-  OCEAN: ReferenceMapStyle & {
-    /**
-     * Explore deep see trenches and mountains, with isolines and depth labels
-     */
-    DEFAULT: MapStyleVariant;
-  };
-
-  /**
-   * Explore deep see trenches and mountains, with isolines and depth labels
-   */
-  OCEAN_V4: ReferenceMapStyle & {
-    /**
-     * Explore deep see trenches and mountains, with isolines and depth labels
-     */
-    DEFAULT: MapStyleVariant;
-
-    /**
-     * Explore deep see trenches and mountains, with isolines and depth labels, in dark mode
-     */
-    DARK: MapStyleVariant;
-  };
-
-  /**
-   * Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
-   */
-  BACKDROP: ReferenceMapStyle & {
-    /**
-     *  Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
-     */
-    DEFAULT: MapStyleVariant;
-
-    /**
-     *  Dark greyscale style with hillshading suitable for colorful terrain-aware visualization
-     */
-    DARK: MapStyleVariant;
-
-    /**
-     *  Light greyscale style with hillshading suitable for colorful terrain-aware visualization
-     */
-    LIGHT: MapStyleVariant;
-  };
-
-  /**
-   * Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
-   */
-  BACKDROP_V4: ReferenceMapStyle & {
-    /**
-     *  Neutral greyscale style with hillshading suitable for colorful terrain-aware visualization
-     */
-    DEFAULT: MapStyleVariant;
-
-    /**
-     *  Dark greyscale style with hillshading suitable for colorful terrain-aware visualization
-     */
-    DARK: MapStyleVariant;
-
-    /**
-     *  Light greyscale style with hillshading suitable for colorful terrain-aware visualization
-     */
-    LIGHT: MapStyleVariant;
-  };
-
-  LANDSCAPE: MapStyleType["LANDSCAPE_V2"];
-
-  LANDSCAPE_V2: ReferenceMapStyle & {
-    /**
-     *  Light terrain map for data overlays and visualisations
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     *  Dark terrain map for data overlays and visualisations
-     */
-    DARK: MapStyleVariant;
-    /**
-     *  Vivid terrain map for data overlays and visualisations
-     */
-    VIVID: MapStyleVariant;
-  };
-
-  LANDSCAPE_V4: ReferenceMapStyle & {
-    /**
-     *  Light terrain map for data overlays and visualisations
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     *  Dark terrain map for data overlays and visualisations
-     */
-    DARK: MapStyleVariant;
-    /**
-     *  Vivid terrain map for data overlays and visualisations
-     */
-    VIVID: MapStyleVariant;
-  };
-  /**
-   *  Watercolor map for creative use
-   */
-  AQUARELLE: ReferenceMapStyle & {
-    /**
-     *  Watercolor map for creative use
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     *  Dark watercolor map for creative use
-     */
-    DARK: MapStyleVariant;
-    /**
-     *  Vivid watercolor map for creative use
-     */
-    VIVID: MapStyleVariant;
-  };
-
-  /**
-   *  Watercolor map for creative use
-   */
-  AQUARELLE_V4: ReferenceMapStyle & {
-    /**
-     *  Watercolor map for creative use
-     */
-    DEFAULT: MapStyleVariant;
-    /**
-     *  Dark watercolor map for creative use
-     */
-    DARK: MapStyleVariant;
-    /**
-     *  Vivid watercolor map for creative use
-     */
-    VIVID: MapStyleVariant;
-  };
-};
-
-export const mapStylePresetList: Array<MapStylePreset> = [
+export const MAP_STYLE_CONFIG = [
   {
     referenceStyleID: "STREETS_V2",
     name: "Streets",
@@ -1535,7 +1032,7 @@ export const mapStylePresetList: Array<MapStylePreset> = [
       },
     ],
   },
-];
+] as const;
 
 /**
  * Map of default reference styles to their versioned counterparts.
@@ -1553,7 +1050,33 @@ const defaultReferenceStyleMap = {
   DATAVIZ: "DATAVIZ_V2",
   BACKDROP: "BACKDROP_V2",
   VOYAGER: "VOYAGER_V2",
+} as const;
+
+// Helper types to build the MapStyleType, this is to avoid having to manually define the MapStyleType
+
+type ConfigID = (typeof MAP_STYLE_CONFIG)[number]["referenceStyleID"];
+
+type ConfigVariant<T extends ConfigID> = Extract<
+  (typeof MAP_STYLE_CONFIG)[number],
+  { referenceStyleID: T }
+>["variants"][number]["variantType"];
+
+type BaseMapStyleType = {
+  [K in ConfigID]: ReferenceMapStyle & {
+    [V in ConfigVariant<K>]: MapStyleVariant;
+  };
 };
+
+export type MapStyleType = BaseMapStyleType & {
+  [K in keyof typeof defaultReferenceStyleMap]: BaseMapStyleType[(typeof defaultReferenceStyleMap)[K] &
+    ConfigID];
+};
+
+// 3. The mutable list for your runtime logic
+// We cast through 'unknown' to break the 'readonly' restriction
+export const mapStylePresetList: MapStylePreset[] = [
+  ...MAP_STYLE_CONFIG,
+] as unknown as MapStylePreset[];
 
 function applyVersionToDefaultReferenceStyle(
   defaultKey: string,
