@@ -397,7 +397,7 @@ export const MAP_STYLE_CONFIG = [
       {
         id: "base-v4-ai",
         name: "Base AI",
-        variantType: "NIGHT",
+        variantType: "AI",
         description: "",
         imageURL: "",
       },
