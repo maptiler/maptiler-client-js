@@ -37,7 +37,6 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
   "LanguageGeocodingOptions": "any",
   "LanguageInfo": "any",
   "LineString": "any",
-  "MAP_STYLE_CONFIG": "readonly [{ readonly referenceStyleID: \\"STREETS_V2\\"; readonly name: \\"Streets\\"; readonly description: \\"\\"; readonly variants: readonly [{ readonly id: \\"streets-v2\\"; readonly name: \\"Default v2\\"; readonly variantType: \\"DEFAULT\\"; readonly description: \\"\\"; readonly imageURL: \\"\\"; readonly deprecated: true; readonly depreca...",
   "MapStyle": {
     "AQUARELLE": [
       "DARK",
