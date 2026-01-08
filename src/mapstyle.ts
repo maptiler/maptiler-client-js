@@ -287,7 +287,7 @@ export class ReferenceMapStyle {
   }
 }
 
-export const MAP_STYLE_CONFIG = [
+const MAP_STYLE_CONFIG = [
   {
     referenceStyleID: "STREETS_V2",
     name: "Streets",
@@ -1053,7 +1053,6 @@ const defaultReferenceStyleMap = {
 } as const;
 
 // Helper types to build the MapStyleType, this is to avoid having to manually define the MapStyleType
-
 type ConfigID = (typeof MAP_STYLE_CONFIG)[number]["referenceStyleID"];
 
 type ConfigVariant<T extends ConfigID> = Extract<
@@ -1072,8 +1071,6 @@ export type MapStyleType = BaseMapStyleType & {
     ConfigID];
 };
 
-// 3. The mutable list for your runtime logic
-// We cast through 'unknown' to break the 'readonly' restriction
 export const mapStylePresetList: MapStylePreset[] = [
   ...MAP_STYLE_CONFIG,
 ] as unknown as MapStylePreset[];

@@ -11,6 +11,11 @@ const EARTH_RADIUS = 6371008.8;
 const EARTH_CIRCUMFERENCE = 2 * Math.PI * EARTH_RADIUS;
 
 /**
+ * Max latitude valid in Web Mercator
+ */
+const MAX_VALID_LATITUDE = 85.0511287;
+
+/**
  * Convert a wgs84 longitude to web Mercator X (west-east axis), where westmost X is 0 and eastmost X is 1.
  */
 function longitudeToMercatorX(lng: number): number {
@@ -21,6 +26,7 @@ function longitudeToMercatorX(lng: number): number {
  * Convert a wgs84 latitude to web Mercator Y (north-south axis), where northmost Y is 0 and southmost Y is 1.
  */
 function latitudeToMercatorY(lat: number): number {
+  lat = Math.max(Math.min(lat, MAX_VALID_LATITUDE), -MAX_VALID_LATITUDE);
   return (
     (180 -
       (180 / Math.PI) *
