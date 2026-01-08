@@ -1053,28 +1053,35 @@ const defaultReferenceStyleMap = {
 } as const;
 
 // Helper types to build the MapStyleType, this is to avoid having to manually define the MapStyleType
+
+// get the ID of the config eg. STREETS_V2, STREETS_V4, etc.
 type ConfigID = (typeof MAP_STYLE_CONFIG)[number]["referenceStyleID"];
 
+// filter the config to only get the variants for the given referenceStyleID
 type ConfigVariant<T extends ConfigID> = Extract<
   (typeof MAP_STYLE_CONFIG)[number],
   { referenceStyleID: T }
 >["variants"][number]["variantType"];
 
+// build it together to get the type of the MapStyleType
 type BaseMapStyleType = {
   [K in ConfigID]: ReferenceMapStyle & {
     [V in ConfigVariant<K>]: MapStyleVariant;
   };
 };
 
+// map the default reference styles in defaultReferenceStyleMap to the MapStyleType
 export type MapStyleType = BaseMapStyleType & {
   [K in keyof typeof defaultReferenceStyleMap]: BaseMapStyleType[(typeof defaultReferenceStyleMap)[K] &
     ConfigID];
 };
 
+// cast to a mutable array for the runtime logic
 export const mapStylePresetList: MapStylePreset[] = [
   ...MAP_STYLE_CONFIG,
 ] as unknown as MapStylePreset[];
 
+// predecate to map the namespaced styles to the default reference style map
 function applyVersionToDefaultReferenceStyle(
   defaultKey: string,
   referenceKey: string,
@@ -1102,6 +1109,7 @@ function applyVersionToDefaultReferenceStyle(
   mapStylePresetList.push(defaultStyle);
 }
 
+// use the predecate...
 Object.entries(defaultReferenceStyleMap).forEach(
   ([defaultKey, referenceKey]) => {
     applyVersionToDefaultReferenceStyle(defaultKey, referenceKey);
