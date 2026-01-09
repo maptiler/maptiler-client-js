@@ -43,27 +43,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DEFAULT",
       "VIVID",
     ],
-    "AQUARELLE_V2": [
-      "DARK",
-      "DEFAULT",
-      "VIVID",
-    ],
-    "AQUARELLE_V4": [
-      "DARK",
-      "DEFAULT",
-      "VIVID",
-    ],
     "BACKDROP": [
-      "DARK",
-      "DEFAULT",
-      "LIGHT",
-    ],
-    "BACKDROP_V2": [
-      "DARK",
-      "DEFAULT",
-      "LIGHT",
-    ],
-    "BACKDROP_V4": [
       "DARK",
       "DEFAULT",
       "LIGHT",
@@ -95,16 +75,6 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DEFAULT",
       "LIGHT",
     ],
-    "DATAVIZ_V2": [
-      "DARK",
-      "DEFAULT",
-      "LIGHT",
-    ],
-    "DATAVIZ_V4": [
-      "DARK",
-      "DEFAULT",
-      "LIGHT",
-    ],
     "HYBRID": [
       "DEFAULT",
     ],
@@ -126,13 +96,6 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
     "OCEAN": [
       "DEFAULT",
     ],
-    "OCEAN_V2": [
-      "DEFAULT",
-    ],
-    "OCEAN_V4": [
-      "DARK",
-      "DEFAULT",
-    ],
     "OPENSTREETMAP": [
       "DEFAULT",
     ],
@@ -140,14 +103,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DARK",
       "DEFAULT",
     ],
-    "OUTDOOR_V4": [
-      "DARK",
-      "DEFAULT",
-    ],
     "SATELLITE": [
-      "DEFAULT",
-    ],
-    "SATELLITE_V4": [
       "DEFAULT",
     ],
     "STREETS": [
@@ -175,15 +131,6 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "LINES",
       "LITE",
     ],
-    "TONER_V2": [
-      "BACKGROUND",
-      "DEFAULT",
-      "LINES",
-      "LITE",
-    ],
-    "TONER_V4": [
-      "DEFAULT",
-    ],
     "TOPO": [
       "DARK",
       "DEFAULT",
@@ -191,26 +138,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "SHINY",
       "TOPOGRAPHIQUE",
     ],
-    "TOPO_V2": [
-      "DARK",
-      "DEFAULT",
-      "PASTEL",
-      "SHINY",
-      "TOPOGRAPHIQUE",
-    ],
-    "TOPO_V4": [
-      "DARK",
-      "DEFAULT",
-      "PASTEL",
-      "TOPOGRAPHIQUE",
-    ],
     "VOYAGER": [
-      "DARK",
-      "DEFAULT",
-      "LIGHT",
-      "VINTAGE",
-    ],
-    "VOYAGER_V2": [
       "DARK",
       "DEFAULT",
       "LIGHT",
