@@ -41,6 +41,10 @@ The project is entirely written in TypeScript and all the function arguments are
 </ul>
 </details>
 
+<p align="center">   <img src="https://docs.maptiler.com/client-js/description/img/code.gif" alt="Demo Screenshot" width="80%"/>  <br /> 
+</p>
+<br>
+
 ## 📦 Installation
 
 ### ES module from NPM
