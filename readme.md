@@ -1,22 +1,6 @@
-<p align="center">
-<a href="https://docs.maptiler.com/client-js/">official page →</a><br>
-  <img src="images/maptiler-client-logo.svg" width="400px">
-</p>
-
-<p align="center" style="color: #AAA">
-  The Javascript & TypeScript API client library to enjoy <a href="https://www.maptiler.com/cloud/">MapTiler Cloud</a>'s <br>services such as geocoding, geolocation and more!
-</p>
-
-<p align="center">
-  <img src="images/JS-logo.svg" width="20px">
-  <img src="images/TS-logo.svg" width="20px">
-  <img src="https://img.shields.io/npm/v/@maptiler/client"></img>
-  <img src="https://img.shields.io/twitter/follow/maptiler?style=social"></img>
-</p>
+<img src="./images/maptiler-client-logo.svg" alt="Company Logo" height="32"/>
 
 # API Client Library for JavaScript / TypeScript
-
-## What?
 
 The **MapTiler Client JS** exposes a number of handy functions that wrap API call to [MapTiler Cloud API services](https://docs.maptiler.com/cloud/api), such as:
 - [Geocoding forward and reverse](#-geocoding)
@@ -25,8 +9,6 @@ The **MapTiler Client JS** exposes a number of handy functions that wrap API cal
 - [User data fetching as GeoJSON](#-data)
 - [Static maps of all sorts](#%EF%B8%8F-static-maps)
 - [Elevation lookup with batch features](#-elevation)
-
-## Why?
 
 The project is entirely written in TypeScript and all the function arguments are nicely documented and typed.
 
@@ -38,15 +20,63 @@ The project is entirely written in TypeScript and all the function arguments are
 - Runs: in Node.js or in browser
 - Open source license
 
-# Install
+[![](https://img.shields.io/npm/v/@maptiler/client?style=for-the-badge&labelColor=D3DBEC&color=f2f6ff&logo=npm&logoColor=333359)](https://www.npmjs.com/package/@maptiler/client) ![](https://img.shields.io/badge/-white?style=for-the-badge&logo=javascript)![](https://img.shields.io/badge/-white?style=for-the-badge&logo=typescript)
+---
+
+📖 [Documentation](https://docs.maptiler.com/client-js/) &nbsp; 📦 [NPM Package](https://www.npmjs.com/package/@maptiler/client) &nbsp; 🌐 [Website](https://docs.maptiler.com/client-js/) &nbsp; 🔑 [Get API Key](https://cloud.maptiler.com/account/keys/)
+
+---
+
+<br>
+
+<details> <summary><b>Table of Contents</b></summary>
+<ul>
+<li><a href="#-installation">Installation</a></li>
+<li><a href="#-basic-usage">Basic Usage</a></li>
+<li><a href="#-related-examples">Examples</a></li>
+<li><a href="#-api-reference">API Reference</a></li>
+<li><a href="#-support">Support</a></li>
+<li><a href="#-contributing">Contributing</a></li>
+<li><a href="#-license">License</a></li>
+</ul>
+</details>
+
+<p align="center">   <img src="https://docs.maptiler.com/client-js/description/img/code.gif" alt="Demo Screenshot" width="80%"/>  <br /> 
+</p>
+<br>
+
+## 📦 Installation
+
+### ES module from NPM
+
 ```shell
 npm install --save @maptiler/client
 ```
 
-# API documentation
-In addition to the details and examples provided in this readme, check out the [complete API documentation](https://docs.maptiler.com/client-js/).
+### From NodeJS
+NodeJS includes a stable `fetch()` function only from its version *18*, and this client does not contain a polyfill. If the `fetch()` function exists (browser or Node >= 18) then it is going to be resolved automatically, Yet, a custom `fetch()` function can be provided to the `config` object for Node < 18.
 
-# Quick start
+In [this NodeJS example](examples/test-node.js), you can see that the package [Node Fetch](https://www.npmjs.com/package/node-fetch) has been `npm install`ed and is passed to the config object of the *MapTiler Client*.
+
+```js
+import {
+  config,
+  // ...
+} from '@maptiler/client';
+
+// For this example to work, you must bring your own node-compatible fetch,
+// unles you are using a version of Nodejs that already contains fetch (>=18)
+import fetch from 'node-fetch';
+
+config.fetch = fetch;
+
+// ...
+```
+
+<br>
+
+## 🚀 Basic Usage
+
 ```ts
 // Import the whole library
 import * as maptilerClient from '@maptiler/client';
@@ -64,15 +94,30 @@ import {
 } from '@maptiler/client';
 ```
 
+<br>
+
+## 💡 Related Examples
+
 The [examples](examples/) folder includes are featuring usages for **NodeJS**, **browser with UMD** and **browser with ES module**.
 
-# Easy access to MapTiler Cloud API
+<br>
+
+## 📘 API Reference
+
+For detailed guides, API reference, and advanced examples, visit our comprehensive documentation:
+
+[API documentation](https://docs.maptiler.com/client-js/)
+
+### Easy access to MapTiler API
+
 Here is the list of service wrapper functions that are built-in:
 
-## 🔍 Geocoding
+### 🔍 Geocoding
+
 > ✅ Please, use geocoding functions only from client-side (browser) and do not 🚫 **store** or **redistribute** MapTiler Cloud API data. In case of doubt, consult the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) ⚖️
 
-### Forward
+#### Forward
+
 You want to know the longitude and latitude of a specific place, use the forward geocoding:
 ```ts
 // in an async function, or as a 'thenable':
@@ -85,7 +130,8 @@ You can provide some options such as:
 
 Read more about forward geocoding as well as feature ID query and batch forward geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#forward).
 
-### Reverse
+#### Reverse
+
 You wan to tknow the name of a place, given a longitude-latitude? Use the reverse geocoding:
 ```ts
 // in an async function, or as a 'thenable':
@@ -95,7 +141,8 @@ The same option object as the forward geocoding can be provided.
 
 Read more about reverse geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#reverse).
 
-### Language
+#### Language
+
 For both *forward* and *reverse* geocoding, this library provides a list of supported languages as shorthands that include [ISO language codes](https://en.wikipedia.org/wiki/ISO_639-1). The result will be provided in multiple languages if the `language` options is an array:
 
 ```ts
@@ -106,7 +153,8 @@ The special language `AUTO` will detect the platform/browser preferred language.
 
 If the language is not specified as options, MapTiler Cloud will use the `Accept-language` from the HTTP header of the request. The language seleted this way is generaly similar to the `Language.AUTO` mode, but can still differ in some cases ([read more](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language)).
 
-## 🕵️‍♂️ Geolocation
+### 🕵️‍♂️ Geolocation
+
 The geolocation service provides location informations of a visitor using its IP address.
 
 The geolocation uses the IP address of a visitors to provide informations about their location, such as city, region, country, timezone, etc. The precision is lower than GPS but does not require visitors to explicitely enable the location service from their web browser.
@@ -119,10 +167,12 @@ const result = await maptilerClient.geolocation.info();
 
 Read more about geolocation on our [official documentation](https://docs.maptiler.com/client-js/geolocation/).
 
-## 🌐 Coordinates
+### 🌐 Coordinates
+
 If you are already familiar with [epsg.io](https://epsg.io/) (created by MapTiler), then you may find convenient to access the details of more than 10 thousands of coordinate reference systems (CRS) programmatically, as well as transforming coordinates from one system to another!
 
-### Search
+#### Search
+
 The `search` lets you perform a query in a free form fashion. Here are some examples:
 ```ts
 // in an async function, or as a 'thenable':
@@ -136,7 +186,8 @@ The `transformations` options retrieves a lot more details about the CRS that Ma
 
 Read more about searching coordinate systems on our [official documentation](https://docs.maptiler.com/client-js/coordinates/#search).
 
-### Transform
+#### Transform
+
 Transforming a couple of coordinates from one system to another can be challenging, for example, most countries have their own official system, yet web mapping tools are more often than not exclusive to [WGS84](https://epsg.io/4326).
 
 If not provided, both the source (`sourceCrs`) and the destination (`targetCrs`) are default to **EPSG:4326** (in other words, [WGS84](https://epsg.io/4326)). Here is how to use this feature:
@@ -153,7 +204,8 @@ const resultB = await maptilerClient.coordinates.transform([[10, 48], [1, 45]], 
 
 Read more about transforming coordinates on our [official documentation](https://docs.maptiler.com/client-js/coordinates/#transform).
 
-## 💽 Data
+### 💽 Data
+
 MapTiler Cloud give its users the possibility to [upload and create data](https://cloud.maptiler.com/data/), manually with a user interface or by uploading a GPX, GeoJSON, KML or shp file. A unique ID is associated to each dataset so that we can later on access it programmatically to retrieve a GeoJSON equivalent of it:
 
 ```ts
@@ -165,7 +217,8 @@ Since the result is a GeoJSON, it can easily be added to a `map` with `.addSourc
 
 Read more about fetching your own data on our [official documentation](https://docs.maptiler.com/client-js/data/).
 
-## 🗺️ Static maps
+### 🗺️ Static maps
+
 > ✅ Please, use static maps URLs only from client side `<img>` elements, and do not 🚫 store or redistribute the static map files. In case of doubt, consult the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) ⚖️
 
 Maptiler Cloud provides many possibilities for creating static maps as PNG, JPEG or WebP images. They all offer the possibilities to:
@@ -178,8 +231,8 @@ Three modes are available: `centered`, `bounded` and `automatic`.
 > 📣 *__important:__* <span style="text-decoration: underline">only image **URLs** are returned.</span>   
 > Contrary to the other functions of this library, the static map functions **do not** perform any query to MapTiler Cloud API, instead they build the image URL for you to use in `<img>` elements.
 
+#### Map Styles
 
-### Map Styles
 In the following static map functions, the `option` object features a `style` property that can be a string or one of the built-in style shorthand. Here is the full list:
 
 - `MapStyle.STREETS`, reference style for navigation and city exploration
@@ -218,7 +271,8 @@ In the following static map functions, the `option` object features a `style` pr
 - `MapStyle.OPENSTREETMAP` (reference style, this one does not have any variants)
 - `MapStyle.OCEAN` (reference style, this one does not have any variants)
 
-### Centered static maps
+#### Centered static maps
+
 This type of map is centered on a longitude-latitude coordinate and the zoom level must also be provided (from `0`: very zoomed out, to `22`: very zoomed in).  
 Note that if a path or markers are provided, the framing of the map will not automatically adapt to include those (use the `automatic` mode for that).
 
@@ -246,8 +300,8 @@ const imageLink = maptilerClient.staticMaps.centered(
 
 Read more about centered static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#center-based-image).
 
+#### Bounded static maps
 
-### Bounded static maps
 This type of map requires a bounding box made of two points: the south-west bound and the north-east bound. The zoom level cannot be provided and is automatically deduced from the size of the bounding box.
 
 ```ts
@@ -289,7 +343,8 @@ As you may notice, the geo bounding box could have very different proportions th
 
 Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#bounds-based-image).
 
-### Automatic static maps
+#### Automatic static maps
+
 As we have seen with centered and bounded maps, providing all the parameters is nice but can be cumbersome for the simplest use cases. This is why MapTiler Cloud also provides static maps that fits automatically whatever you need to place inside: path or markers.
 
 In the following example, we are going to load a cycling track recorded by one of our team members in Montreal, Canada. The track, originally a GPX file, was pushed to MapTiler Data and is now made available as a GeoJSON:
@@ -332,7 +387,8 @@ And voila!
 
 Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#auto-fitted-image).
 
-## 🏔️ Elevation
+### 🏔️ Elevation
+
 With the elevation API, it's possible to get the elevation in metter from any location. It's possible lookup and compute elevation for a single location, to provide a batch of points, from a GeoJSON LineString or from a GeoJSON MultiLineString!
 
 > ℹ️ Under the hood, the elevation API is fueled by MapTiler Cloud's **RGB Terrain** raster tileset, which is a composite of many high-resolution DEMs from all over the world, currated and processed by our geodata team! The same dataset is also fueling our SDK's elevation (3D terrain) and the hillshading we use in many of our styles.
@@ -341,7 +397,8 @@ With the elevation API, it's possible to get the elevation in metter from any lo
 
 Let's see how to use it:
 
-### At a single location
+#### At a single location
+
 ```ts
 // Not mandatory, but it's to explain where the type comes from:
 import { Position } from "geojson";
@@ -353,7 +410,8 @@ The returned value is also a *GeoJSON* `Position` array, but with three elements
 
 Read more about elevation lookup for a single location in our [official documentation](https://docs.maptiler.com/client-js/elevation/#at).
 
-### Batch mode
+#### Batch mode
+
 ```ts
 // Not mandatory, but it's to explain where the type comes from:
 import { Position } from "geojson";
@@ -375,7 +433,8 @@ const elevatedPeaks = await maptilerClient.elevation.batch(peaks);
 
 Read more about elevation lookup for a batch of locations in our [official documentation](https://docs.maptiler.com/client-js/elevation/#batch).
 
-### From a GeoJSON LineString
+#### From a GeoJSON LineString
+
 In the *GeoJSON* LineString case, it clones the entire structure and the positions arrays of the clone will contain three element: `[lng, lat, elevation]`. The original LineString is not mutated nor pointed at.
 
 ```ts
@@ -394,7 +453,8 @@ const someElevatedLineString = await maptilerClient.elevation.fromLineString(som
 
 Read more about elevation lookup for a `LineString` in our [official documentation](https://docs.maptiler.com/client-js/elevation/#linestring).
 
-### From a GeoJSON MultiLineString
+#### From a GeoJSON MultiLineString
+
 In the *GeoJSON* MultiLineString case, it clones the entire structure and the positions arrays of the clone will contain three element: `[lng, lat, elevation]`. The original MultiLineString is not mutated nor pointed at.
 
 ```ts
@@ -417,10 +477,12 @@ const someElevatedMultiLineString = await maptilerClient.elevation.fromMultiLine
 
 Read more about elevation lookup for a `MultiLineString` in our [official documentation](https://docs.maptiler.com/client-js/elevation/#multilinestring).
 
-### Caching
+#### Caching
+
 In order to increase performance while reducing unnecessary elevation data fetching, the elevation tiles are cached. This is particularly important for the LineString and MultiLineString lookups because GeoJSON data are likely to come from a recorded or planned route, where position points are very close to one another.
 
-## 🧮 Math
+### 🧮 Math
+
 Some operations can be fairly repetitive: WGS84 to Mercator, WGS84 to *zxy* tile index, distance between two points with Haversine formula, etc. As a result, we have decided to expose a `math` package providing the most recurent feature, so that, just like us at MapTiler, you no longer need to copy-paste the same function from your previous project!
 
 The `math` package differs from the others in the sense that it does not call the MapTiler Cloud API, instead it operates fully on the machine it's running on.
@@ -459,27 +521,51 @@ const tileXY = maptilerClient.math.wgs84ToTileIndex(montBlancPeakWgs84, 14);
 // and many more!
 ```
 
-Please find out more about the math package in our [official documentation](https://docs.maptiler.com/client-js/math):
+Please find out more about the math package in our [official documentation](https://docs.maptiler.com/client-js/math).
 
-# From NodeJS
-NodeJS includes a stable `fetch()` function only from its version *18*, and this client does not contain a polyfill. If the `fetch()` function exists (browser or Node >= 18) then it is going to be resolved automatically, Yet, a custom `fetch()` function can be provided to the `config` object for Node < 18.
+<br>
 
-In [this NodeJS example](examples/test-node.js), you can see that the package [Node Fetch](https://www.npmjs.com/package/node-fetch) has been `npm install`ed and is passed to the config object of the *MapTiler Client*.
+## 💬 Support
 
-```js
-import {
-  config,
-  // ...
-} from '@maptiler/client';
+- 📚 [Documentation](https://docs.maptiler.com/client-js/) - Comprehensive guides and API reference
+- ✉️ [Contact us](https://maptiler.com/contact) - Get in touch or submit a request
+- 🐦 [Twitter/X](https://twitter.com/maptiler) - Follow us for updates
 
-// For this example to work, you must bring your own node-compatible fetch,
-// unles you are using a version of Nodejs that already contains fetch (>=18)
-import fetch from 'node-fetch';
+<br>
 
-config.fetch = fetch;
+---
 
-// ...
-```
+<br>
 
-# Terms and usage limitations
+## 🤝 Contributing
+
+We love contributions from the community! Whether it's bug reports, feature requests, or pull requests, all contributions are welcome:
+
+- Fork the repository and create your branch from `main`
+- If you've added code, add tests that cover your changes
+- Ensure your code follows our style guidelines
+- Give your pull request a clear, descriptive summary
+- Open a Pull Request with a comprehensive description
+
+<br>
+
+## 📄 License
+
+This project is licensed under the BSD 3-Clause License – see the [LICENSE](./LICENSE) file for details.
+
+### Terms and usage limitations
+
 The data fetched from MapTiler Cloud API, with or without this library, cannot be stored or redistributed in any ways. If you have any doubt about your specific usecase, please consult our [legal terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) or contact us.
+
+<br>
+
+<p align="center" style="margin-top:20px;margin-bottom:20px;"> <a href="https://cloud.maptiler.com/account/keys/" style="display:inline-block;padding:12px 32px;background:#F2F6FF;color:#000;font-weight:bold;border-radius:6px;text-decoration:none;"> Get Your API Key <sup style="background-color:#0000ff;color:#fff;padding:2px 6px;font-size:12px;border-radius:3px;">FREE</sup><br /> <span style="font-size:90%;font-weight:400;">Start building with 100,000 free map loads per month ・ No credit card required.</span> </a> </p>
+
+<br>
+
+<p align="center"> 💜 Made with love by the <a href="https://www.maptiler.com/">MapTiler</a> team <br />
+<p align="center">
+  <a href="https://docs.maptiler.com/client-js/">Website</a> •
+  <a href="https://docs.maptiler.com/client-js/">Documentation</a> •
+  <a href="https://github.com/maptiler/maptiler-client-js">GitHub</a>
+</p>
