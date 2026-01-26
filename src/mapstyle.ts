@@ -431,7 +431,7 @@ const MAP_STYLE_CONFIG = [
   },
 
   {
-    referenceStyleID: "WINTER",
+    referenceStyleID: "WINTER_V2",
     name: "Winter",
     description: "",
     variants: [
@@ -459,7 +459,29 @@ const MAP_STYLE_CONFIG = [
   },
 
   {
-    referenceStyleID: "SATELLITE",
+    referenceStyleID: "WINTER_V4",
+    name: "Winter",
+    description: "",
+    variants: [
+      {
+        id: "winter-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "winter-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      },
+    ],
+  },
+
+  {
+    referenceStyleID: "SATELLITE_V2",
     name: "Satellite",
     description: "",
     variants: [
@@ -476,7 +498,7 @@ const MAP_STYLE_CONFIG = [
   },
 
   {
-    referenceStyleID: "HYBRID",
+    referenceStyleID: "HYBRID_V2",
     name: "Hybrid",
     description: "",
     variants: [
@@ -487,6 +509,26 @@ const MAP_STYLE_CONFIG = [
         description: "",
         imageURL: "",
       },
+    ],
+  },
+
+  {
+    referenceStyleID: "HYBRID_V4",
+    name: "Hybrid",
+    description: "",
+    variants: [
+      {
+        id: "hybrid-v4",
+        name: "Default",
+        variantType: "DEFAULT",
+        imageURL: "",
+      },
+      {
+        id: "hybrid-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
+        imageURL: "",
+      }
     ],
   },
 
@@ -670,6 +712,8 @@ const MAP_STYLE_CONFIG = [
     referenceStyleID: "TONER_V2",
     name: "Toner",
     description: "",
+    deprecated: true,
+    deprecationMessage: `"toner-v2" is deprecated, and will be no longer be a default style in the future`,
     variants: [
       {
         id: "toner-v2",
@@ -678,7 +722,7 @@ const MAP_STYLE_CONFIG = [
         description: "",
         imageURL: "",
         deprecated: true,
-        deprecationMessage: `"toner-v2" is deprecated, use "toner-v4" instead`,
+        deprecationMessage: `"toner-v2" is deprecated, and may be removed in future versions.`,
       },
       {
         id: "toner-v2-background",
@@ -687,7 +731,7 @@ const MAP_STYLE_CONFIG = [
         deprecated: true,
         description: "",
         imageURL: "",
-        deprecationMessage: `"toner-v2-background" is deprecated, use "toner-v4-background" instead`,
+        deprecationMessage: `"toner-v2-background" is deprecated, and may be removed in future versions.`,
       },
       {
         id: "toner-v2-lite",
@@ -696,7 +740,7 @@ const MAP_STYLE_CONFIG = [
         description: "",
         imageURL: "",
         deprecated: true,
-        deprecationMessage: `"toner-v2-lite" is deprecated, use "toner-v4-lite" instead`,
+        deprecationMessage: `"toner-v2-lite" is deprecated, and may be removed in future versions.`,
       },
       {
         id: "toner-v2-lines",
@@ -705,6 +749,7 @@ const MAP_STYLE_CONFIG = [
         description: "",
         imageURL: "",
         deprecated: true,
+        deprecationMessage: `"toner-v2-lines" is deprecated, and may be removed in future versions.`,
       },
     ],
   },
@@ -893,13 +938,20 @@ const MAP_STYLE_CONFIG = [
   },
   {
     referenceStyleID: "SATELLITE_V4",
-    name: "Satellite",
+    name: "Satellite v4",
     description: "",
     variants: [
       {
         id: "satellite-v4",
         name: "Default",
         variantType: "DEFAULT",
+        description: "",
+        imageURL: "",
+      },
+      {
+        id: "satellite-v4-dark",
+        name: "Dark",
+        variantType: "DARK",
         description: "",
         imageURL: "",
       },
@@ -1032,20 +1084,6 @@ const MAP_STYLE_CONFIG = [
     ],
   },
   {
-    referenceStyleID: "TONER_V4",
-    name: "Toner",
-    description: "",
-    variants: [
-      {
-        id: "toner-v4",
-        name: "Default",
-        variantType: "DEFAULT",
-        description: "",
-        imageURL: "",
-      },
-    ],
-  },
-  {
     referenceStyleID: "TOPO_V4",
     name: "Topo",
     description: "",
@@ -1092,6 +1130,9 @@ const defaultReferenceStyleMap = {
   BASIC: "BASIC_V2",
   LANDSCAPE: "LANDSCAPE_V2",
   AQUARELLE: "AQUARELLE_V2",
+  SATELLITE: "SATELLITE_V2",
+  WINTER: "WINTER_V2",
+  HYBRID: "HYBRID_V2",
   OCEAN: "OCEAN_V2",
   TONER: "TONER_V2",
   TOPO: "TOPO_V2",
