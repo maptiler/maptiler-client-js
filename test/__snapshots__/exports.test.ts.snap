@@ -108,6 +108,13 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
     "HYBRID": [
       "DEFAULT",
     ],
+    "HYBRID_V2": [
+      "DEFAULT",
+    ],
+    "HYBRID_V4": [
+      "DARK",
+      "DEFAULT",
+    ],
     "LANDSCAPE": [
       "DARK",
       "DEFAULT",
@@ -147,7 +154,11 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
     "SATELLITE": [
       "DEFAULT",
     ],
+    "SATELLITE_V2": [
+      "DEFAULT",
+    ],
     "SATELLITE_V4": [
+      "DARK",
       "DEFAULT",
     ],
     "STREETS": [
@@ -180,9 +191,6 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DEFAULT",
       "LINES",
       "LITE",
-    ],
-    "TONER_V4": [
-      "DEFAULT",
     ],
     "TOPO": [
       "DARK",
@@ -217,6 +225,14 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "VINTAGE",
     ],
     "WINTER": [
+      "DARK",
+      "DEFAULT",
+    ],
+    "WINTER_V2": [
+      "DARK",
+      "DEFAULT",
+    ],
+    "WINTER_V4": [
       "DARK",
       "DEFAULT",
     ],
