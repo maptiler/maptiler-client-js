@@ -2,26 +2,40 @@
 ## 2.7.0
 
 ### New Features
-- Adds several new Planet V4 styles to the client.
-  - satellite-v4
-  - dataviz-v4
-  - dataviz-v4-dark
-  - dataviz-v4-light
-  - outdoor-v4
-  - outdoor-v4-dark
-  - backdrop-v4
-  - backdrop-v4-dark
-  - backdrop-v4-light
-  - aquarelle-v4
-  - aquarelle-v4-dark
-  - aquarelle-v4-vivid
-  - ocean-v4
-  - ocean-v4-dark
-  - toner-v4
-  - topo-v4
-  - topo-v4-dark
-  - topo-v4-pastel
-  - topo-v4-topographique
+- Updates styles to Planet V4.
+  - Added:
+    - satellite-v4
+    - satellite-v4-dark
+    - hybrid-v4
+    - hybrid-v4-dark
+    - dataviz-v4
+    - dataviz-v4-dark
+    - dataviz-v4-light
+    - outdoor-v4
+    - outdoor-v4-dark
+    - winter-v4
+    - winter-v4-dark
+    - backdrop-v4
+    - backdrop-v4-dark
+    - backdrop-v4-light
+    - aquarelle-v4
+    - aquarelle-v4-dark
+    - aquarelle-v4-vivid
+    - ocean-v4
+    - ocean-v4-dark
+    - topo-v4
+    - topo-v4-dark
+    - topo-v4-pastel
+    - topo-v4-topographique
+    - base-v4
+    - base-v4-dark
+    - base-v4-light
+    - landscape-v4
+    - landscape-v4-dark
+    - landscape-v4-vivid
+  - Deprecated:
+    - Toner
+
 
 ### Bug fixes
 None
