@@ -33,6 +33,7 @@
     - landscape-v4
     - landscape-v4-dark
     - landscape-v4-vivid
+    - openstreetmap-dark
   - Deprecated:
     - Toner
 

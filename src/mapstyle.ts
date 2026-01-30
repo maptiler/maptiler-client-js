@@ -603,7 +603,7 @@ const MAP_STYLE_CONFIG = [
   },
 
   {
-    referenceStyleID: "OPENSTREETMAP",
+    referenceStyleID: "OPENSTREETMAP_V2",
     name: "OpenStreetMap",
     description: "",
     variants: [
@@ -614,6 +614,13 @@ const MAP_STYLE_CONFIG = [
         description: "",
         imageURL: "",
       },
+      {
+        id: "openstreetmap-dark",
+        name: "Dark",
+        variantType: "DARK",
+        description: "",
+        imageURL: "",
+      }
     ],
   },
   {
