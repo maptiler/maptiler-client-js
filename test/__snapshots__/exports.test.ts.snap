@@ -141,6 +141,11 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DEFAULT",
     ],
     "OPENSTREETMAP": [
+      "DARK",
+      "DEFAULT",
+    ],
+    "OPENSTREETMAP_V2": [
+      "DARK",
       "DEFAULT",
     ],
     "OUTDOOR": [
