@@ -1,9 +1,9 @@
-name: Format and Lint
+name: Format, Lint and Test
 
 on: [pull_request]
 
 jobs:
-  format-and-lint:
+  format-lint-test:
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -22,3 +22,6 @@ jobs:
 
       - name: Linting with ESLint
         run: npm run lint
+
+      - name: Running Tests
+        run: npm run test:prod
