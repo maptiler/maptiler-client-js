@@ -1,4 +1,16 @@
 # MapTiler Client Changelog
+
+## NEXT
+
+### New Features
+- Adds new option `adjustSearchParams` to all functions in `geocoding` module
+
+### Bug Fixes
+None
+
+### Others
+None
+
 ## 2.7.0
 
 ### New Features
@@ -39,15 +51,11 @@
 
 
 ### Bug fixes
-None
+- `math.latitudeToMercatorY` now always returns a value that is valid in Web Mercator context.
 
 ### Others
 - Switches from explicit exported types to inferred types for the `MapStyle`export.
 - Adds testing for type and member exports.
-
-## NEXT
-### Bug Fixes
-- `math.latitudeToMercatorY` now always returns a value that is valid in Web Mercator context.
 
 ## 2.6.0
 ### New Features

@@ -26,6 +26,19 @@ export type LanguageGeocodingOptions = {
   language?: string | Array<string> | LanguageInfo | Array<LanguageInfo>;
 };
 
+export type BaseGeocodingOptions = LanguageGeocodingOptions & {
+  /**
+   * Custom MapTiler Cloud API key to use instead of the one in global `config`.
+   */
+  apiKey?: string;
+
+  /**
+   * Callback function to adjust the target URL search params before fetching.
+   * @param searchParams [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) object that can be modified in place.
+   */
+  adjustSearchParams?: (searchParams: URLSearchParams) => void;
+};
+
 export type GeocodingPlaceType =
   | "continental_marine"
   | "country"
@@ -46,12 +59,7 @@ export type GeocodingPlaceType =
   | "poi";
 
 export type CommonForwardAndReverseGeocodingOptions =
-  LanguageGeocodingOptions & {
-    /**
-     * Custom MapTiler Cloud API key to use instead of the one in global `config`.
-     */
-    apiKey?: string;
-
+  BaseGeocodingOptions & {
     /**
      * Maximum number of results to show. Must be between 1 and 10.
      * For reverse geocoding with multiple `types` this must not be set or must be set to 1.
@@ -102,9 +110,7 @@ export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
 
 export type ReverseGeocodingOptions = CommonForwardAndReverseGeocodingOptions;
 
-export type ByIdGeocodingOptions = LanguageGeocodingOptions & {
-  apiKey?: string;
-};
+export type ByIdGeocodingOptions = BaseGeocodingOptions;
 
 export type Coordinates = Position;
 
@@ -265,6 +271,19 @@ export type GeocodingSearchResult = {
   attribution: string;
 };
 
+function addBaseGeocodingOptions(
+  searchParams: URLSearchParams,
+  options: BaseGeocodingOptions,
+) {
+  const { adjustSearchParams, apiKey } = options;
+
+  if (typeof adjustSearchParams === "function") {
+    adjustSearchParams(searchParams);
+  }
+
+  searchParams.set("key", apiKey ?? config.apiKey);
+}
+
 function addLanguageGeocodingOptions(
   searchParams: URLSearchParams,
   options: LanguageGeocodingOptions,
@@ -306,9 +325,7 @@ function addCommonForwardAndReverseGeocodingOptions(
   searchParams: URLSearchParams,
   options: CommonForwardAndReverseGeocodingOptions,
 ) {
-  const { apiKey, limit, types, excludeTypes } = options;
-
-  searchParams.set("key", apiKey ?? config.apiKey);
+  const { limit, types, excludeTypes } = options;
 
   if (limit !== undefined) {
     searchParams.set("limit", String(limit));
@@ -321,16 +338,12 @@ function addCommonForwardAndReverseGeocodingOptions(
   if (excludeTypes !== undefined) {
     searchParams.set("excludeTypes", String(excludeTypes));
   }
-
-  addLanguageGeocodingOptions(searchParams, options);
 }
 
 function addForwardGeocodingOptions(
   searchParams: URLSearchParams,
   options: GeocodingOptions,
 ) {
-  addCommonForwardAndReverseGeocodingOptions(searchParams, options);
-
   const { bbox, proximity, country, fuzzyMatch, autocomplete } = options;
 
   if (bbox !== undefined) {
@@ -381,6 +394,9 @@ async function forward(
     defaults.maptilerApiURL,
   );
 
+  addBaseGeocodingOptions(endpoint.searchParams, options);
+  addLanguageGeocodingOptions(endpoint.searchParams, options);
+  addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
   addForwardGeocodingOptions(endpoint.searchParams, options);
 
   const res = await callFetch(endpoint.toString());
@@ -415,6 +431,8 @@ async function reverse(
     defaults.maptilerApiURL,
   );
 
+  addBaseGeocodingOptions(endpoint.searchParams, options);
+  addLanguageGeocodingOptions(endpoint.searchParams, options);
   addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
 
   const res = await callFetch(endpoint.toString());
@@ -443,8 +461,7 @@ async function byId(
 ): Promise<GeocodingSearchResult> {
   const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
 
-  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
-
+  addBaseGeocodingOptions(endpoint.searchParams, options);
   addLanguageGeocodingOptions(endpoint.searchParams, options);
 
   const res = await callFetch(endpoint.toString());
@@ -483,6 +500,9 @@ async function batch(
     defaults.maptilerApiURL,
   );
 
+  addBaseGeocodingOptions(endpoint.searchParams, options);
+  addLanguageGeocodingOptions(endpoint.searchParams, options);
+  addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
   addForwardGeocodingOptions(endpoint.searchParams, options);
 
   const res = await callFetch(endpoint.toString());

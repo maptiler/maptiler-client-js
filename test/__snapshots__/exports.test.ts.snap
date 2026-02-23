@@ -4,6 +4,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
 {
   "AutomaticStaticMapOptions": "any",
   "BBox": "any",
+  "BaseGeocodingOptions": "any",
   "BoundedStaticMapOptions": "any",
   "BufferToPixelDataFunction": "any",
   "ByIdGeocodingOptions": "any",
@@ -265,7 +266,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
   "data": "{ get: (dataId: string, options?: GetDataOptions) => Promise<FeatureCollection<Geometry, { [name: string]: any; }>>; }",
   "elevation": "{ at: (position: Position, options?: ElevationAtOptions) => Promise<Position>; batch: (positions: Position[], options?: ElevationBatchOptions) => Promise<...>; fromLineString: (ls: LineString, options?: ElevationBatchOptions) => Promise<...>; fromMultiLineString: (ls: MultiLineString, options?: ElevationBatchOptions...",
   "expandMapStyle": "(style: any) => string",
-  "geocoding": "{ forward: (query: string, options?: GeocodingOptions) => Promise<GeocodingSearchResult>; reverse: (position: Position, options?: CommonForwardAndReverseGeocodingOptions) => Promise<...>; byId: (id: string, options?: ByIdGeocodingOptions) => Promise<...>; batch: (queries: string[], options?: GeocodingOptions) => Pro...",
+  "geocoding": "{ forward: (query: string, options?: GeocodingOptions) => Promise<GeocodingSearchResult>; reverse: (position: Position, options?: CommonForwardAndReverseGeocodingOptions) => Promise<...>; byId: (id: string, options?: BaseGeocodingOptions) => Promise<...>; batch: (queries: string[], options?: GeocodingOptions) => Pro...",
   "geolocation": "{ info: (options?: GeolocationInfoOptions) => Promise<GeolocationResult>; }",
   "getAutoLanguage": "() => LanguageInfo",
   "getBufferToPixelDataParser": "() => BufferToPixelDataFunction",
