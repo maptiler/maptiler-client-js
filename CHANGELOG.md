@@ -9,7 +9,7 @@
 None
 
 ### Others
-None
+- Default value of `types` option of Geocoding API Client changed, TSDoc now links to API docs instead of listing the default types explicitly
 
 ## 2.7.0
 

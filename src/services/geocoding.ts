@@ -69,7 +69,7 @@ export type CommonForwardAndReverseGeocodingOptions =
 
     /**
      * Features of specified types to query.
-     * If not specified, feature of all available types except `poi` and `major_landform` will be queried (`types = ["poi", "major_landform"]`, `excludeTypes = true`).
+     * If not specified, default configuration of API is used (see https://docs.maptiler.com/cloud/api/geocoding/#PlaceTypeValues for the list).
      * In case of reverse geocoding if just a single type is specified, then multiple nearby features of the single type can be returned,
      * otherwise single feature for every specified type (or default types) can be returned.
      */
