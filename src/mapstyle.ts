@@ -528,7 +528,7 @@ const MAP_STYLE_CONFIG = [
         name: "Dark",
         variantType: "DARK",
         imageURL: "",
-      }
+      },
     ],
   },
 
@@ -620,7 +620,7 @@ const MAP_STYLE_CONFIG = [
         variantType: "DARK",
         description: "",
         imageURL: "",
-      }
+      },
     ],
   },
   {
@@ -1132,20 +1132,21 @@ const MAP_STYLE_CONFIG = [
  * This is make it easier to version the default reference styles.
  * Note: the type definition `MapStyleType` will need to be updated to reflect this.
  */
-const defaultReferenceStyleMap = {
-  STREETS: "STREETS_V2",
+export const defaultReferenceStyleMap = {
+  STREETS: "STREETS_V4",
   BASIC: "BASIC_V2",
-  LANDSCAPE: "LANDSCAPE_V2",
-  AQUARELLE: "AQUARELLE_V2",
-  SATELLITE: "SATELLITE_V2",
-  WINTER: "WINTER_V2",
-  HYBRID: "HYBRID_V2",
-  OCEAN: "OCEAN_V2",
+  BASE: "BASE_V4",
+  LANDSCAPE: "LANDSCAPE_V4",
+  AQUARELLE: "AQUARELLE_V4",
+  SATELLITE: "SATELLITE_V4",
+  WINTER: "WINTER_V4",
+  HYBRID: "HYBRID_V4",
+  OCEAN: "OCEAN_V4",
   TONER: "TONER_V2",
-  TOPO: "TOPO_V2",
+  TOPO: "TOPO_V4",
   OPENSTREETMAP: "OPENSTREETMAP_V2",
-  DATAVIZ: "DATAVIZ_V2",
-  BACKDROP: "BACKDROP_V2",
+  DATAVIZ: "DATAVIZ_V4",
+  BACKDROP: "BACKDROP_V4",
   VOYAGER: "VOYAGER_V2",
 } as const;
 
