@@ -58,28 +58,27 @@ export type GeocodingPlaceType =
   | "road"
   | "poi";
 
-export type CommonForwardAndReverseGeocodingOptions =
-  BaseGeocodingOptions & {
-    /**
-     * Maximum number of results to show. Must be between 1 and 10.
-     * For reverse geocoding with multiple `types` this must not be set or must be set to 1.
-     * Default is 5 for forward and 1 for reverse geocoding.
-     */
-    limit?: number;
+export type CommonForwardAndReverseGeocodingOptions = BaseGeocodingOptions & {
+  /**
+   * Maximum number of results to show. Must be between 1 and 10.
+   * For reverse geocoding with multiple `types` this must not be set or must be set to 1.
+   * Default is 5 for forward and 1 for reverse geocoding.
+   */
+  limit?: number;
 
-    /**
-     * Features of specified types to query.
-     * If not specified, default configuration of API is used (see https://docs.maptiler.com/cloud/api/geocoding/#PlaceTypeValues for the list).
-     * In case of reverse geocoding if just a single type is specified, then multiple nearby features of the single type can be returned,
-     * otherwise single feature for every specified type (or default types) can be returned.
-     */
-    types?: GeocodingPlaceType[];
+  /**
+   * Features of specified types to query.
+   * If not specified, default configuration of API is used (see https://docs.maptiler.com/cloud/api/geocoding/#PlaceTypeValues for the list).
+   * In case of reverse geocoding if just a single type is specified, then multiple nearby features of the single type can be returned,
+   * otherwise single feature for every specified type (or default types) can be returned.
+   */
+  types?: GeocodingPlaceType[];
 
-    /**
-     * Set to `true` to use all available feature types except those mentioned in `types`. Default value is `false` if `types` is specified.
-     */
-    excludeTypes?: boolean;
-  };
+  /**
+   * Set to `true` to use all available feature types except those mentioned in `types`. Default value is `false` if `types` is specified.
+   */
+  excludeTypes?: boolean;
+};
 
 export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
   /**
