@@ -1037,7 +1037,7 @@ export function getLanguageInfoFromKey(
   languageDictionary: { [k: string]: LanguageInfo } = Language,
 ): LanguageInfo | null {
   if (languageKey in languageDictionary) {
-    return languageKey[languageKey];
+    return languageDictionary[languageKey];
   }
   return null;
 }
@@ -1154,5 +1154,7 @@ export function areSameLanguages(
   const langAObj = toLanguageInfo(langA, languageDictionary);
   const langBObj = toLanguageInfo(langB, languageDictionary);
 
-  return langAObj && langBObj && langAObj.flag === langBObj.flag;
+  return (
+    langAObj !== null && langBObj !== null && langAObj.flag === langBObj.flag
+  );
 }
