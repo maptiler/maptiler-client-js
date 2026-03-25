@@ -9,7 +9,9 @@
 - Adds new option `adjustSearchParams` to all functions in `geocoding` module
 
 ### Bug Fixes
-None
+- Fixes `elevation.batch` skipping the last kernel (group of coordinates) when smoothing the result
+- Fixes language helpers `toLanguageInfo` and `areSameLanguages` not working with keys from `Language` enum (like `"ENGLISH"`)
+- Fixes language helper `areSameLanguages` to always return boolean (it could return `null` before)
 
 ### Others
 - Default value of `types` option of Geocoding API Client changed, TSDoc now links to API docs instead of listing the default types explicitly

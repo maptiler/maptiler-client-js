@@ -270,7 +270,7 @@ async function batch(
     const elevations: number[] = elevatedPositions.map((pos) => pos[2]);
     const kernelSpan = ~~(kernelSize / 2);
 
-    for (let i = kernelSpan; i < elevations.length - kernelSpan - 1; i += 1) {
+    for (let i = kernelSpan; i < elevations.length - kernelSpan; i += 1) {
       let sum = 0;
       for (let j = 0; j < kernelSize; j += 1) {
         const elev = elevations[i - kernelSpan + j];
