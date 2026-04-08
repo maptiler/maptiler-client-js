@@ -1,6 +1,6 @@
 # MapTiler Client Changelog
 
-## NEXT
+## 3.0.0
 
 ### ⚠️ Breaking Changes
 - The default styles of Satellite, Hybrid, Dataviz, Outdoor, Winter, Backdrop, Aquarelle, Ocean, Top, Base and Landscape all point to v4 as their default style. V2 styles are still available under under the `_V2` suffixed namespace eg `MapStyle.STREETS_V2.DEFAULT`.
