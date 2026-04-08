@@ -26,6 +26,19 @@ export type LanguageGeocodingOptions = {
   language?: string | Array<string> | LanguageInfo | Array<LanguageInfo>;
 };
 
+export type BaseGeocodingOptions = LanguageGeocodingOptions & {
+  /**
+   * Custom MapTiler Cloud API key to use instead of the one in global `config`.
+   */
+  apiKey?: string;
+
+  /**
+   * Callback function to adjust the target URL search params before fetching.
+   * @param searchParams [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) object that can be modified in place.
+   */
+  adjustSearchParams?: (searchParams: URLSearchParams) => void;
+};
+
 export type GeocodingPlaceType =
   | "continental_marine"
   | "country"
@@ -45,33 +58,27 @@ export type GeocodingPlaceType =
   | "road"
   | "poi";
 
-export type CommonForwardAndReverseGeocodingOptions =
-  LanguageGeocodingOptions & {
-    /**
-     * Custom MapTiler Cloud API key to use instead of the one in global `config`.
-     */
-    apiKey?: string;
+export type CommonForwardAndReverseGeocodingOptions = BaseGeocodingOptions & {
+  /**
+   * Maximum number of results to show. Must be between 1 and 10.
+   * For reverse geocoding with multiple `types` this must not be set or must be set to 1.
+   * Default is 5 for forward and 1 for reverse geocoding.
+   */
+  limit?: number;
 
-    /**
-     * Maximum number of results to show. Must be between 1 and 10.
-     * For reverse geocoding with multiple `types` this must not be set or must be set to 1.
-     * Default is 5 for forward and 1 for reverse geocoding.
-     */
-    limit?: number;
+  /**
+   * Features of specified types to query.
+   * If not specified, default configuration of API is used (see https://docs.maptiler.com/cloud/api/geocoding/#PlaceTypeValues for the list).
+   * In case of reverse geocoding if just a single type is specified, then multiple nearby features of the single type can be returned,
+   * otherwise single feature for every specified type (or default types) can be returned.
+   */
+  types?: GeocodingPlaceType[];
 
-    /**
-     * Features of specified types to query.
-     * If not specified, feature of all available types except `poi` and `major_landform` will be queried (`types = ["poi", "major_landform"]`, `excludeTypes = true`).
-     * In case of reverse geocoding if just a single type is specified, then multiple nearby features of the single type can be returned,
-     * otherwise single feature for every specified type (or default types) can be returned.
-     */
-    types?: GeocodingPlaceType[];
-
-    /**
-     * Set to `true` to use all available feature types except those mentioned in `types`. Default value is `false` if `types` is specified.
-     */
-    excludeTypes?: boolean;
-  };
+  /**
+   * Set to `true` to use all available feature types except those mentioned in `types`. Default value is `false` if `types` is specified.
+   */
+  excludeTypes?: boolean;
+};
 
 export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
   /**
@@ -102,9 +109,7 @@ export type GeocodingOptions = CommonForwardAndReverseGeocodingOptions & {
 
 export type ReverseGeocodingOptions = CommonForwardAndReverseGeocodingOptions;
 
-export type ByIdGeocodingOptions = LanguageGeocodingOptions & {
-  apiKey?: string;
-};
+export type ByIdGeocodingOptions = BaseGeocodingOptions;
 
 export type Coordinates = Position;
 
@@ -265,6 +270,19 @@ export type GeocodingSearchResult = {
   attribution: string;
 };
 
+function addBaseGeocodingOptions(
+  searchParams: URLSearchParams,
+  options: BaseGeocodingOptions,
+) {
+  const { adjustSearchParams, apiKey } = options;
+
+  if (typeof adjustSearchParams === "function") {
+    adjustSearchParams(searchParams);
+  }
+
+  searchParams.set("key", apiKey ?? config.apiKey);
+}
+
 function addLanguageGeocodingOptions(
   searchParams: URLSearchParams,
   options: LanguageGeocodingOptions,
@@ -306,9 +324,7 @@ function addCommonForwardAndReverseGeocodingOptions(
   searchParams: URLSearchParams,
   options: CommonForwardAndReverseGeocodingOptions,
 ) {
-  const { apiKey, limit, types, excludeTypes } = options;
-
-  searchParams.set("key", apiKey ?? config.apiKey);
+  const { limit, types, excludeTypes } = options;
 
   if (limit !== undefined) {
     searchParams.set("limit", String(limit));
@@ -321,16 +337,12 @@ function addCommonForwardAndReverseGeocodingOptions(
   if (excludeTypes !== undefined) {
     searchParams.set("excludeTypes", String(excludeTypes));
   }
-
-  addLanguageGeocodingOptions(searchParams, options);
 }
 
 function addForwardGeocodingOptions(
   searchParams: URLSearchParams,
   options: GeocodingOptions,
 ) {
-  addCommonForwardAndReverseGeocodingOptions(searchParams, options);
-
   const { bbox, proximity, country, fuzzyMatch, autocomplete } = options;
 
   if (bbox !== undefined) {
@@ -381,6 +393,9 @@ async function forward(
     defaults.maptilerApiURL,
   );
 
+  addBaseGeocodingOptions(endpoint.searchParams, options);
+  addLanguageGeocodingOptions(endpoint.searchParams, options);
+  addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
   addForwardGeocodingOptions(endpoint.searchParams, options);
 
   const res = await callFetch(endpoint.toString());
@@ -415,6 +430,8 @@ async function reverse(
     defaults.maptilerApiURL,
   );
 
+  addBaseGeocodingOptions(endpoint.searchParams, options);
+  addLanguageGeocodingOptions(endpoint.searchParams, options);
   addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
 
   const res = await callFetch(endpoint.toString());
@@ -443,8 +460,7 @@ async function byId(
 ): Promise<GeocodingSearchResult> {
   const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
 
-  endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
-
+  addBaseGeocodingOptions(endpoint.searchParams, options);
   addLanguageGeocodingOptions(endpoint.searchParams, options);
 
   const res = await callFetch(endpoint.toString());
@@ -483,6 +499,9 @@ async function batch(
     defaults.maptilerApiURL,
   );
 
+  addBaseGeocodingOptions(endpoint.searchParams, options);
+  addLanguageGeocodingOptions(endpoint.searchParams, options);
+  addCommonForwardAndReverseGeocodingOptions(endpoint.searchParams, options);
   addForwardGeocodingOptions(endpoint.searchParams, options);
 
   const res = await callFetch(endpoint.toString());

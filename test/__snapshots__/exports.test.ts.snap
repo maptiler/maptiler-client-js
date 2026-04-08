@@ -4,6 +4,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
 {
   "AutomaticStaticMapOptions": "any",
   "BBox": "any",
+  "BaseGeocodingOptions": "any",
   "BoundedStaticMapOptions": "any",
   "BufferToPixelDataFunction": "any",
   "ByIdGeocodingOptions": "any",
@@ -68,6 +69,12 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DEFAULT",
       "LIGHT",
     ],
+    "BASE": [
+      "AI",
+      "DARK",
+      "DEFAULT",
+      "LIGHT",
+    ],
     "BASE_V4": [
       "AI",
       "DARK",
@@ -106,6 +113,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "LIGHT",
     ],
     "HYBRID": [
+      "DARK",
       "DEFAULT",
     ],
     "HYBRID_V2": [
@@ -131,6 +139,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "VIVID",
     ],
     "OCEAN": [
+      "DARK",
       "DEFAULT",
     ],
     "OCEAN_V2": [
@@ -157,6 +166,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DEFAULT",
     ],
     "SATELLITE": [
+      "DARK",
       "DEFAULT",
     ],
     "SATELLITE_V2": [
@@ -169,8 +179,6 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
     "STREETS": [
       "DARK",
       "DEFAULT",
-      "LIGHT",
-      "NIGHT",
       "PASTEL",
     ],
     "STREETS_V2": [
@@ -201,7 +209,6 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DARK",
       "DEFAULT",
       "PASTEL",
-      "SHINY",
       "TOPOGRAPHIQUE",
     ],
     "TOPO_V2": [
@@ -263,9 +270,10 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
   "config": "ClientConfig",
   "coordinates": "{ search: (query: string, options?: CoordinatesSearchOptions) => Promise<CoordinateSearchResult>; transform: (positions: Position | Position[], options?: CoordinatesTransformOptions) => Promise<...>; }",
   "data": "{ get: (dataId: string, options?: GetDataOptions) => Promise<FeatureCollection<Geometry, { [name: string]: any; }>>; }",
+  "defaultReferenceStyleMap": "{ readonly STREETS: \\"STREETS_V4\\"; readonly BASIC: \\"BASIC_V2\\"; readonly BASE: \\"BASE_V4\\"; readonly LANDSCAPE: \\"LANDSCAPE_V4\\"; readonly AQUARELLE: \\"AQUARELLE_V4\\"; readonly SATELLITE: \\"SATELLITE_V4\\"; ... 8 more ...; readonly VOYAGER: \\"VOYAGER_V2\\"; }",
   "elevation": "{ at: (position: Position, options?: ElevationAtOptions) => Promise<Position>; batch: (positions: Position[], options?: ElevationBatchOptions) => Promise<...>; fromLineString: (ls: LineString, options?: ElevationBatchOptions) => Promise<...>; fromMultiLineString: (ls: MultiLineString, options?: ElevationBatchOptions...",
   "expandMapStyle": "(style: any) => string",
-  "geocoding": "{ forward: (query: string, options?: GeocodingOptions) => Promise<GeocodingSearchResult>; reverse: (position: Position, options?: CommonForwardAndReverseGeocodingOptions) => Promise<...>; byId: (id: string, options?: ByIdGeocodingOptions) => Promise<...>; batch: (queries: string[], options?: GeocodingOptions) => Pro...",
+  "geocoding": "{ forward: (query: string, options?: GeocodingOptions) => Promise<GeocodingSearchResult>; reverse: (position: Position, options?: CommonForwardAndReverseGeocodingOptions) => Promise<...>; byId: (id: string, options?: BaseGeocodingOptions) => Promise<...>; batch: (queries: string[], options?: GeocodingOptions) => Pro...",
   "geolocation": "{ info: (options?: GeolocationInfoOptions) => Promise<GeolocationResult>; }",
   "getAutoLanguage": "() => LanguageInfo",
   "getBufferToPixelDataParser": "() => BufferToPixelDataFunction",

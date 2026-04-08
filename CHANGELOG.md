@@ -1,4 +1,21 @@
 # MapTiler Client Changelog
+
+## 3.0.0
+
+### ⚠️ Breaking Changes
+- The default styles of Satellite, Hybrid, Dataviz, Outdoor, Winter, Backdrop, Aquarelle, Ocean, Top, Base and Landscape all point to v4 as their default style. V2 styles are still available under under the `_V2` suffixed namespace eg `MapStyle.STREETS_V2.DEFAULT`.
+
+### New Features
+- Adds new option `adjustSearchParams` to all functions in `geocoding` module
+
+### Bug Fixes
+- Fixes `elevation.batch` skipping the last kernel (group of coordinates) when smoothing the result
+- Fixes language helpers `toLanguageInfo` and `areSameLanguages` not working with keys from `Language` enum (like `"ENGLISH"`)
+- Fixes language helper `areSameLanguages` to always return boolean (it could return `null` before)
+
+### Others
+- Default value of `types` option of Geocoding API Client changed, TSDoc now links to API docs instead of listing the default types explicitly
+
 ## 2.7.0
 
 ### New Features
@@ -39,15 +56,11 @@
 
 
 ### Bug fixes
-None
+- `math.latitudeToMercatorY` now always returns a value that is valid in Web Mercator context.
 
 ### Others
 - Switches from explicit exported types to inferred types for the `MapStyle`export.
 - Adds testing for type and member exports.
-
-## NEXT
-### Bug Fixes
-- `math.latitudeToMercatorY` now always returns a value that is valid in Web Mercator context.
 
 ## 2.6.0
 ### New Features
