@@ -12,6 +12,10 @@
     "require": "./dist/maptiler-client.cjs",
     "types": "./dist/maptiler-client.d.ts"
   },
+  "files": [
+    "dist",
+    "!dist/*.umd.*"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
