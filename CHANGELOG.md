@@ -1,5 +1,10 @@
 # MapTiler Client Changelog
 
+## 3.0.1
+
+### Bug Fixes
+- Fixes content of published npm package to contain only necessary files (no change for UMD)
+
 ## 3.0.0
 
 ### ⚠️ Breaking Changes

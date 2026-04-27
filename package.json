@@ -1,6 +1,6 @@
 {
   "name": "@maptiler/client",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Javascript & Typescript wrapper to MapTiler Cloud API",
   "module": "dist/maptiler-client.mjs",
   "types": "dist/maptiler-client.d.ts",
@@ -12,6 +12,10 @@
     "require": "./dist/maptiler-client.cjs",
     "types": "./dist/maptiler-client.d.ts"
   },
+  "files": [
+    "dist",
+    "!dist/*.umd.*"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
