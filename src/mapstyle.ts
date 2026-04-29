@@ -405,7 +405,7 @@ const MAP_STYLE_CONFIG = [
   },
 
   {
-    referenceStyleID: "OUTDOOR",
+    referenceStyleID: "OUTDOOR_V2",
     name: "Outdoor",
     description: "",
     variants: [
@@ -1130,7 +1130,6 @@ const MAP_STYLE_CONFIG = [
 /**
  * Map of default reference styles to their versioned counterparts.
  * This is make it easier to version the default reference styles.
- * Note: the type definition `MapStyleType` will need to be updated to reflect this.
  */
 export const defaultReferenceStyleMap = {
   STREETS: "STREETS_V4",
