@@ -1,6 +1,6 @@
 # MapTiler Client Changelog
 
-## Next
+## 3.0.2
 ### Bug Fixes
 - Correctly maps Outdoor v4 mapstyle tou `OUTDOOR_V4` namespace.
 
