@@ -8,7 +8,7 @@
 - None
 
 ### Others
-- Removes versios from `.name` field in mapstyle config.
+- Removes version from `.name` field in mapstyle config.
 
 ## 3.0.1
 
