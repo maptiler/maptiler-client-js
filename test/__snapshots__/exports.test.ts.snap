@@ -161,6 +161,10 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
       "DARK",
       "DEFAULT",
     ],
+    "OUTDOOR_V2": [
+      "DARK",
+      "DEFAULT",
+    ],
     "OUTDOOR_V4": [
       "DARK",
       "DEFAULT",
