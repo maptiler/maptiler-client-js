@@ -295,7 +295,7 @@ const MAP_STYLE_CONFIG = [
     variants: [
       {
         id: "streets-v2",
-        name: "Default v2",
+        name: "Default",
         variantType: "DEFAULT",
         description: "",
         imageURL: "",
@@ -304,7 +304,7 @@ const MAP_STYLE_CONFIG = [
       },
       {
         id: "streets-v2-dark",
-        name: "Dark v2",
+        name: "Dark",
         variantType: "DARK",
         description: "",
         imageURL: "",
@@ -313,7 +313,7 @@ const MAP_STYLE_CONFIG = [
       },
       {
         id: "streets-v2-light",
-        name: "Light v2",
+        name: "Light",
         variantType: "LIGHT",
         description: "",
         imageURL: "",
@@ -322,7 +322,7 @@ const MAP_STYLE_CONFIG = [
       },
       {
         id: "streets-v2-night",
-        name: "Night v2",
+        name: "Night",
         variantType: "NIGHT",
         description: "",
         imageURL: "",
@@ -331,7 +331,7 @@ const MAP_STYLE_CONFIG = [
       },
       {
         id: "streets-v2-pastel",
-        name: "Pastel v2",
+        name: "Pastel",
         variantType: "PASTEL",
         description: "",
         imageURL: "",
@@ -396,7 +396,7 @@ const MAP_STYLE_CONFIG = [
       },
       {
         id: "base-v4-ai",
-        name: "Base AI",
+        name: "AI",
         variantType: "AI",
         description: "",
         imageURL: "",
@@ -405,7 +405,7 @@ const MAP_STYLE_CONFIG = [
   },
 
   {
-    referenceStyleID: "OUTDOOR",
+    referenceStyleID: "OUTDOOR_V2",
     name: "Outdoor",
     description: "",
     variants: [
@@ -945,7 +945,7 @@ const MAP_STYLE_CONFIG = [
   },
   {
     referenceStyleID: "SATELLITE_V4",
-    name: "Satellite v4",
+    name: "Satellite",
     description: "",
     variants: [
       {
@@ -1130,7 +1130,6 @@ const MAP_STYLE_CONFIG = [
 /**
  * Map of default reference styles to their versioned counterparts.
  * This is make it easier to version the default reference styles.
- * Note: the type definition `MapStyleType` will need to be updated to reflect this.
  */
 export const defaultReferenceStyleMap = {
   STREETS: "STREETS_V4",
@@ -1142,6 +1141,7 @@ export const defaultReferenceStyleMap = {
   WINTER: "WINTER_V4",
   HYBRID: "HYBRID_V4",
   OCEAN: "OCEAN_V4",
+  OUTDOOR: "OUTDOOR_V4",
   TONER: "TONER_V2",
   TOPO: "TOPO_V4",
   OPENSTREETMAP: "OPENSTREETMAP_V2",
