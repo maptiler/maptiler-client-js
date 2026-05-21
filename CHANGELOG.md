@@ -1,5 +1,10 @@
 # MapTiler Client Changelog
 
+## NEXT
+
+### New Features
+- Adds new API client module for MapTiler Routing API (experimental)
+
 ## 3.0.2
 ### Bug Fixes
 - Correctly maps Outdoor v4 mapstyle tou `OUTDOOR_V4` namespace.
