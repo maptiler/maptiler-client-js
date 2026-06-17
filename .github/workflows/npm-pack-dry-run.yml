@@ -1,15 +1,27 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
 
-name: Node.js Package
+name: Node.js Package (dry-run)
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
+    paths:
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "rollup.config.js"
+      - "tsconfig.json"
+      - ".github/workflows/npm-publish-dry-run.yml"
+
+concurrency:
+  group: npm-pack-dry-run-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -18,11 +30,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: lts/*
           registry-url: https://registry.npmjs.org/
-
-      - name: Clear NPM cache
-        run: npm cache clean --force
+          cache: "npm"
+          cache-dependency-path: ./package-lock.json
 
       - name: Install dependencies and build
         run: npm ci
@@ -36,16 +47,6 @@ jobs:
         run: exit 1
 
         id: check-build-status
-      - name: Publish NPM package (regular)
-        if: "!github.event.release.prerelease"
+      - name: Pack NPM package
         run: |
-          npm publish --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-
-      - name: Publish NPM package (pre-release)
-        if: "github.event.release.prerelease"
-        run: |
-          npm publish --tag next --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          npm pack --dry-run

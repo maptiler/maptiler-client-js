@@ -10,6 +10,7 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -18,11 +19,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: lts/*
           registry-url: https://registry.npmjs.org/
-
-      - name: Clear NPM cache
-        run: npm cache clean --force
+          cache: "npm"
+          cache-dependency-path: ./package-lock.json
 
       - name: Install dependencies and build
         run: npm ci
