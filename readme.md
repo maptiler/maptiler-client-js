@@ -23,7 +23,7 @@ The project is entirely written in TypeScript and all the function arguments are
 [![](https://img.shields.io/npm/v/@maptiler/client?style=for-the-badge&labelColor=D3DBEC&color=f2f6ff&logo=npm&logoColor=333359)](https://www.npmjs.com/package/@maptiler/client) ![](https://img.shields.io/badge/-white?style=for-the-badge&logo=javascript)![](https://img.shields.io/badge/-white?style=for-the-badge&logo=typescript)
 ---
 
-📖 [Documentation](https://docs.maptiler.com/client-js/) &nbsp; 📦 [NPM Package](https://www.npmjs.com/package/@maptiler/client) &nbsp; 🌐 [Website](https://docs.maptiler.com/client-js/) &nbsp; 🔑 [Get API Key](https://cloud.maptiler.com/account/keys/)
+📖 [Documentation](https://docs.maptiler.com/cloud/api/) &nbsp; 📦 [NPM Package](https://www.npmjs.com/package/@maptiler/client) &nbsp; 🌐 [Website](https://docs.maptiler.com/client-js/) &nbsp; 🔑 [Get API Key](https://cloud.maptiler.com/account/keys/)
 
 ---
 
@@ -106,7 +106,7 @@ The [examples](examples/) folder includes usages for **NodeJS**, **browser with 
 
 For detailed guides, API reference, and advanced examples, visit our comprehensive documentation:
 
-[API documentation](https://docs.maptiler.com/client-js/)
+[API documentation](https://docs.maptiler.com/cloud/api/)
 
 ### Easy access to MapTiler API
 
@@ -115,6 +115,8 @@ Here is the list of service wrapper functions that are built-in:
 ### 🔍 Geocoding
 
 > ✅ Please, use geocoding functions only from client-side (browser) and do not 🚫 **store** or **redistribute** MapTiler Cloud API data. In case of doubt, consult the [terms](https://www.maptiler.com/cloud/terms/#explicitly-prohibited-use) ⚖️
+
+Read more about geocoding, including forward, reverse, batch, and usage examples, in our [Geocoding API documentation](https://docs.maptiler.com/cloud/api/geocoding/).
 
 #### Forward
 
@@ -128,8 +130,6 @@ You can provide some options, such as:
 - one of more languages to get the results into
 - a bounding geo box, to restrict the search to a given window
 
-Read more about forward geocoding, as well as feature ID query and batch forward geocoding, on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#forward).
-
 #### Reverse
 
 You want to know the name of a place, given a longitude-latitude? Use the reverse geocoding:
@@ -138,8 +138,6 @@ You want to know the name of a place, given a longitude-latitude? Use the revers
 const result = await maptilerClient.geocoding.reverse([6.249638, 46.402056]);
 ```
 The same option object as the forward geocoding can be provided.
-
-Read more about reverse geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#reverse).
 
 #### Language
 
@@ -165,8 +163,6 @@ There is only a single function:
 const result = await maptilerClient.geolocation.info();
 ```
 
-Read more about geolocation on our [official documentation](https://docs.maptiler.com/client-js/geolocation/).
-
 ### 🌐 Coordinates
 
 If you are already familiar with [epsg.io](https://epsg.io/) (created by MapTiler), then you may find it convenient to access the details of more than 10 thousands of coordinate reference systems (CRS) programmatically, as well as transforming coordinates from one system to another!
@@ -184,8 +180,6 @@ const resultD = await maptilerClient.coordinates.search('code:4326', {transforma
 
 The `transformations` options retrieve a lot more details about the CRS that MapTiler API is able to transform to/from than just their IDs.
 
-Read more about searching coordinate systems in our [official documentation](https://docs.maptiler.com/client-js/coordinates/#search).
-
 #### Transform
 
 Transforming a couple of coordinates from one system to another can be challenging, for example, most countries have their own official system, yet web mapping tools are more often than not exclusive to [WGS84](https://epsg.io/4326).
@@ -202,8 +196,6 @@ const resultA = await maptilerClient.coordinates.transform([1, 45], {targetCrs: 
 const resultB = await maptilerClient.coordinates.transform([[10, 48], [1, 45]], {targetCrs: 9793})
 ```
 
-Read more about transforming coordinates on our [official documentation](https://docs.maptiler.com/client-js/coordinates/#transform).
-
 ### 💽 Data
 
 MapTiler Cloud give its users the possibility to [upload and create data](https://cloud.maptiler.com/data/), manually with a user interface or by uploading a GPX, GeoJSON, KML or shp file. A unique ID is associated with each dataset so that we can later on access it programmatically to retrieve a GeoJSON equivalent of it:
@@ -214,8 +206,6 @@ const result = await maptilerClient.data.get('my-dataset-unique-id')
 ```
 
 Since the result is a GeoJSON, it can easily be added to a `map` with `.addSource()` and `.addLayer()`.
-
-Read more about fetching your own data on our [official documentation](https://docs.maptiler.com/client-js/data/).
 
 ### 🗺️ Static maps
 
@@ -298,7 +288,7 @@ const imageLink = maptilerClient.staticMaps.centered(
   });
 ```
 
-Read more about centered static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#center-based-image).
+Read more about centered static maps in our official [Static maps API documentation](https://docs.maptiler.com/cloud/api/static-maps/#center-based-image).
 
 #### Bounded static maps
 
@@ -408,8 +398,6 @@ const elevatedPosition = await maptilerClient.elevation.at(montBlancPeak);
 ```
 The returned value is also a *GeoJSON* `Position` array, but with three elements: `[lng, lat, elevation]`.
 
-Read more about elevation lookup for a single location in our [official documentation](https://docs.maptiler.com/client-js/elevation/#at).
-
 #### Batch mode
 
 ```ts
@@ -431,8 +419,6 @@ const peaks: Position[] = [
 const elevatedPeaks = await maptilerClient.elevation.batch(peaks);
 ```
 
-Read more about elevation lookup for a batch of locations in our [official documentation](https://docs.maptiler.com/client-js/elevation/#batch).
-
 #### From a GeoJSON LineString
 
 In the *GeoJSON* LineString case, it clones the entire structure and the positions arrays of the clone will contain three elements: `[lng, lat, elevation]`. The original LineString is not mutated nor pointed at.
@@ -450,8 +436,6 @@ const someLineString: LineString = {
 const someElevatedLineString = await maptilerClient.elevation.fromLineString(someLineString);
 // someElevatedLineString is also of type LineString
 ```
-
-Read more about elevation lookup for a `LineString` in our [official documentation](https://docs.maptiler.com/client-js/elevation/#linestring).
 
 #### From a GeoJSON MultiLineString
 
@@ -474,8 +458,6 @@ const someMultiLineString: MultiLineString = {
 const someElevatedMultiLineString = await maptilerClient.elevation.fromMultiLineString(someMultiLineString);
 // someElevatedMultiLineString is also of type MultiLineString
 ```
-
-Read more about elevation lookup for a `MultiLineString` in our [official documentation](https://docs.maptiler.com/client-js/elevation/#multilinestring).
 
 #### Caching
 
@@ -521,13 +503,11 @@ const tileXY = maptilerClient.math.wgs84ToTileIndex(montBlancPeakWgs84, 14);
 // and many more!
 ```
 
-Please find out more about the math package in our [official documentation](https://docs.maptiler.com/client-js/math).
-
 <br>
 
 ## 💬 Support
 
-- 📚 [Documentation](https://docs.maptiler.com/client-js/) - Comprehensive guides and API reference
+- 📚 [Documentation](https://docs.maptiler.com/cloud/api/) - Comprehensive guides and API reference
 - ✉️ [Contact us](https://maptiler.com/contact) - Get in touch or submit a request
 - 🐦 [Twitter/X](https://twitter.com/maptiler) - Follow us for updates
 
@@ -566,6 +546,6 @@ The data fetched from MapTiler Cloud API, with or without this library, cannot b
 <p align="center"> 💜 Made with love by the <a href="https://www.maptiler.com/">MapTiler</a> team <br />
 <p align="center">
   <a href="https://docs.maptiler.com/client-js/">Website</a> •
-  <a href="https://docs.maptiler.com/client-js/">Documentation</a> •
+  <a href="https://docs.maptiler.com/cloud/api/">Documentation</a> •
   <a href="https://github.com/maptiler/maptiler-client-js">GitHub</a>
 </p>

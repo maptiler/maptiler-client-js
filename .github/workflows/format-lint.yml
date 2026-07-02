@@ -1,18 +1,36 @@
 name: Format, Lint and Test
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "src/**"
+      - "test/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - ".eslintrc.cjs"
+      - "rollup.config.js"
+      - ".github/workflows/format-lint.yml"
+
+concurrency:
+  group: format-lint-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   format-lint-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: lts/*
+          cache: "npm"
+          cache-dependency-path: ./package-lock.json
 
       - name: Install Node.js dependencies
         run: npm ci
