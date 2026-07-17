@@ -2,7 +2,6 @@ import { LineString, MultiLineString, Position } from "geojson";
 
 import { callFetch } from "../callFetch";
 import { config } from "../config";
-import { defaults } from "../defaults";
 import { ServiceError } from "./ServiceError";
 import { math } from "./math";
 import {
@@ -69,10 +68,7 @@ async function computeOnServer(
       const startPos = part * API_BATCH_SIZE;
       const batch = positions.slice(startPos, startPos + API_BATCH_SIZE);
       const batchEncoded = batch.map((pos) => pos.join(",")).join(";");
-      const endpoint = new URL(
-        `elevation/${batchEncoded}.json`,
-        defaults.maptilerApiURL,
-      );
+      const endpoint = new URL(`elevation/${batchEncoded}.json`, config.apiURL);
       endpoint.searchParams.set("key", apiKey);
       return callFetch(endpoint.toString());
     },
@@ -109,7 +105,7 @@ async function computeOnClient(
   if (!terrainTileJson) {
     const endpoint = new URL(
       `tiles/${TERRAIN_TILESET}/tiles.json`,
-      defaults.maptilerApiURL,
+      config.apiURL,
     );
     endpoint.searchParams.set("key", apiKey);
     const urlWithParams = endpoint.toString();

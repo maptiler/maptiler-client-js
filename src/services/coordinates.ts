@@ -1,7 +1,6 @@
 import { BBox, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
-import { defaults } from "../defaults";
 import { ServiceError } from "./ServiceError";
 
 const customMessages = {
@@ -120,10 +119,7 @@ async function search(
     throw new Error("The query must be a non-empty string");
   }
 
-  const endpoint = new URL(
-    `coordinates/search/${query}.json`,
-    defaults.maptilerApiURL,
-  );
+  const endpoint = new URL(`coordinates/search/${query}.json`, config.apiURL);
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("limit" in options) {
@@ -215,7 +211,7 @@ async function transform(
 
   const endpoint = new URL(
     `coordinates/transform/${coordinatesStr}.json`,
-    defaults.maptilerApiURL,
+    config.apiURL,
   );
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 

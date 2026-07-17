@@ -1,7 +1,6 @@
 import { BBox } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
-import { defaults } from "../defaults";
 import { ServiceError } from "./ServiceError";
 
 const customMessages = {
@@ -123,7 +122,7 @@ export type GeolocationResult = {
 async function info(
   options: GeolocationInfoOptions = {},
 ): Promise<GeolocationResult> {
-  const endpoint = new URL(`geolocation/ip.json`, defaults.maptilerApiURL);
+  const endpoint = new URL(`geolocation/ip.json`, config.apiURL);
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
 
   if ("elevation" in options) {
