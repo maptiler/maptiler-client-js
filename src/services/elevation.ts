@@ -16,6 +16,7 @@ const API_BATCH_SIZE = 50;
 const API_WARN_SIZE = 1000;
 
 let terrainTileJson: TileJSON = null;
+let terrainTileJsonHost: string | null = null;
 
 export type ElevationAtOptions = {
   /**
@@ -101,8 +102,9 @@ async function computeOnClient(
   apiKey: string,
   zoom?: number,
 ): Promise<Position[]> {
-  // Fetch terrain TileJSON
-  if (!terrainTileJson) {
+  // Fetch terrain TileJSON, re-fetching if the configured API host changed
+  // since the last fetch (eg. after config.useEuEndpoints() is toggled)
+  if (!terrainTileJson || terrainTileJsonHost !== config.apiHost) {
     const endpoint = new URL(
       `tiles/${TERRAIN_TILESET}/tiles.json`,
       config.apiURL,
@@ -112,6 +114,7 @@ async function computeOnClient(
     const res = await callFetch(urlWithParams);
     if (res.ok) {
       terrainTileJson = (await res.json()) as TileJSON;
+      terrainTileJsonHost = config.apiHost;
     } else {
       throw new ServiceError(res, customMessages[res.status] ?? "");
     }

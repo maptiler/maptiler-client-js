@@ -65,6 +65,43 @@ describe("elevation.batch()", () => {
     );
   });
 
+  it("re-fetches the terrain TileJSON when the API host changes via useEuEndpoints()", async () => {
+    const tilesJsonCallsFor = (host: string) =>
+      (callFetch as Mock).mock.calls.filter(([url]: [string]) =>
+        url.includes("tiles.json"),
+      ).filter(([url]: [string]) => new URL(url).host === host);
+
+    (callFetch as Mock).mockImplementation((url: string) => {
+      if (url.includes("tiles.json")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              tiles: [`https://${new URL(url).host}/tiles/{z}/{x}/{y}.webp`],
+              maxzoom: 12,
+            }),
+        });
+      }
+      // Individual tile fetches are left failing: this test only cares
+      // about whether the TileJSON itself gets re-fetched from the right host.
+      return Promise.resolve({ ok: false, status: 500 });
+    });
+
+    await elevation.batch([[10, 20]], { computeOn: "client" }).catch(() => {});
+    expect(tilesJsonCallsFor("api.maptiler.com")).toHaveLength(1);
+
+    // Same host again: the cached TileJSON should be reused, not re-fetched.
+    await elevation.batch([[10, 20]], { computeOn: "client" }).catch(() => {});
+    expect(tilesJsonCallsFor("api.maptiler.com")).toHaveLength(1);
+
+    // Switching host must invalidate the cache and re-fetch from the new host.
+    config.useEuEndpoints(true);
+    await elevation.batch([[10, 20]], { computeOn: "client" }).catch(() => {});
+    expect(tilesJsonCallsFor("api.maptiler.eu")).toHaveLength(1);
+
+    config.useEuEndpoints(false);
+  });
+
   it("applies smoothing kernel", async () => {
     (callFetch as Mock).mockResolvedValue({
       ok: true,
