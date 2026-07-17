@@ -103,9 +103,7 @@ class ClientConfig {
    * (`https://api.maptiler.com/` or `https://api.maptiler.eu/`)
    */
   get apiURL(): string {
-    return this._useEuEndpoints
-      ? defaults.euMaptilerApiURL
-      : defaults.maptilerApiURL;
+    return `https://${this.apiHost}/`;
   }
 }
 
