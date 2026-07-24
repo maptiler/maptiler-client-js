@@ -80,6 +80,7 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
+    "@googlemaps/polyline-codec": "^1.0.28",
     "quick-lru": "^7.0.0"
   }
 }

@@ -25,7 +25,7 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: ["quick-lru"]
+    external: ["@googlemaps/polyline-codec", "quick-lru"]
   },
 
   // CJS module, not minified + sourcemap
@@ -106,7 +106,7 @@ if (process.env.NODE_ENV === "production") {
       }
     ],
     input: "src/index.ts",
-    external: ["quick-lru"],
+    external: ["@googlemaps/polyline-codec", "quick-lru"],
   },
   {
     plugins: [

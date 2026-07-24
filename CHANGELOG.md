@@ -1,5 +1,9 @@
 # MapTiler Client Changelog
 
+## NEXT
+### New Features
+- Adds new API client module for MapTiler Routing API (experimental)
+
 ## 3.1.0
 ### New Features
 - Adds support for api.maptiler.eu API endpoint via `config` object
