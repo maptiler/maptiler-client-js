@@ -73,7 +73,7 @@
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-swc": "^0.2.1",
     "serve": "^14.1.1",
-    "sharp": "^0.32.6",
+    "sharp": "^0.35.0",
     "typedoc": "^0.25.2",
     "typedoc-plugin-markdown": "^3.16.0",
     "typescript": "^5.2.2",
