@@ -103,7 +103,7 @@ async function computeOnClient(
   zoom?: number,
 ): Promise<Position[]> {
   // Fetch terrain TileJSON, re-fetching if the configured API host changed
-  // since the last fetch (eg. after config.useEuEndpoints() is toggled)
+  // since the last fetch (eg. after config.useEuEndpoints is toggled)
   if (!terrainTileJson || terrainTileJsonHost !== config.apiHost) {
     const endpoint = new URL(
       `tiles/${TERRAIN_TILESET}/tiles.json`,

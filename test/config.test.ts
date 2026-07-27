@@ -2,38 +2,30 @@ import { describe, it, expect, afterEach } from "vitest";
 
 import { config } from "../src/config";
 
-describe("config.useEuEndpoints()", () => {
+describe("config.useEuEndpoints", () => {
   afterEach(() => {
-    config.useEuEndpoints(false);
+    config.useEuEndpoints = false;
   });
 
   it("defaults to the .com host", () => {
-    expect(config.isUsingEuEndpoints).toBe(false);
+    expect(config.useEuEndpoints).toBe(false);
     expect(config.apiHost).toBe("api.maptiler.com");
     expect(config.apiURL).toBe("https://api.maptiler.com/");
   });
 
-  it("switches to the .eu host when called with no argument", () => {
-    config.useEuEndpoints();
+  it("switches to the .eu host when set to true", () => {
+    config.useEuEndpoints = true;
 
-    expect(config.isUsingEuEndpoints).toBe(true);
+    expect(config.useEuEndpoints).toBe(true);
     expect(config.apiHost).toBe("api.maptiler.eu");
     expect(config.apiURL).toBe("https://api.maptiler.eu/");
   });
 
-  it("switches to the .eu host when called with true", () => {
-    config.useEuEndpoints(true);
+  it("switches back to the .com host when set to false", () => {
+    config.useEuEndpoints = true;
+    config.useEuEndpoints = false;
 
-    expect(config.isUsingEuEndpoints).toBe(true);
-    expect(config.apiHost).toBe("api.maptiler.eu");
-    expect(config.apiURL).toBe("https://api.maptiler.eu/");
-  });
-
-  it("switches back to the .com host when called with false", () => {
-    config.useEuEndpoints(true);
-    config.useEuEndpoints(false);
-
-    expect(config.isUsingEuEndpoints).toBe(false);
+    expect(config.useEuEndpoints).toBe(false);
     expect(config.apiHost).toBe("api.maptiler.com");
     expect(config.apiURL).toBe("https://api.maptiler.com/");
   });

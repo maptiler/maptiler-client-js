@@ -3,7 +3,7 @@ import { BufferToPixelDataFunction } from "./tiledecoding";
 /**
  * The only two hosts the MapTiler Cloud API is served from.
  * Not exported: the API host must always be read through `config.apiHost`/`config.apiURL`
- * so that `useEuEndpoints()` is honored everywhere.
+ * so that `useEuEndpoints` is honored everywhere.
  */
 const DEFAULT_API_HOST = "api.maptiler.com";
 const EU_API_HOST = "api.maptiler.eu";
@@ -83,16 +83,16 @@ class ClientConfig {
 
   /**
    * Switch between the default `api.maptiler.com` host and the EU-based `api.maptiler.eu` host.
-   * Call with `false` to switch back to the default.
+   * Set to `false` to switch back to the default.
    */
-  useEuEndpoints(value = true): void {
+  set useEuEndpoints(value: boolean) {
     this._useEuEndpoints = value;
   }
 
   /**
    * Whether the EU-based `api.maptiler.eu` host is currently in use instead of the default `api.maptiler.com`
    */
-  get isUsingEuEndpoints(): boolean {
+  get useEuEndpoints(): boolean {
     return this._useEuEndpoints;
   }
 

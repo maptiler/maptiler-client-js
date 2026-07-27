@@ -65,7 +65,7 @@ describe("elevation.batch()", () => {
     );
   });
 
-  it("re-fetches the terrain TileJSON when the API host changes via useEuEndpoints()", async () => {
+  it("re-fetches the terrain TileJSON when the API host changes via useEuEndpoints", async () => {
     const tilesJsonCallsFor = (host: string) =>
       (callFetch as Mock).mock.calls.filter(([url]: [string]) =>
         url.includes("tiles.json"),
@@ -95,11 +95,11 @@ describe("elevation.batch()", () => {
     expect(tilesJsonCallsFor("api.maptiler.com")).toHaveLength(1);
 
     // Switching host must invalidate the cache and re-fetch from the new host.
-    config.useEuEndpoints(true);
+    config.useEuEndpoints = true;
     await elevation.batch([[10, 20]], { computeOn: "client" }).catch(() => {});
     expect(tilesJsonCallsFor("api.maptiler.eu")).toHaveLength(1);
 
-    config.useEuEndpoints(false);
+    config.useEuEndpoints = false;
   });
 
   it("applies smoothing kernel", async () => {

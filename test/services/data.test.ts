@@ -24,7 +24,7 @@ describe("data.get()", () => {
   });
 
   afterEach(() => {
-    config.useEuEndpoints(false);
+    config.useEuEndpoints = false;
   });
 
   it("throws when dataId is not a non-empty string", async () => {
@@ -65,13 +65,13 @@ describe("data.get()", () => {
     expect(url.searchParams.get("key")).toBe("TEST_KEY");
   });
 
-  it("uses the .eu host once useEuEndpoints() is enabled", async () => {
+  it("uses the .eu host once useEuEndpoints is enabled", async () => {
     (callFetch as Mock).mockResolvedValue({
       ok: true,
       json: () => Promise.resolve({ type: "FeatureCollection", features: [] }),
     });
 
-    config.useEuEndpoints();
+    config.useEuEndpoints = true;
     await data.get("abc");
 
     const url = new URL((callFetch as Mock).mock.calls[0][0]);
