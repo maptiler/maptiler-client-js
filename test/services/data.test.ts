@@ -1,4 +1,12 @@
-import { describe, it, expect, beforeEach, vi, type Mock } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  afterEach,
+  vi,
+  type Mock,
+} from "vitest";
 
 vi.mock("../../src/callFetch", () => ({
   callFetch: vi.fn(),
@@ -13,6 +21,10 @@ describe("data.get()", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     config.apiKey = "TEST_KEY";
+  });
+
+  afterEach(() => {
+    config.useEuEndpoints = false;
   });
 
   it("throws when dataId is not a non-empty string", async () => {
@@ -51,6 +63,19 @@ describe("data.get()", () => {
 
     expect(url.pathname).toBe("/data/abc/features.json");
     expect(url.searchParams.get("key")).toBe("TEST_KEY");
+  });
+
+  it("uses the .eu host once useEuEndpoints is enabled", async () => {
+    (callFetch as Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ type: "FeatureCollection", features: [] }),
+    });
+
+    config.useEuEndpoints = true;
+    await data.get("abc");
+
+    const url = new URL((callFetch as Mock).mock.calls[0][0]);
+    expect(url.host).toBe("api.maptiler.eu");
   });
 
   it("throws ServiceError for 403", async () => {

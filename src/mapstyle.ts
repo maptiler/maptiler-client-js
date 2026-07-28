@@ -1,3 +1,5 @@
+import { config } from "./config";
+
 /**
  * Expand the map style provided as argument of the Map constructor
  * @param style
@@ -14,10 +16,10 @@ export function expandMapStyle(style): string {
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
     expandedStyle = trimmed;
   } else if ((match = maptilerDomainRegex.exec(trimmed)) !== null) {
-    expandedStyle = `https://api.maptiler.com/maps/${match[1]}/style.json`;
+    expandedStyle = `${config.apiURL}maps/${match[1]}/style.json`;
   } else {
     // The style could also possibly just be the name of the style without any URI style
-    expandedStyle = `https://api.maptiler.com/maps/${trimmed}/style.json`;
+    expandedStyle = `${config.apiURL}maps/${trimmed}/style.json`;
   }
 
   return expandedStyle;
