@@ -2,7 +2,6 @@ import { LineString, MultiLineString, Position } from "geojson";
 
 import { callFetch } from "../callFetch";
 import { config } from "../config";
-import { defaults } from "../defaults";
 import { ServiceError } from "./ServiceError";
 import { math } from "./math";
 import {
@@ -17,6 +16,7 @@ const API_BATCH_SIZE = 50;
 const API_WARN_SIZE = 1000;
 
 let terrainTileJson: TileJSON = null;
+let terrainTileJsonHost: string | null = null;
 
 export type ElevationAtOptions = {
   /**
@@ -69,10 +69,7 @@ async function computeOnServer(
       const startPos = part * API_BATCH_SIZE;
       const batch = positions.slice(startPos, startPos + API_BATCH_SIZE);
       const batchEncoded = batch.map((pos) => pos.join(",")).join(";");
-      const endpoint = new URL(
-        `elevation/${batchEncoded}.json`,
-        defaults.maptilerApiURL,
-      );
+      const endpoint = new URL(`elevation/${batchEncoded}.json`, config.apiURL);
       endpoint.searchParams.set("key", apiKey);
       return callFetch(endpoint.toString());
     },
@@ -105,17 +102,19 @@ async function computeOnClient(
   apiKey: string,
   zoom?: number,
 ): Promise<Position[]> {
-  // Fetch terrain TileJSON
-  if (!terrainTileJson) {
+  // Fetch terrain TileJSON, re-fetching if the configured API host changed
+  // since the last fetch (eg. after config.useEuEndpoints is toggled)
+  if (!terrainTileJson || terrainTileJsonHost !== config.apiHost) {
     const endpoint = new URL(
       `tiles/${TERRAIN_TILESET}/tiles.json`,
-      defaults.maptilerApiURL,
+      config.apiURL,
     );
     endpoint.searchParams.set("key", apiKey);
     const urlWithParams = endpoint.toString();
     const res = await callFetch(urlWithParams);
     if (res.ok) {
       terrainTileJson = (await res.json()) as TileJSON;
+      terrainTileJsonHost = config.apiHost;
     } else {
       throw new ServiceError(res, customMessages[res.status] ?? "");
     }

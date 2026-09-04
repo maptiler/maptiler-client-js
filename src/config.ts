@@ -1,5 +1,13 @@
 import { BufferToPixelDataFunction } from "./tiledecoding";
 
+/**
+ * The only two hosts the MapTiler Cloud API is served from.
+ * Not exported: the API host must always be read through `config.apiHost`/`config.apiURL`
+ * so that `useEuEndpoints` is honored everywhere.
+ */
+const DEFAULT_API_HOST = "api.maptiler.com";
+const EU_API_HOST = "api.maptiler.eu";
+
 export type FetchFunction = (
   input: RequestInfo | URL,
   init?: RequestInit,
@@ -34,6 +42,11 @@ class ClientConfig {
   private _fetch: FetchFunction | null = tryGettingFetch();
 
   /**
+   * Whether to use the EU-based `api.maptiler.eu` host instead of the default `api.maptiler.com`
+   */
+  private _useEuEndpoints = false;
+
+  /**
    * Number of tiles to keep in cache
    */
   public tileCacheSize: number = 200;
@@ -66,6 +79,36 @@ class ClientConfig {
    */
   get fetch(): FetchFunction | null {
     return this._fetch;
+  }
+
+  /**
+   * Switch between the default `api.maptiler.com` host and the EU-based `api.maptiler.eu` host.
+   * Set to `false` to switch back to the default.
+   */
+  set useEuEndpoints(value: boolean) {
+    this._useEuEndpoints = value;
+  }
+
+  /**
+   * Whether the EU-based `api.maptiler.eu` host is currently in use instead of the default `api.maptiler.com`
+   */
+  get useEuEndpoints(): boolean {
+    return this._useEuEndpoints;
+  }
+
+  /**
+   * The host currently used for the MapTiler API requests (`api.maptiler.com` or `api.maptiler.eu`)
+   */
+  get apiHost(): string {
+    return this._useEuEndpoints ? EU_API_HOST : DEFAULT_API_HOST;
+  }
+
+  /**
+   * The base URL currently used for the MapTiler API requests
+   * (`https://api.maptiler.com/` or `https://api.maptiler.eu/`)
+   */
+  get apiURL(): string {
+    return `https://${this.apiHost}/`;
   }
 }
 
