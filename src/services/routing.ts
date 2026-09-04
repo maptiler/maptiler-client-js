@@ -2,7 +2,6 @@ import type { BBox, MultiPoint, MultiPolygon, Position } from "geojson";
 import { decode } from "@googlemaps/polyline-codec";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
-import { defaults } from "../defaults";
 import { ServiceError } from "./ServiceError";
 
 /** Routing profile — determines the costing model. */
@@ -417,7 +416,7 @@ async function directionsPost(
   body: RoutingRequest,
   fetchExtras?: RequestInit,
 ): Promise<RoutingResponse> {
-  const url = new URL("routing/v1/directions", defaults.maptilerApiURL);
+  const url = new URL("routing/v1/directions", config.apiURL);
   url.searchParams.set("key", config.apiKey);
 
   const headers = new Headers(fetchExtras?.headers);
@@ -440,7 +439,7 @@ async function directionsGet(
   req: RoutingRequest,
   fetchExtras?: RequestInit,
 ): Promise<RoutingResponse> {
-  const url = new URL("routing/v1/directions", defaults.maptilerApiURL);
+  const url = new URL("routing/v1/directions", config.apiURL);
   const search = url.searchParams;
 
   search.set("key", config.apiKey);
