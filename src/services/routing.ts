@@ -413,13 +413,20 @@ async function processDirectionsResponse(
 /**
  * Get directions using POST request
  */
-async function directionsPost(body: RoutingRequest): Promise<RoutingResponse> {
+async function directionsPost(
+  body: RoutingRequest,
+  fetchExtras?: RequestInit,
+): Promise<RoutingResponse> {
   const url = new URL("routing/v1/directions", defaults.maptilerApiURL);
   url.searchParams.set("key", config.apiKey);
 
+  const headers = new Headers(fetchExtras?.headers);
+  headers.set("content-type", "application/json");
+
   const res = await callFetch(url.toString(), {
+    ...fetchExtras,
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers,
     body: JSON.stringify(body),
   });
 
@@ -429,7 +436,10 @@ async function directionsPost(body: RoutingRequest): Promise<RoutingResponse> {
 /**
  * Get directions using GET request
  */
-async function directionsGet(req: RoutingRequest): Promise<RoutingResponse> {
+async function directionsGet(
+  req: RoutingRequest,
+  fetchExtras?: RequestInit,
+): Promise<RoutingResponse> {
   const url = new URL("routing/v1/directions", defaults.maptilerApiURL);
   const search = url.searchParams;
 
@@ -444,7 +454,11 @@ async function directionsGet(req: RoutingRequest): Promise<RoutingResponse> {
   addResponseOptions(search, req.response);
   addProfileOptions(search, req.profile, req.profileOptions);
 
-  const res = await callFetch(url.toString());
+  const res = await callFetch(url.toString(), {
+    ...fetchExtras,
+    method: "GET",
+    body: null,
+  });
 
   return await processDirectionsResponse(res);
 }

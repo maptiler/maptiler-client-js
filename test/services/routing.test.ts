@@ -37,10 +37,11 @@ describe("routing.directionsPost()", () => {
       expect.stringContaining("/routing/v1/directions?key=TEST_KEY"),
       expect.objectContaining({
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: expect.any(Headers),
         body: JSON.stringify(body),
       }),
     );
+    expect((callFetch as Mock).mock.calls[0][1].headers.get("content-type")).toBe("application/json");
   });
 
   it("throws ServiceError on non-OK response", async () => {
@@ -103,7 +104,7 @@ describe("routing.directionsGet()", () => {
       ],
     });
 
-    expect(callFetch).toHaveBeenCalledWith(expect.any(String));
+    expect(callFetch).toHaveBeenCalledWith(expect.any(String), expect.any(Object));
 
     const url = new URL((callFetch as Mock).mock.calls[0][0]);
 
