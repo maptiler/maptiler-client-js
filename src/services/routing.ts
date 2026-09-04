@@ -379,6 +379,13 @@ function addProfileOptions(
   }
 }
 
+function decodeLegGeometry(leg: RoutingRouteLeg): Position[] {
+  if (typeof leg.geometry === "string") {
+    return decode(leg.geometry, 6).map(([lat, lon]) => [lon, lat]);
+  }
+  return leg.geometry;
+}
+
 async function processDirectionsResponse(
   res: Response,
 ): Promise<RoutingResponse> {
@@ -389,8 +396,14 @@ async function processDirectionsResponse(
   const response: RoutingResponse = await res.json();
 
   for (const leg of response.route.legs) {
-    if (typeof leg.geometry === "string") {
-      leg.geometry = decode(leg.geometry, 6).map(([lat, lon]) => [lon, lat]);
+    leg.geometry = decodeLegGeometry(leg);
+  }
+
+  if (response.alternates) {
+    for (const alternateRoute of response.alternates) {
+      for (const leg of alternateRoute.legs) {
+        leg.geometry = decodeLegGeometry(leg);
+      }
     }
   }
 
