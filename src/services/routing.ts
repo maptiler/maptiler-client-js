@@ -247,7 +247,7 @@ export interface RoutingRouteLeg {
   geometry: Position[];
 
   /** Turn-by-turn steps */
-  steps: RoutingRouteStep[];
+  steps?: RoutingRouteStep[];
 }
 
 /** Details of a single turn-by-turn step */
@@ -291,7 +291,7 @@ export interface RoutingRouteManeuver {
   turnAngle?: number;
 
   /** Maneuver type */
-  type:
+  type?:
     | "none"
     | "continue"
     | "slightLeftTurn"
