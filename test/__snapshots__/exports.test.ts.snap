@@ -306,7 +306,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
   "mapStylePresetList": "MapStylePreset[]",
   "math": "{ EARTH_RADIUS: number; EARTH_CIRCUMFERENCE: number; longitudeToMercatorX: (lng: number) => number; latitudeToMercatorY: (lat: number) => number; wgs84ToMercator: (position: Position) => Position; ... 11 more ...; haversineCumulatedDistanceWgs84: (positions: Position[]) => number[]; }",
   "misc": "{ extractLineStrings: (geoJson: GeoJsonObject) => (LineString | MultiLineString)[]; simplify: (points: Position[], tolerance: number) => Position[]; }",
-  "routing": "{ directionsPost: (body: RoutingRequest) => Promise<RoutingResponse>; directionsGet: (req: RoutingRequest) => Promise<RoutingResponse>; }",
+  "routing": "{ directionsPost: (body: RoutingRequest, fetchExtras?: RequestInit) => Promise<RoutingResponse>; directionsGet: (req: RoutingRequest, fetchExtras?: RequestInit) => Promise<...>; }",
   "staticMaps": "{ centered: (center: Position, zoom: number, options?: StaticMapBaseOptions) => string; bounded: (boundingBox: BBox, options?: BoundedStaticMapOptions) => string; automatic: (options?: BoundedStaticMapOptions) => string; }",
   "styleToStyle": "(style: string | ReferenceMapStyle | MapStyleVariant) => string",
   "toLanguageInfo": "(lang: string | LanguageInfo, languageDictionary?: { [k: string]: LanguageInfo; }) => LanguageInfo",
