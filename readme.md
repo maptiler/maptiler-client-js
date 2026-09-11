@@ -8,7 +8,7 @@ The **MapTiler Client JS** exposes a number of handy functions that wrap API cal
 - [Coordinate systems search and transform](#-coordinates)
 - [User data fetching as GeoJSON](#-data)
 - [Static maps of all sorts](#%EF%B8%8F-static-maps)
-- [Elevation lookup with batch features](#-elevation)
+- [Elevation lookup with batch features](#%EF%B8%8F-elevation)
 
 The project is entirely written in TypeScript and all the function arguments are nicely documented and typed.
 
