@@ -3,7 +3,7 @@
 ## NEXT
 
 ### New Features
-- Adds new API client module for MapTiler Routing API (experimental)
+- Adds new API client module for MapTiler Routing API (Directions)
 
 ## 3.0.2
 ### Bug Fixes
