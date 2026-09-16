@@ -82,6 +82,65 @@ describe("routing.directionsPost()", () => {
 
     expect(result).toEqual(fakeJson);
   });
+
+  it("applies adjustSearchParams and keeps the key non-overridable", async () => {
+    (callFetch as Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ route: { summary: {}, legs: [] } }),
+    });
+
+    await routing.directionsPost(
+      {
+        profile: "car",
+        locations: [
+          { lon: 10, lat: 20 },
+          { lon: 30, lat: 40 },
+        ],
+      },
+      {
+        adjustSearchParams: (searchParams) => {
+          searchParams.set("custom", "value");
+          searchParams.set("key", "OVERRIDE_ATTEMPT");
+        },
+      },
+    );
+
+    const url = new URL((callFetch as Mock).mock.calls[0][0]);
+
+    expect(url.searchParams.get("custom")).toBe("value");
+    expect(url.searchParams.get("key")).toBe("TEST_KEY");
+  });
+
+  it("passes fetchExtras through and keeps the JSON content-type", async () => {
+    (callFetch as Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ route: { summary: {}, legs: [] } }),
+    });
+
+    const controller = new AbortController();
+
+    await routing.directionsPost(
+      {
+        profile: "car",
+        locations: [
+          { lon: 10, lat: 20 },
+          { lon: 30, lat: 40 },
+        ],
+      },
+      {
+        fetchExtras: {
+          signal: controller.signal,
+          headers: { "x-custom": "header" },
+        },
+      },
+    );
+
+    const init = (callFetch as Mock).mock.calls[0][1];
+
+    expect(init.signal).toBe(controller.signal);
+    expect(init.headers.get("x-custom")).toBe("header");
+    expect(init.headers.get("content-type")).toBe("application/json");
+  });
 });
 
 describe("routing.directionsGet()", () => {
@@ -208,5 +267,60 @@ describe("routing.directionsGet()", () => {
     });
 
     expect(result).toEqual(fakeJson);
+  });
+
+  it("applies adjustSearchParams and keeps the key non-overridable", async () => {
+    (callFetch as Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ route: { summary: {}, legs: [] } }),
+    });
+
+    await routing.directionsGet(
+      {
+        profile: "car",
+        locations: [
+          { lon: 10, lat: 20 },
+          { lon: 30, lat: 40 },
+        ],
+      },
+      {
+        adjustSearchParams: (searchParams) => {
+          searchParams.set("custom", "value");
+          searchParams.set("profile", "bicycle");
+          searchParams.set("key", "OVERRIDE_ATTEMPT");
+        },
+      },
+    );
+
+    const url = new URL((callFetch as Mock).mock.calls[0][0]);
+
+    expect(url.searchParams.get("custom")).toBe("value");
+    expect(url.searchParams.get("profile")).toBe("bicycle");
+    expect(url.searchParams.get("key")).toBe("TEST_KEY");
+  });
+
+  it("passes fetchExtras through", async () => {
+    (callFetch as Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ route: { summary: {}, legs: [] } }),
+    });
+
+    const controller = new AbortController();
+
+    await routing.directionsGet(
+      {
+        profile: "car",
+        locations: [
+          { lon: 10, lat: 20 },
+          { lon: 30, lat: 40 },
+        ],
+      },
+      { fetchExtras: { signal: controller.signal } },
+    );
+
+    const init = (callFetch as Mock).mock.calls[0][1];
+
+    expect(init.signal).toBe(controller.signal);
+    expect(init.method).toBe("GET");
   });
 });
