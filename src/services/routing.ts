@@ -127,6 +127,20 @@ export type RoutingProfileOptions =
   | RoutingBicycleOptions
   | RoutingPedestrianOptions;
 
+/** Options applying to the routing request itself, rather than to the route. */
+export interface RoutingOptions {
+  /**
+   * Callback function to adjust the target URL search params before fetching.
+   * @param searchParams [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) object that can be modified in place.
+   */
+  adjustSearchParams?: (searchParams: URLSearchParams) => void;
+
+  /**
+   * Extra options to pass to the underlying [fetch](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit) call.
+   */
+  fetchExtras?: RequestInit;
+}
+
 /** Full routing request body for POST /routing/directions. */
 export interface RoutingRequest {
   /** Pass-through identifier returned in response */
@@ -378,6 +392,19 @@ function addProfileOptions(
   }
 }
 
+function addRoutingOptions(
+  search: URLSearchParams,
+  options: RoutingOptions,
+): void {
+  const { adjustSearchParams } = options;
+
+  if (typeof adjustSearchParams === "function") {
+    adjustSearchParams(search);
+  }
+
+  search.set("key", config.apiKey);
+}
+
 function decodeLegGeometry(leg: RoutingRouteLeg): Position[] {
   if (typeof leg.geometry === "string") {
     return decode(leg.geometry, 6).map(([lat, lon]) => [lon, lat]);
@@ -414,10 +441,12 @@ async function processDirectionsResponse(
  */
 async function directionsPost(
   body: RoutingRequest,
-  fetchExtras?: RequestInit,
+  options: RoutingOptions = {},
 ): Promise<RoutingResponse> {
+  const { fetchExtras } = options;
+
   const url = new URL("routing/v1/directions", config.apiURL);
-  url.searchParams.set("key", config.apiKey);
+  addRoutingOptions(url.searchParams, options);
 
   const headers = new Headers(fetchExtras?.headers);
   headers.set("content-type", "application/json");
@@ -437,12 +466,13 @@ async function directionsPost(
  */
 async function directionsGet(
   req: RoutingRequest,
-  fetchExtras?: RequestInit,
+  options: RoutingOptions = {},
 ): Promise<RoutingResponse> {
+  const { fetchExtras } = options;
+
   const url = new URL("routing/v1/directions", config.apiURL);
   const search = url.searchParams;
 
-  search.set("key", config.apiKey);
   search.set("profile", req.profile);
 
   if (req.id) search.set("id", req.id);
@@ -452,6 +482,7 @@ async function directionsGet(
   addLocations(search, req.locations);
   addResponseOptions(search, req.response);
   addProfileOptions(search, req.profile, req.profileOptions);
+  addRoutingOptions(search, options);
 
   const res = await callFetch(url.toString(), {
     ...fetchExtras,
