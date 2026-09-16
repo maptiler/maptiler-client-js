@@ -11,6 +11,7 @@ const bundles = [
   // ES module, not minified + sourcemap
   {
     plugins: [
+      nodeResolve(),
       json(),
       esbuild(),
     ],
@@ -25,6 +26,7 @@ const bundles = [
     watch: {
       include: "src/**"
     },
+    // @googlemaps/polyline-codec can't be properly externalized
     external: ["quick-lru"]
   },
 
@@ -93,6 +95,7 @@ if (process.env.NODE_ENV === "production") {
   // ES module, minified
   {
     plugins: [
+      nodeResolve(),
       json(),
       esbuild({
         sourceMap: false,
@@ -106,11 +109,12 @@ if (process.env.NODE_ENV === "production") {
       }
     ],
     input: "src/index.ts",
+    // @googlemaps/polyline-codec can't be properly externalized
     external: ["quick-lru"],
   },
   {
     plugins: [
-      nodeResolve(), // for the standalone UMD, we want to resolve so that the bundle contains all the dep.
+      nodeResolve(),
       commonjs({ include: "node_modules/**" }),
       globals(),
       json(),
