@@ -11,6 +11,7 @@ const bundles = [
   // ES module, not minified + sourcemap
   {
     plugins: [
+      nodeResolve(),
       json(),
       esbuild(),
     ],
@@ -25,7 +26,8 @@ const bundles = [
     watch: {
       include: "src/**"
     },
-    external: ["@googlemaps/polyline-codec", "quick-lru"]
+    // @googlemaps/polyline-codec can't be properly externalized
+    external: ["quick-lru"]
   },
 
   // CJS module, not minified + sourcemap
@@ -93,6 +95,7 @@ if (process.env.NODE_ENV === "production") {
   // ES module, minified
   {
     plugins: [
+      nodeResolve(),
       json(),
       esbuild({
         sourceMap: false,
@@ -106,7 +109,8 @@ if (process.env.NODE_ENV === "production") {
       }
     ],
     input: "src/index.ts",
-    external: ["@googlemaps/polyline-codec", "quick-lru"],
+    // @googlemaps/polyline-codec can't be properly externalized
+    external: ["quick-lru"],
   },
   {
     plugins: [
