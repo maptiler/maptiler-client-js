@@ -255,9 +255,7 @@ export interface RoutingRouteLeg {
   /** Summary of the leg */
   summary: RoutingSummary;
 
-  /**
-   * Geometry of the leg as a list of coordinates
-   */
+  /** Geometry of the leg as a list of coordinates */
   geometry: Position[];
 
   /** Turn-by-turn steps */
