@@ -1,5 +1,15 @@
 # MapTiler Client Changelog
 
+## 3.1.0
+### New Features
+- Adds support for api.maptiler.eu API endpoint via `config` object
+
+### Bug Fixes
+- Fixes links in Readme
+
+### Others
+- Security dependency updates
+
 ## 3.0.2
 ### Bug Fixes
 - Correctly maps Outdoor v4 mapstyle tou `OUTDOOR_V4` namespace.

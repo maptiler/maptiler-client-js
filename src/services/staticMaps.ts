@@ -1,6 +1,5 @@
 import { BBox, Position } from "geojson";
 import { config } from "../config";
-import { defaults } from "../defaults";
 import { MapStyleVariant, ReferenceMapStyle, styleToStyle } from "../mapstyle";
 import { misc } from "../misc";
 
@@ -216,7 +215,7 @@ function centered(
     `maps/${encodeURIComponent(style)}/static/${center[0]},${
       center[1]
     },${zoom}/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL,
+    config.apiURL,
   );
 
   if ("attribution" in options) {
@@ -300,7 +299,7 @@ function bounded(
     `maps/${encodeURIComponent(style)}/static/${boundingBox[0]},${
       boundingBox[1]
     },${boundingBox[2]},${boundingBox[3]}/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL,
+    config.apiURL,
   );
 
   if ("attribution" in options) {
@@ -390,7 +389,7 @@ function automatic(options: AutomaticStaticMapOptions = {}): string {
     `maps/${encodeURIComponent(
       style,
     )}/static/auto/${width}x${height}${scale}.${format}`,
-    defaults.maptilerApiURL,
+    config.apiURL,
   );
 
   if ("attribution" in options) {

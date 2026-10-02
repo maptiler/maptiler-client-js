@@ -1,7 +1,6 @@
 import type { BBox, Feature, Geometry, Position } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
-import { defaults } from "../defaults";
 
 import {
   type LanguageInfo,
@@ -390,7 +389,7 @@ async function forward(
 
   const endpoint = new URL(
     `geocoding/${encodeURIComponent(query)}.json`,
-    defaults.maptilerApiURL,
+    config.apiURL,
   );
 
   addBaseGeocodingOptions(endpoint.searchParams, options);
@@ -427,7 +426,7 @@ async function reverse(
 
   const endpoint = new URL(
     `geocoding/${position[0]},${position[1]}.json`,
-    defaults.maptilerApiURL,
+    config.apiURL,
   );
 
   addBaseGeocodingOptions(endpoint.searchParams, options);
@@ -458,7 +457,7 @@ async function byId(
   id: string,
   options: ByIdGeocodingOptions = {},
 ): Promise<GeocodingSearchResult> {
-  const endpoint = new URL(`geocoding/${id}.json`, defaults.maptilerApiURL);
+  const endpoint = new URL(`geocoding/${id}.json`, config.apiURL);
 
   addBaseGeocodingOptions(endpoint.searchParams, options);
   addLanguageGeocodingOptions(endpoint.searchParams, options);
@@ -494,10 +493,7 @@ async function batch(
     .map((query) => encodeURIComponent(query))
     .join(";");
 
-  const endpoint = new URL(
-    `geocoding/${joinedQuery}.json`,
-    defaults.maptilerApiURL,
-  );
+  const endpoint = new URL(`geocoding/${joinedQuery}.json`, config.apiURL);
 
   addBaseGeocodingOptions(endpoint.searchParams, options);
   addLanguageGeocodingOptions(endpoint.searchParams, options);

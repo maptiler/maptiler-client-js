@@ -1,7 +1,6 @@
 import { FeatureCollection } from "geojson";
 import { callFetch } from "../callFetch";
 import { config } from "../config";
-import { defaults } from "../defaults";
 import { ServiceError } from "./ServiceError";
 
 const customMessages = {
@@ -34,7 +33,7 @@ async function get(
 
   const endpoint = new URL(
     `data/${encodeURIComponent(dataId)}/features.json`,
-    defaults.maptilerApiURL,
+    config.apiURL,
   );
   endpoint.searchParams.set("key", options.apiKey ?? config.apiKey);
   const urlWithParams = endpoint.toString();
