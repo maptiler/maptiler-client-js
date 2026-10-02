@@ -4,6 +4,7 @@ export * from "./config";
 export * from "./language";
 export * from "./services/geocoding";
 export * from "./services/geolocation";
+export * from "./services/routing";
 export * from "./services/coordinates";
 export * from "./services/data";
 export * from "./services/staticMaps";
