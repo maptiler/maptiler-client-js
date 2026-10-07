@@ -132,7 +132,7 @@ You can provide some options, such as:
 - one of more languages to get the results into
 - a bounding geo box, to restrict the search to a given window
 
-Read more about forward geocoding, as well as feature ID query and batch forward geocoding, on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#forward).
+Read more about forward geocoding, as well as feature ID query and batch forward geocoding, on our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_geocoding.geocoding/#forward).
 
 #### Reverse
 
@@ -145,7 +145,7 @@ const result = await maptilerClient.geocoding.reverse([6.249638, 46.402056]);
 
 The same option object as the forward geocoding can be provided.
 
-Read more about reverse geocoding on our [official documentation](https://docs.maptiler.com/client-js/geocoding/#reverse).
+Read more about reverse geocoding on our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_geocoding.geocoding/#reverse).
 
 #### Language
 
@@ -177,7 +177,7 @@ There is only a single function:
 const result = await maptilerClient.geolocation.info();
 ```
 
-Read more about geolocation on our [official documentation](https://docs.maptiler.com/client-js/geolocation/).
+Read more about geolocation on our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_geolocation.geolocation/).
 
 ### 🌐 Coordinates
 
@@ -197,7 +197,7 @@ const resultD = await maptilerClient.coordinates.search('code:4326', {transforma
 
 The `transformations` options retrieve a lot more details about the CRS that MapTiler API is able to transform to/from than just their IDs.
 
-Read more about searching coordinate systems in our [official documentation](https://docs.maptiler.com/client-js/coordinates/#search).
+Read more about searching coordinate systems in our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_coordinates.coordinates/#search).
 
 #### Transform
 
@@ -223,7 +223,7 @@ const resultB = await maptilerClient.coordinates.transform(
 );
 ```
 
-Read more about transforming coordinates on our [official documentation](https://docs.maptiler.com/client-js/coordinates/#transform).
+Read more about transforming coordinates on our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_coordinates.coordinates/#transform).
 
 ### 💽 Data
 
@@ -236,7 +236,7 @@ const result = await maptilerClient.data.get("my-dataset-unique-id");
 
 Since the result is a GeoJSON, it can easily be added to a `map` with `.addSource()` and `.addLayer()`.
 
-Read more about fetching your own data on our [official documentation](https://docs.maptiler.com/client-js/data/).
+Read more about fetching your own data on our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_data.data/).
 
 ### 🗺️ Static maps
 
@@ -321,7 +321,7 @@ const imageLink = maptilerClient.staticMaps.centered(
 );
 ```
 
-Read more about centered static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#tag/static-maps/GET/maps/{mapId}/static/{lon},{lat},{zoom}/{width}x{height}{scale}.{format}).
+Read more about centered static maps on our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_staticMaps.staticMaps/#centered).
 
 #### Bounded static maps
 
@@ -363,7 +363,7 @@ As you may notice, the geo bounding box could have very different proportions th
 | :------------------------------------------------------------: | :------------------------------------------------------------: |
 | ![](images/screenshots/static-bounded-portugal-2048x2048.webp) | ![](images/screenshots/static-bounded-portugal-1024x2048.webp) |
 
-Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#tag/static-maps/GET/maps/{mapId}/static/{minx},{miny},{maxx},{maxy}/{width}x{height}{scale}.{format}).
+Read more about bounded static maps on our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_staticMaps.staticMaps/#bounded).
 
 #### Automatic static maps
 
@@ -410,7 +410,7 @@ And voila!
 
 > 📣 _**Note:**_ The GeoJSON for this track contains 9380 pairs of coordinates, which is a lot! In order to send the track to MapTiler Cloud static maps API, the client simplifies the long paths while keeping a high degree of precision using a very fast [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm).
 
-Read more about bounded static maps on our official [API documentation](https://docs.maptiler.com/cloud/api/static-maps/#tag/static-maps/GET/maps/{mapId}/static/auto/{width}x{height}{scale}.{format}).
+Read more about automatic bounded static maps on our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_staticMaps.staticMaps/#automatic).
 
 ### 🏔️ Elevation
 
@@ -434,7 +434,7 @@ const elevatedPosition = await maptilerClient.elevation.at(montBlancPeak);
 
 The returned value is also a _GeoJSON_ `Position` array, but with three elements: `[lng, lat, elevation]`.
 
-Read more about elevation lookup for a single location in our [official documentation](https://docs.maptiler.com/client-js/elevation/#at).
+Read more about elevation lookup for a single location in our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_elevation.elevation/#at).
 
 #### Batch mode
 
@@ -457,7 +457,7 @@ const peaks: Position[] = [
 const elevatedPeaks = await maptilerClient.elevation.batch(peaks);
 ```
 
-Read more about elevation lookup for a batch of locations in our [official documentation](https://docs.maptiler.com/client-js/elevation/#batch).
+Read more about elevation lookup for a batch of locations in our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_elevation.elevation/#batch).
 
 #### From a GeoJSON LineString
 
@@ -481,7 +481,7 @@ const someElevatedLineString =
 // someElevatedLineString is also of type LineString
 ```
 
-Read more about elevation lookup for a `LineString` in our [official documentation](https://docs.maptiler.com/client-js/elevation/#linestring).
+Read more about elevation lookup for a `LineString` in our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_elevation.elevation/#fromlinestring).
 
 #### From a GeoJSON MultiLineString
 
@@ -517,7 +517,7 @@ const someElevatedMultiLineString =
 // someElevatedMultiLineString is also of type MultiLineString
 ```
 
-Read more about elevation lookup for a `MultiLineString` in our [official documentation](https://docs.maptiler.com/client-js/elevation/#multilinestring).
+Read more about elevation lookup for a `MultiLineString` in our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_elevation.elevation/#frommultilinestring).
 
 #### Caching
 
@@ -563,7 +563,7 @@ const tileXY = maptilerClient.math.wgs84ToTileIndex(montBlancPeakWgs84, 14);
 // and many more!
 ```
 
-Please find out more about the math package in our [official documentation](/client-js/api/variables/services_math.math/).
+Please find out more about the math package in our [official documentation](https://docs.maptiler.com/client-js/api/variables/services_math.math/).
 
 <br>
 
