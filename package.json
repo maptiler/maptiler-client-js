@@ -1,6 +1,6 @@
 {
   "name": "@maptiler/client",
-  "version": "3.1.0",
+  "version": "0.0.0-PLACEHOLDER",
   "description": "Javascript & Typescript wrapper to MapTiler Cloud API",
   "module": "dist/maptiler-client.mjs",
   "types": "dist/maptiler-client.d.ts",
