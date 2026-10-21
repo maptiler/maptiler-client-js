@@ -1,6 +1,6 @@
 {
   "name": "@maptiler/client",
-  "version": "3.1.0",
+  "version": "0.0.0-PLACEHOLDER",
   "description": "Javascript & Typescript wrapper to MapTiler Cloud API",
   "module": "dist/maptiler-client.mjs",
   "types": "dist/maptiler-client.d.ts",
@@ -57,6 +57,7 @@
   },
   "license": "BSD-3-Clause",
   "devDependencies": {
+    "@googlemaps/polyline-codec": "^1.0.28",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
