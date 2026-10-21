@@ -409,6 +409,33 @@ export interface RoutingRouteManeuver {
   type?: RoutingManeuverType;
 }
 
+/** Error codes API can return backin case of error */
+export type ApiErrorCode =
+  | "MT_NETWORK_ERROR"
+  | "MT_MAX_AVOID_LOCATIONS_LIMIT"
+  | "MT_MAX_LOCATIONS_LIMIT"
+  | "MT_MIN_LOCATIONS_LIMIT"
+  | "MT_MIN_WAYPOINTS_LIMIT"
+  | "MT_ARRIVAL_DEPARTURE_CONFLICT"
+  | "MT_MIN_NODES_LIMIT"
+  | "MT_MAX_TIME_LIMIT"
+  | "MT_MAX_DISTANCE_LIMIT"
+  | "MT_UNCONNECTED_REGIONS"
+  | "MT_NO_SUITABLE_EDGES"
+  | "MT_LOCATION_UNREACHABLE"
+  | "MT_PATH_NOT_FOUND"
+  | "MT_INVALID_LOCATION"
+  | "MT_INVALID_DATETIME"
+  | "MT_PROFILE_CONSTRAINT"
+  | "MT_ROUTING"
+  | "MT_UNEXPECTED"
+  | "MT_UNAVAILABLE"
+  | "MT_KEY_INVALID"
+  | "MT_INVALID_REQUEST"
+  | "MT_AVOID_LOCATIONS"
+  | `MT_API_${string}`
+  | (string & NonNullable<unknown>);
+
 /** Error payload returned by the Routing API alongside a non-OK status. */
 interface RoutingErrorPayload {
   /** Short, ASCII code of the error */
@@ -573,7 +600,7 @@ async function getErrorMessage(res: Response): Promise<string> {
   let payload: Partial<RoutingErrorPayload> | null = null;
 
   try {
-    payload = await res.json();
+    payload = await res.clone().json();
   } catch {
     return "";
   }
