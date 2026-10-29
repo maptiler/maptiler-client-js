@@ -657,7 +657,16 @@ async function directionsPost(
     ...fetchExtras,
     method: "POST",
     headers,
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      ...body,
+      // The API rejects locations with unknown fields, let's strip these
+      locations: body.locations.map(({ lon, lat, heading, waypoint }) => ({
+        lon,
+        lat,
+        heading,
+        waypoint,
+      })),
+    }),
   });
 
   return await processDirectionsResponse(res);

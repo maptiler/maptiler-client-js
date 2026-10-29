@@ -143,6 +143,27 @@ describe("routing.directionsPost()", () => {
     expect(init.headers.get("x-custom")).toBe("header");
     expect(init.headers.get("content-type")).toBe("application/json");
   });
+
+  it("sends only the known location fields", async () => {
+    (callFetch as Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ route: { summary: {}, legs: [] } }),
+    });
+
+    const places = [
+      { lon: 10, lat: 20, heading: 90, label: "Start" },
+      { lon: 30, lat: 40, waypoint: false, label: "End" },
+    ];
+
+    await routing.directionsPost({ profile: "car", locations: places });
+
+    const sent = JSON.parse((callFetch as Mock).mock.calls[0][1].body);
+
+    expect(sent.locations).toEqual([
+      { lon: 10, lat: 20, heading: 90 },
+      { lon: 30, lat: 40, waypoint: false },
+    ]);
+  });
 });
 
 describe("routing.directionsGet()", () => {
