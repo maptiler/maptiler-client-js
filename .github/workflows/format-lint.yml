@@ -43,3 +43,6 @@ jobs:
 
       - name: Running Tests
         run: npm run test:prod
+
+      - name: Running Type Tests
+        run: npm run test:types
