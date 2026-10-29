@@ -346,12 +346,14 @@ const TWO_LOCATIONS = [
 ];
 
 function mockResponse(json: unknown, ok = true, status = 200) {
-  (callFetch as Mock).mockResolvedValue({
+  const res = {
     ok,
     status,
     url: "https://api.maptiler.com/routing/v1/directions",
     json: () => Promise.resolve(json),
-  });
+    clone: () => res,
+  };
+  (callFetch as Mock).mockResolvedValue(res);
 }
 
 function lastUrl(): URL {
@@ -371,6 +373,7 @@ describe("routing.directionsGet() profile options", () => {
       locations: TWO_LOCATIONS,
       profileOptions: {
         weight: 24,
+        length: 12,
         height: 4.5,
         axleLoad: 11,
         hazmat: true,
@@ -382,6 +385,7 @@ describe("routing.directionsGet() profile options", () => {
     const search = lastUrl().searchParams;
 
     expect(search.get("truck.weight")).toBe("24");
+    expect(search.get("truck.length")).toBe("12");
     expect(search.get("truck.height")).toBe("4.5");
     expect(search.get("truck.axleLoad")).toBe("11");
     expect(search.get("truck.hazmat")).toBe("true");
@@ -442,20 +446,32 @@ describe("routing.directionsGet() profile options", () => {
     expect(search.get("alternates")).toBe("0");
   });
 
-  it("adds id, departureTime and arrivalTime", async () => {
+  it("adds id and departureTime", async () => {
     await routing.directionsGet({
       profile: "car",
       locations: TWO_LOCATIONS,
       id: "my-request",
       departureTime: "2026-03-15T12:33",
-      arrivalTime: "2026-03-15T18:00",
     });
 
     const search = lastUrl().searchParams;
 
     expect(search.get("id")).toBe("my-request");
     expect(search.get("departureTime")).toBe("2026-03-15T12:33");
+    expect(search.get("arrivalTime")).toBeNull();
+  });
+
+  it("adds arrivalTime", async () => {
+    await routing.directionsGet({
+      profile: "car",
+      locations: TWO_LOCATIONS,
+      arrivalTime: "2026-03-15T18:00",
+    });
+
+    const search = lastUrl().searchParams;
+
     expect(search.get("arrivalTime")).toBe("2026-03-15T18:00");
+    expect(search.get("departureTime")).toBeNull();
   });
 });
 

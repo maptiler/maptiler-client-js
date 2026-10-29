@@ -96,8 +96,8 @@ export interface RoutingCarOptions {
   avoidances?: RoutingAvoidances;
 }
 
-/** Truck-specific routing options supported by the GET endpoint. */
-export interface RoutingGetTruckOptions {
+/** Truck-specific routing options. */
+export interface RoutingTruckOptions {
   /**
    * Weight of the truck, in metric tonnes. Used for restrictions.
    * Default: 21.77.
@@ -109,6 +109,12 @@ export interface RoutingGetTruckOptions {
    * Default: 4.11.
    */
   height?: number;
+
+  /**
+   * Length of the truck, in meters.
+   * Default: 21.64.
+   */
+  length?: number;
 
   /**
    * Axle load of the truck, in metric tonnes.
@@ -127,15 +133,6 @@ export interface RoutingGetTruckOptions {
 
   /** Avoidance flags */
   avoidances?: RoutingAvoidances;
-}
-
-/** Truck-specific routing options. */
-export interface RoutingTruckOptions extends RoutingGetTruckOptions {
-  /**
-   * Length of the truck, in meters.
-   * Default: 21.64.
-   */
-  length?: number;
 }
 
 /** Bicycle-specific routing options. */
@@ -200,26 +197,36 @@ export interface RoutingResponseOptions {
   };
 }
 
+/**
+ * Either the departure or the arrival time. The API treats them as
+ * alternative time types, so setting both is a type error.
+ */
+export type RoutingTime =
+  | {
+      /**
+       * Time of departure.
+       * Format: YYYY-MM-DDTHH:MM
+       */
+      departureTime?: string;
+      arrivalTime?: never;
+    }
+  | {
+      departureTime?: never;
+      /**
+       * Desired arrival time.
+       * Format: YYYY-MM-DDTHH:MM
+       */
+      arrivalTime?: string;
+    };
+
 /** Request fields shared by both endpoints. */
-export interface RoutingRequestBase {
+export type RoutingRequestBase = RoutingTime & {
   /** Pass-through identifier returned in response */
   id?: string;
 
-  /**
-   * Time of departure.
-   * Format: YYYY-MM-DDTHH:MM
-   */
-  departureTime?: string;
-
-  /**
-   * Desired arrival time.
-   * Format: YYYY-MM-DDTHH:MM
-   */
-  arrivalTime?: string;
-
   /** Response formatting options */
   response?: RoutingResponseOptions;
-}
+};
 
 /** Full routing request body for POST /routing/v1/directions. */
 export type RoutingRequest = RoutingRequestBase & {
@@ -240,8 +247,8 @@ export type RoutingRequest = RoutingRequestBase & {
  *
  * The GET endpoint takes a strict subset of what the POST body accepts, so
  * this type deliberately omits the fields that cannot be expressed as query
- * parameters: {@link RoutingLocation.heading}, {@link RoutingLocation.waypoint},
- * `avoidLocations` and the truck `length`.
+ * parameters: {@link RoutingLocation.heading}, {@link RoutingLocation.waypoint}
+ * and `avoidLocations`.
  * Use {@link routing.directionsPost} if you need any of them.
  */
 export type RoutingGetRequest = RoutingRequestBase & {
@@ -249,7 +256,7 @@ export type RoutingGetRequest = RoutingRequestBase & {
   locations: RoutingGetLocation[];
 } & RoutingProfileSelection<
     RoutingCarOptions,
-    RoutingGetTruckOptions,
+    RoutingTruckOptions,
     RoutingBicycleOptions,
     RoutingPedestrianOptions
   >;
@@ -384,8 +391,8 @@ export type RoutingManeuverType =
   | "slightRightTurn"
   | "leftTurn"
   | "rightTurn"
-  | "leftSharpTurn"
-  | "rightSharpTurn"
+  | "sharpLeftTurn"
+  | "sharpRightTurn"
   | "leftUTurn"
   | "rightUTurn"
   | "roundaboutEnter"
@@ -411,9 +418,9 @@ export interface RoutingRouteManeuver {
 
 /** Error codes API can return backin case of error */
 export type ApiErrorCode =
-  | "MT_NETWORK_ERROR"
   | "MT_MAX_AVOID_LOCATIONS_LIMIT"
   | "MT_MAX_LOCATIONS_LIMIT"
+  | "MT_MAX_CONTOURS_LIMIT"
   | "MT_MIN_LOCATIONS_LIMIT"
   | "MT_MIN_WAYPOINTS_LIMIT"
   | "MT_ARRIVAL_DEPARTURE_CONFLICT"
@@ -498,7 +505,7 @@ function addResponseOptions(
 /** `topSpeed` and the avoidance flags are shared by the car and truck profiles. */
 function addSpeedAndAvoidances(
   search: URLSearchParams,
-  opts: RoutingCarOptions | RoutingGetTruckOptions,
+  opts: RoutingCarOptions | RoutingTruckOptions,
 ): void {
   if (opts.topSpeed !== undefined)
     search.set("topSpeed", String(opts.topSpeed));
@@ -534,6 +541,8 @@ function addProfileOptions(
         search.set("truck.height", String(opts.height));
       if (opts.weight !== undefined)
         search.set("truck.weight", String(opts.weight));
+      if (opts.length !== undefined)
+        search.set("truck.length", String(opts.length));
       if (opts.axleLoad !== undefined)
         search.set("truck.axleLoad", String(opts.axleLoad));
       if (opts.hazmat !== undefined)
@@ -630,8 +639,7 @@ async function processDirectionsResponse(
  * Get directions using POST request.
  *
  * Accepts the full request body. Use this over {@link directionsGet} when the
- * route needs `avoidLocations`, per-location `heading` or `waypoint`, or the
- * truck `length`.
+ * route needs `avoidLocations` or per-location `heading` or `waypoint`.
  */
 async function directionsPost(
   body: RoutingRequest,

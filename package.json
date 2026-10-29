@@ -49,7 +49,8 @@
     "prepare": "npm run format:fix && npm run lint:fix && npm run test && npm run build",
     "test:prod": "vitest test --run",
     "test:dev": "vitest test --watch",
-    "test": ""
+    "test:types": "vitest typecheck --run",
+    "test": "npm run test:prod && npm run test:types"
   },
   "repository": {
     "type": "git",

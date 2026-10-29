@@ -3,8 +3,8 @@
  *
  * These assert the POST/GET split: the GET endpoint accepts a strict subset of
  * the POST body, and each profile accepts only its own options. Nothing here
- * runs, `tsc --noEmit` over the project is what enforces it, and a
- * `@ts-expect-error` that stops being an error fails the build.
+ * runs, `npm run test:types` (Vitest typecheck mode) is what enforces it, and a
+ * `@ts-expect-error` that stops being an error fails the check.
  */
 import type {
   RoutingGetRequest,
@@ -46,11 +46,12 @@ export const getWithWaypoint: RoutingGetRequest = {
   locations: [{ lon: 10, lat: 20, waypoint: false }],
 };
 
-export const getWithTruckLength: RoutingGetRequest = {
-  profile: "truck",
+// @ts-expect-error `departureTime` and `arrivalTime` cannot be combined
+export const departureWithArrival: RoutingRequest = {
+  profile: "car",
   locations,
-  // @ts-expect-error truck `length` is POST-only
-  profileOptions: { length: 12 },
+  departureTime: "2026-03-15T12:33",
+  arrivalTime: "2026-03-15T18:00",
 };
 
 export const postWithEncodePoints: RoutingRequest = {
@@ -71,7 +72,6 @@ export const validGetRequest: RoutingGetRequest = {
   profile: "truck",
   locations,
   id: "my-request",
-  departureTime: "2026-03-15T12:33",
   arrivalTime: "2026-03-15T18:00",
   response: {
     units: "km",
@@ -81,6 +81,7 @@ export const validGetRequest: RoutingGetRequest = {
   },
   profileOptions: {
     weight: 24,
+    length: 12,
     height: 4.5,
     axleLoad: 11,
     hazmat: true,

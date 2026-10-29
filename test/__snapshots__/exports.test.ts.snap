@@ -2,6 +2,7 @@
 
 exports[`SDK Type Exports Snapshot > should match the documented API surface 1`] = `
 {
+  "ApiErrorCode": "any",
   "AutomaticStaticMapOptions": "any",
   "BBox": "any",
   "BaseGeocodingOptions": "any",
@@ -270,7 +271,6 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
   "RoutingDistanceUnit": "any",
   "RoutingGetLocation": "any",
   "RoutingGetRequest": "any",
-  "RoutingGetTruckOptions": "any",
   "RoutingInstructionsLanguage": "any",
   "RoutingLocation": "any",
   "RoutingManeuverType": "any",
@@ -287,6 +287,7 @@ exports[`SDK Type Exports Snapshot > should match the documented API surface 1`]
   "RoutingRouteManeuver": "any",
   "RoutingRouteStep": "any",
   "RoutingSummary": "any",
+  "RoutingTime": "any",
   "RoutingTruckOptions": "any",
   "ServiceError": "typeof ServiceError",
   "StaticMapBaseOptions": "any",
