@@ -183,6 +183,9 @@ export type StaticMapMarker =
        * Default: none provided
        */
       icon?: string;
+
+      title?: string;
+      titlePosition?: "above" | "below" | "left" | "right";
     };
 
 export type StaticMapPath =
@@ -265,7 +268,7 @@ function getEndpoint(
     endpoint.searchParams.set("attribution", options.attribution.toString());
   }
 
-  if (padding && "padding" in options && options.padding) {
+  if (padding && "padding" in options && options.padding !== undefined) {
     endpoint.searchParams.set("padding", options.padding.toString());
   }
 
@@ -337,6 +340,14 @@ function getMarkers(options: StaticMapBaseOptions): string[] {
 
       if (options.hiDPI) {
         markerStr += `scale:2|`;
+      }
+    } else {
+      if (isObject && marker.title) {
+        markerStr += `title:${marker.title}|`;
+      }
+
+      if (isObject && marker.titlePosition) {
+        markerStr += `titlePosition:${marker.titlePosition}|`;
       }
     }
 
