@@ -1,6 +1,6 @@
 # MapTiler Client Changelog
 
-## NEXT
+## 3.2.0
 ### New Features
 - Adds new API client module for MapTiler Routing API (Directions)
 
