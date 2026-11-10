@@ -38,8 +38,11 @@ jobs:
       - name: Fail job if makeRelease failed
         if: steps.makeRelease.outcome == 'failure'
         run: exit 1
-
         id: check-build-status
+
+      - name: Update NPM version
+        run: npm version ${{ github.event.release.tag_name }} --no-git-tag-version
+
       - name: Publish NPM package (regular)
         if: "!github.event.release.prerelease"
         run: |
@@ -50,10 +53,6 @@ jobs:
         run: |
           npm publish --tag next
 
-      - name: Get Package version
-        id: version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-        
       - name: Publish to CDN Cloudflare R2
         uses: ryand56/r2-upload-action@v1.4
         with:
@@ -62,7 +61,7 @@ jobs:
           r2-secret-access-key: ${{ secrets.CDN_MAPTILER_SECRET_ACCESS_KEY }}
           r2-bucket: cdn-storage
           source-dir: dist
-          destination-dir: client-js/v${{ env.PACKAGE_VERSION }}/
+          destination-dir: client-js/${{ github.event.release.tag_name }}/
 
       - name: Dispatch fixture publish request to maptiler-sdk-e2e-testing
         continue-on-error: true # if the dispatch fails, we don't want to fail the job

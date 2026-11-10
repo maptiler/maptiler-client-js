@@ -11,6 +11,7 @@ const bundles = [
   // ES module, not minified + sourcemap
   {
     plugins: [
+      nodeResolve(),
       json(),
       esbuild(),
     ],
@@ -25,6 +26,9 @@ const bundles = [
     watch: {
       include: "src/**"
     },
+    // @googlemaps/polyline-codec can't be externalized: it ships no "exports"
+    // map and its "main" is UMD, so Node's ESM loader resolves the CJS file and cannot detect
+    // the named `decode` export, breaking every consumer that imports us under native Node ESM.
     external: ["quick-lru"]
   },
 
@@ -54,7 +58,7 @@ const bundles = [
   // UMD module, not minified
   {
     plugins: [
-      nodeResolve(), // for the standalone UMD, we want to resolve so that the bundle contains all the dep.
+      nodeResolve(),
       commonjs({ include: "node_modules/**" }),
       globals(),
       json(),
@@ -93,6 +97,7 @@ if (process.env.NODE_ENV === "production") {
   // ES module, minified
   {
     plugins: [
+      nodeResolve(),
       json(),
       esbuild({
         sourceMap: false,
@@ -106,11 +111,14 @@ if (process.env.NODE_ENV === "production") {
       }
     ],
     input: "src/index.ts",
+    // @googlemaps/polyline-codec can't be externalized: it ships no "exports"
+    // map and its "main" is UMD, so Node's ESM loader resolves the CJS file and cannot detect
+    // the named `decode` export, breaking every consumer that imports us under native Node ESM.
     external: ["quick-lru"],
   },
   {
     plugins: [
-      nodeResolve(), // for the standalone UMD, we want to resolve so that the bundle contains all the dep.
+      nodeResolve(),
       commonjs({ include: "node_modules/**" }),
       globals(),
       json(),

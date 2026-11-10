@@ -3,6 +3,7 @@
     "moduleResolution": "Bundler",
     "target": "es6",
     "declaration": true,
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   }
