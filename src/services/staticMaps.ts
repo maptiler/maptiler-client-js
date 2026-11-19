@@ -13,8 +13,8 @@ export type StaticMapBaseOptions = {
   apiKey?: string;
 
   /**
-   * Style of the map (not full style URL). Example: "winter", "streets-v2".
-   * Default: `"streets-v2"`
+   * Style of the map (not full style URL). Example: "winter", "streets-v4".
+   * Default: `defaultMapStyle`
    */
   style?: string | ReferenceMapStyle | MapStyleVariant;
 
