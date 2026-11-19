@@ -1,5 +1,10 @@
 # MapTiler Client Changelog
 
+## 3.3.0
+### New Features
+- Static maps created without a `style` now use Streets v4 (`MapStyle.STREETS`).
+- Adds `defaultMapStyle`, the style used when no style is provided.
+
 ## 3.2.0
 ### New Features
 - Adds new API client module for MapTiler Routing API (Directions)

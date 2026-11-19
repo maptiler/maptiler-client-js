@@ -1270,12 +1270,10 @@ export function styleToStyle(
   style: string | ReferenceMapStyle | MapStyleVariant | null | undefined,
 ): string {
   if (!style) {
-    return MapStyle[mapStylePresetList[0].referenceStyleID]
-      .getDefaultVariant()
-      .getId();
+    return defaultMapStyle.getDefaultVariant().getId();
   }
 
-  // If the provided style is a shorthand (eg. "streets-v2") then we make sure it's trimmed and lowercase
+  // If the provided style is a shorthand (eg. "streets-v4") then we make sure it's trimmed and lowercase
   if (typeof style === "string" || style instanceof String) {
     return style.trim().toLowerCase();
   }
@@ -1298,3 +1296,6 @@ export function styleToStyle(
  *
  */
 export const MapStyle: MapStyleType = buildMapStyles();
+
+/** The style used when no style is provided, e.g. for static maps. */
+export const defaultMapStyle = MapStyle.STREETS;
