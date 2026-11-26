@@ -1,5 +1,10 @@
 # MapTiler Client Changelog
 
+## Unreleased
+
+### Others
+- Adds `timezone` to available types in Geocoding API
+
 ## 3.3.0
 ### New Features
 - Static maps created without a `style` now use Streets v4 (`MapStyle.STREETS`).
