@@ -41,6 +41,7 @@ export type BaseGeocodingOptions = LanguageGeocodingOptions & {
 export type GeocodingPlaceType =
   | "continental_marine"
   | "country"
+  | "timezone"
   | "major_landform"
   | "region"
   | "subregion"
